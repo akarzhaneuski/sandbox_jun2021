@@ -22,4 +22,4 @@ services:
       dockerfile: Dockerfile
     restart: always
     depends_on:
-      - "db"
+      - "mysql-db"
