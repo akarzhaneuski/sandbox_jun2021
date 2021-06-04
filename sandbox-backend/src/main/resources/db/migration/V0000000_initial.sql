@@ -20,7 +20,7 @@ CREATE TABLE employee
     id         INT                        NOT NULL AUTO_INCREMENT PRIMARY KEY,
     login      VARCHAR(50)                NOT NULL,
     password   VARCHAR(255)               NOT NULL,
-    role       enum ('user', 'moderator') NOT NULL,
+    role       enum ('USER', 'MODERATOR') NOT NULL,
     locationId INT,
     modified   DATETIME,
     modifiedBy VARCHAR(50),
@@ -62,7 +62,7 @@ CREATE TABLE discount
     companyId   INT,
     modified    DATETIME,
     modifiedBy  VARCHAR(50),
-    foreign key (companyid) references company (id)
+    foreign key (companyId) references company (id)
 );
 
 CREATE TABLE tag
@@ -99,8 +99,8 @@ CREATE TABLE review
     rate        INT      NOT NULL,
     comment     VARCHAR(500),
     date        DATETIME NOT NULL,
-    discount_id INT      NOT NULL,
-    employee_id INT      NOT NULL,
-    FOREIGN KEY (discount_id) REFERENCES discount (id),
-    FOREIGN KEY (employee_id) REFERENCES employee (id)
+    discountId INT      NOT NULL,
+    employeeId INT      NOT NULL,
+    FOREIGN KEY (discountId) REFERENCES discount (id),
+    FOREIGN KEY (employeeId) REFERENCES employee (id)
 );
