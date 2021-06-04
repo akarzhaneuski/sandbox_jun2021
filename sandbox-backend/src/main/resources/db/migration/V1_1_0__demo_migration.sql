@@ -6,17 +6,26 @@ CREATE TABLE IF NOT EXISTS `DEMO_TABLE`
 
 ) ENGINE = InnoDB
   DEFAULT CHARSET = UTF8;
+
+CREATE TABLE location
+(
+    id         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    city       VARCHAR(100),
+    modified   DATETIME,
+    modifiedBy VARCHAR(50)
+);
+
 CREATE TABLE employee
 (
-    id          INT                        NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    login       VARCHAR(50)                NOT NULL,
-    password    VARCHAR(255)               NOT NULL,
-    role        enum ('user', 'moderator') NOT NULL,
-    location_id INT,
-    modified    DATETIME,
-    modifiedBy  VARCHAR(50),
+    id         INT                        NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    login      VARCHAR(50)                NOT NULL,
+    password   VARCHAR(255)               NOT NULL,
+    role       enum ('user', 'moderator') NOT NULL,
+    locationId INT,
+    modified   DATETIME,
+    modifiedBy VARCHAR(50),
     CONSTRAINT FK_employee_location
-        FOREIGN KEY (location_id) REFERENCES location (id),
+        FOREIGN KEY (locationId) REFERENCES location (id),
     KEY (id)
 );
 
@@ -28,25 +37,17 @@ CREATE TABLE company
     modifiedBy VARCHAR(50)
 );
 
-CREATE TABLE location
-(
-    id         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    city       VARCHAR(100),
-    modified   DATETIME,
-    modifiedBy VARCHAR(50)
-);
-
 CREATE TABLE company_location
 (
-    id          INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    company_id  INT NOT NULL,
-    location_id INT NOT NULL,
-    FOREIGN KEY (company_id)
+    id         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    companyId  INT NOT NULL,
+    locationId INT NOT NULL,
+    FOREIGN KEY (companyId)
         REFERENCES company (id),
-    FOREIGN KEY (location_id)
+    FOREIGN KEY (locationId)
         REFERENCES location (id),
     CONSTRAINT FK_company_location
-        UNIQUE (company_id, location_id)
+        UNIQUE (companyId, locationId)
 );
 
 CREATE TABLE discount
@@ -58,10 +59,10 @@ CREATE TABLE discount
     periodEnd   DATETIME     NOT NULL,
     quantity    INT DEFAULT 0,
     promocode   VARCHAR(50)  NOT NULL,
-    company_id  INT,
+    companyId   INT,
     modified    DATETIME,
     modifiedBy  VARCHAR(50),
-    foreign key (company_id) references company (id)
+    foreign key (companyid) references company (id)
 );
 
 CREATE TABLE tag
