@@ -77,9 +77,7 @@ CREATE TABLE discount_tag
     discountId INT NOT NULL,
     tagId      INT NOT NULL,
     FOREIGN KEY (discountId) REFERENCES discount (id),
-    FOREIGN KEY (tagId) REFERENCES tag (id),
-    CONSTRAINT FK_discount_tag
-        UNIQUE (discountId, tagId)
+    FOREIGN KEY (tagId) REFERENCES tag (id)
 );
 
 CREATE TABLE employee_discount
@@ -88,9 +86,7 @@ CREATE TABLE employee_discount
     employeeId INT NOT NULL,
     discountId INT NOT NULL,
     FOREIGN KEY (employeeId) REFERENCES employee (id),
-    FOREIGN KEY (discountId) REFERENCES discount (id),
-    CONSTRAINT FK_employee_discount
-        UNIQUE (employeeId, discountId)
+    FOREIGN KEY (discountId) REFERENCES discount (id)
 );
 
 CREATE TABLE review
