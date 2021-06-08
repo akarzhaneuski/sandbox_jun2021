@@ -40,5 +40,5 @@ public class Review  extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "employeeId")
-    private Employee employeeId;
+    private Employee Id;
 }
