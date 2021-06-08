@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,12 +16,8 @@ import java.util.Date;
 @Builder
 
 @Entity
-@Table(name = "employee")
-public class Employee {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    @Column(name = "id")
-    private Long id;
+@Table(name = "employee", uniqueConstraints = @UniqueConstraint(columnNames = {"login"}))
+public class Employee extends AuditableEntity {
 
     @Column(name = "login")
     private String login;
@@ -28,14 +26,9 @@ public class Employee {
     private String password;
 
     @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Column(name = "locationId")
     private Long locationId;
-
-    @Column(name = "modified")
-    private Date modified;
-
-    @Column(name = "modifiedBy")
-    private String modifiedBy;
 }
