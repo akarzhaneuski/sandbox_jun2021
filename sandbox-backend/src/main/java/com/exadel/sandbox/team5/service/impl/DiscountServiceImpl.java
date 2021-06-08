@@ -2,7 +2,7 @@ package com.exadel.sandbox.team5.service.impl;
 
 import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.entity.Discount;
-import com.exadel.sandbox.team5.service.DiscountService;
+import com.exadel.sandbox.team5.service.CRUDService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
@@ -11,7 +11,7 @@ import java.util.List;
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class DiscountServiceImpl implements DiscountService {
+public class DiscountServiceImpl implements CRUDService<Discount> {
 
     private final DiscountDAO discountDAO;
 

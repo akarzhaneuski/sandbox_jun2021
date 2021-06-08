@@ -5,6 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -16,6 +18,11 @@ import java.io.Serializable;
 @Table(name = "tag")
 public class Tag extends BaseEntity {
 
+    @ManyToMany(mappedBy = "tags")
+    private Set<Discount> discounts = new HashSet<>();
+
     @Column(name = "tagName", nullable = false, length = 50)
-    private String tagName;
+    private String Name;
+
+
 }
