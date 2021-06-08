@@ -1,9 +1,13 @@
 package com.exadel.sandbox.team5.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+@Data
 
 @Entity
 @Table(name = "employee_discount")
@@ -20,7 +24,11 @@ public class EmployeeDiscountEntity implements Serializable {
     private int employeeId;
 
 
-    @OneToMany(mappedBy = "discountId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "id")
+    private Set<DiscountEntity> discounts = new HashSet<>();
+
+    /*@OneToMany(mappedBy = "discountId", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<DiscountEntity> discountId = new HashSet<DiscountEntity>();
 
     public void setDiscountId(Set<DiscountEntity> discountId) {
@@ -37,6 +45,6 @@ public class EmployeeDiscountEntity implements Serializable {
 
     public void removeDiscountId(DiscountEntity discount) {
         getDiscountId().remove(discount);
-    }
+    }*/
 
 }

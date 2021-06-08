@@ -1,8 +1,12 @@
 package com.exadel.sandbox.team5.entity;
 
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.io.Serializable;
+
+@Data
 
 @Entity
 @Table(name = "tag")

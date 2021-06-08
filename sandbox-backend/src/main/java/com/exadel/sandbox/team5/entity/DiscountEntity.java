@@ -1,25 +1,22 @@
 package com.exadel.sandbox.team5.entity;
 
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+@Data
+
 @Entity
 @Table(name = "discount")
 public class DiscountEntity implements Serializable {
-    private DiscountEntity discountEntity;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @Column(name = "id", nullable = false)
     private int id;
-
-    @ManyToOne
-    @JoinColumn(name="discountId")
-    public DiscountEntity getDiscountEntity() {
-        return this.discountEntity;
-    }
 
     @Column(name = "name", nullable = false, length = 50)
     private String name;
