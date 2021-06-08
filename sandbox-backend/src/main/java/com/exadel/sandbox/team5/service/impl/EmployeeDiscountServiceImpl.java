@@ -1,7 +1,7 @@
 package com.exadel.sandbox.team5.service.impl;
 
-import com.exadel.sandbox.team5.dao.EmployeeDiscountRepository;
-import com.exadel.sandbox.team5.entity.EmployeeDiscountEntity;
+import com.exadel.sandbox.team5.dao.EmployeeDiscountDAO;
+import com.exadel.sandbox.team5.entity.EmployeeDiscount;
 import com.exadel.sandbox.team5.service.EmployeeDiscountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,30 +14,30 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeeDiscountServiceImpl implements EmployeeDiscountService {
 
-    private final EmployeeDiscountRepository employeeDiscountRepository;
+    private final EmployeeDiscountDAO employeeDiscountDAO;
 
     @Override
-    public EmployeeDiscountEntity getById(int id) {
-        return employeeDiscountRepository.findById(id).orElse(null);
+    public EmployeeDiscount getById(Long id) {
+        return employeeDiscountDAO.findById(id).orElse(null);
     }
 
     @Override
-    public List<EmployeeDiscountEntity> getAll() {
-        return employeeDiscountRepository.findAll();
+    public List<EmployeeDiscount> getAll() {
+        return employeeDiscountDAO.findAll();
     }
 
     @Override
-    public EmployeeDiscountEntity save(EmployeeDiscountEntity employeeDiscount) {
-        return employeeDiscountRepository.saveAndFlush(employeeDiscount);
+    public EmployeeDiscount save(EmployeeDiscount employeeDiscount) {
+        return employeeDiscountDAO.saveAndFlush(employeeDiscount);
     }
 
     @Override
-    public EmployeeDiscountEntity update(EmployeeDiscountEntity employeeDiscount) {
-        return employeeDiscountRepository.save(employeeDiscount);
+    public EmployeeDiscount update(EmployeeDiscount employeeDiscount) {
+        return employeeDiscountDAO.save(employeeDiscount);
     }
 
     @Override
-    public void delete(int id) {
-        employeeDiscountRepository.deleteById(id);
+    public void delete(Long id) {
+        employeeDiscountDAO.deleteById(id);
     }
 }

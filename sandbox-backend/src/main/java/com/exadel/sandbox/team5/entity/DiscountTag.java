@@ -1,20 +1,19 @@
 package com.exadel.sandbox.team5.entity;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Data
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 
 @Entity
 @Table(name = "discount_tag")
-public class DiscountTagEntity implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    @Column(name = "id", nullable = false)
-    private int id;
+public class DiscountTag extends BaseEntity {
 
     @Column(name = "discountId", nullable = false)
     private int discountId;

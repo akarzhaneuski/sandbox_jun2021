@@ -1,22 +1,21 @@
 package com.exadel.sandbox.team5.entity;
 
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@Data
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 
 @Entity
 @Table(name = "discount")
-public class DiscountEntity implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    @Column(name = "id", nullable = false)
-    private int id;
+public class Discount extends AuditableEntity {
 
     @Column(name = "name", nullable = false, length = 50)
     private String name;
@@ -40,13 +39,5 @@ public class DiscountEntity implements Serializable {
 
     @Column(name = "companyId")
     private  int companyId;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "modified")
-    private Date modified;
-
-    @Column(name = "modifiedBy", length = 50)
-    private String modifiedBy;
-
 
 }

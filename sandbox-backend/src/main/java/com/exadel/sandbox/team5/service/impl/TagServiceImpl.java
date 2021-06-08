@@ -1,7 +1,7 @@
 package com.exadel.sandbox.team5.service.impl;
 
-import com.exadel.sandbox.team5.dao.TagRepository;
-import com.exadel.sandbox.team5.entity.TagEntity;
+import com.exadel.sandbox.team5.dao.TagDAO;
+import com.exadel.sandbox.team5.entity.Tag;
 import com.exadel.sandbox.team5.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,30 +14,30 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TagServiceImpl implements TagService {
 
-    private TagRepository tagRepository;
+    private TagDAO tagDAO;
 
     @Override
-    public TagEntity getById(int id) {
-        return tagRepository.findById(id).orElse(null);
+    public Tag getById(Long id) {
+        return tagDAO.findById(id).orElse(null);
     }
 
     @Override
-    public List<TagEntity> getAll() {
-        return tagRepository.findAll();
+    public List<Tag> getAll() {
+        return tagDAO.findAll();
     }
 
     @Override
-    public TagEntity save(TagEntity tag) {
-        return tagRepository.saveAndFlush(tag);
+    public Tag save(Tag tag) {
+        return tagDAO.saveAndFlush(tag);
     }
 
     @Override
-    public TagEntity update(TagEntity tag) {
-        return tagRepository.save(tag);
+    public Tag update(Tag tag) {
+        return tagDAO.save(tag);
     }
 
     @Override
-    public void delete(int id) {
-        tagRepository.deleteById(id);
+    public void delete(Long id) {
+        tagDAO.deleteById(id);
     }
 }

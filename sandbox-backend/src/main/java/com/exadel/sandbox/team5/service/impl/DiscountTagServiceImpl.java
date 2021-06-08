@@ -1,8 +1,8 @@
 package com.exadel.sandbox.team5.service.impl;
 
 
-import com.exadel.sandbox.team5.dao.DiscountTagRepository;
-import com.exadel.sandbox.team5.entity.DiscountTagEntity;
+import com.exadel.sandbox.team5.dao.DiscountTagDAO;
+import com.exadel.sandbox.team5.entity.DiscountTag;
 import com.exadel.sandbox.team5.service.DiscountTagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,30 +15,30 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DiscountTagServiceImpl implements DiscountTagService {
 
-    private final DiscountTagRepository discountTagRepository;
+    private final DiscountTagDAO discountTagDAO;
 
     @Override
-    public DiscountTagEntity getById(int id) {
-        return discountTagRepository.findById(id).orElse(null);
+    public DiscountTag getById(Long id) {
+        return discountTagDAO.findById(id).orElse(null);
     }
 
     @Override
-    public List<DiscountTagEntity> getAll() {
-        return discountTagRepository.findAll();
+    public List<DiscountTag> getAll() {
+        return discountTagDAO.findAll();
     }
 
     @Override
-    public DiscountTagEntity save(DiscountTagEntity discountTagEntity) {
-        return discountTagRepository.saveAndFlush(discountTagEntity);
+    public DiscountTag save(DiscountTag discountTag) {
+        return discountTagDAO.saveAndFlush(discountTag);
     }
 
     @Override
-    public DiscountTagEntity update(DiscountTagEntity discountTagEntity) {
-        return discountTagRepository.save(discountTagEntity);
+    public DiscountTag update(DiscountTag discountTag) {
+        return discountTagDAO.save(discountTag);
     }
 
     @Override
-    public void delete(int id) {
-        discountTagRepository.deleteById(id);
+    public void delete(Long id) {
+        discountTagDAO.deleteById(id);
     }
 }
