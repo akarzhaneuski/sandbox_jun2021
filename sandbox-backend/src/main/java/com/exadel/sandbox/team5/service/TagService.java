@@ -3,13 +3,17 @@ package com.exadel.sandbox.team5.service;
 import com.exadel.sandbox.team5.entity.DiscountTagEntity;
 import com.exadel.sandbox.team5.entity.TagEntity;
 
-import java.util.Set;
+import java.util.List;
 
 public interface TagService {
 
-    TagEntity addTag(TagEntity tag);
+    TagEntity getById(int id);
+
+    List<TagEntity> getAll();
+
+    TagEntity save(TagEntity tag);
+
+    TagEntity update(TagEntity tag);
+
     void delete(int id);
-    TagEntity getByName(String name);
-    TagEntity editTag(TagEntity tag);
-    Set<TagEntity> getAll();
 }

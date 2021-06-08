@@ -2,13 +2,18 @@ package com.exadel.sandbox.team5.service;
 
 import com.exadel.sandbox.team5.entity.DiscountEntity;
 
-import java.util.Set;
+import java.util.List;
+import java.util.Optional;
 
 public interface DiscountService {
 
-    DiscountEntity addDiscount(DiscountEntity discount);
+    DiscountEntity getById(int id);
+
+    List<DiscountEntity> getAll();
+
+    DiscountEntity save(DiscountEntity discountEntity);
+
+    DiscountEntity update(DiscountEntity discountEntity);
+
     void delete(int id);
-    DiscountEntity getByName(String name);
-    DiscountEntity editDiscount(DiscountEntity discount);
-    Set<DiscountEntity> getAll();
 }

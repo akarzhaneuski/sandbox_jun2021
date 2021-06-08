@@ -3,41 +3,42 @@ package com.exadel.sandbox.team5.service.impl;
 import com.exadel.sandbox.team5.dao.DiscountRepository;
 import com.exadel.sandbox.team5.entity.DiscountEntity;
 import com.exadel.sandbox.team5.service.DiscountService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 
+@Transactional
 @Service
+@RequiredArgsConstructor
 public class DiscountServiceImpl implements DiscountService {
 
-    @Autowired
-    private DiscountRepository discountRepository;
+    private final DiscountRepository discountRepository;
 
     @Override
-    public DiscountEntity addDiscount(DiscountEntity discount) {
+    public DiscountEntity getById(int id) {
+        return discountRepository.findById(id).orElse(null);
+    }
 
-        DiscountEntity savedDiscount = discountRepository.saveAllAndFlush(discount);
-        return savedDiscount;
+    @Override
+    public List<DiscountEntity> getAll() {
+        return discountRepository.findAll();
+    }
+
+    @Override
+    public DiscountEntity save(DiscountEntity discountEntity) {
+        return discountRepository.saveAndFlush(discountEntity);
+    }
+
+    @Override
+    public DiscountEntity update(DiscountEntity discountEntity) {
+        return discountRepository.save(discountEntity);
     }
 
     @Override
     public void delete(int id) {
-
-    }
-
-    @Override
-    public DiscountEntity getByName(String name) {
-        return null;
-    }
-
-    @Override
-    public DiscountEntity editDiscount(DiscountEntity discount) {
-        return null;
-    }
-
-    @Override
-    public Set<DiscountEntity> getAll() {
-        return null;
+        discountRepository.deleteById(id);
     }
 }
