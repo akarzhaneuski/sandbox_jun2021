@@ -17,11 +17,9 @@ import java.util.Set;
 public class EmployeeDiscount extends BaseEntity{
 
     @Column(name = "employeeId", nullable = false)
-    private int employeeId;
+    private long employeeId;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "id")
-    private Set<Discount> discounts = new HashSet<>();
-
+    @Column(name = "discountId", nullable = false)
+    private long discountId;
 
 }
