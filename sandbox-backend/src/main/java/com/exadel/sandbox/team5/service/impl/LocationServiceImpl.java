@@ -1,13 +1,11 @@
 package com.exadel.sandbox.team5.service.impl;
 
 import com.exadel.sandbox.team5.dao.LocationDAO;
-import com.exadel.sandbox.team5.entity.LocationEntity;
+import com.exadel.sandbox.team5.entity.Location;
 import com.exadel.sandbox.team5.service.LocationService;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
@@ -19,23 +17,23 @@ public class LocationServiceImpl implements LocationService {
     private final LocationDAO dao;
 
     @Override
-    public LocationEntity getById(Long id) {
+    public Location getById(Long id) {
         return dao.findById(id).orElse(null);
     }
 
     @Override
-    public List<LocationEntity> getAll() {
+    public List<Location> getAll() {
         return dao.findAll();
     }
 
     @Override
-    public LocationEntity save(LocationEntity locationEntity) {
-        return dao.save(locationEntity);
+    public Location save(Location location) {
+        return dao.save(location);
     }
 
     @Override
-    public LocationEntity update(LocationEntity locationEntity) {
-        return dao.save(locationEntity);
+    public Location update(Location location) {
+        return dao.save(location);
     }
 
     @Override

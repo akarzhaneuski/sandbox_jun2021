@@ -1,18 +1,7 @@
 package com.exadel.sandbox.team5.service;
 
-import com.exadel.sandbox.team5.entity.LocationEntity;
+import com.exadel.sandbox.team5.entity.Location;
 
-import java.util.List;
+public interface LocationService extends CRUDService<Location> {
 
-public interface LocationService {
-
-    LocationEntity getById(Long id);
-
-    List<LocationEntity> getAll();
-
-    LocationEntity save(LocationEntity locationEntity);
-
-    LocationEntity update(LocationEntity locationEntity);
-
-    void delete(Long id);
 }
