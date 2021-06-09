@@ -21,6 +21,6 @@ public class Tag extends BaseEntity {
     @ManyToMany(mappedBy = "tags")
     private Set<Discount> discounts = new HashSet<>();
 
-    @Column(name = "tagName", nullable = false, length = 50)
+    @Column(name = "tagName")
     private String name;
 }

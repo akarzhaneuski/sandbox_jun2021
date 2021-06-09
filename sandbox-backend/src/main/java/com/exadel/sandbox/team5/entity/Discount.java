@@ -31,27 +31,27 @@ public class Discount extends AuditableEntity {
     private Set<Employee> employee = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name="companyId", nullable=false)
+    @JoinColumn(name="companyId")
     private Company company;
 
-    @Column(name = "name", nullable = false, length = 50)
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description")
     private String description;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "periodStart", nullable = false)
+    @Column(name = "periodStart")
     private Date periodStart;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "periodEnd", nullable = false)
+    @Column(name = "periodEnd")
     private Date periodEnd;
 
-    @Column(name = "quantity", columnDefinition = "int default 10")
+    @Column(name = "quantity")
     private int quantity;
 
-    @Column(name = "promocode", nullable = false, length = 50)
+    @Column(name = "promocode")
     private String promoCode;
 
 }
