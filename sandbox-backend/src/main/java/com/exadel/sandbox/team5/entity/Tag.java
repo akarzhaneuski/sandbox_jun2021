@@ -22,7 +22,5 @@ public class Tag extends BaseEntity {
     private Set<Discount> discounts = new HashSet<>();
 
     @Column(name = "tagName", nullable = false, length = 50)
-    private String Name;
-
-
+    private String name;
 }
