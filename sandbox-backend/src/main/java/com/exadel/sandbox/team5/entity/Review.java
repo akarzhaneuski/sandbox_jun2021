@@ -6,7 +6,8 @@ import org.hibernate.annotations.CascadeType;
 import javax.persistence.*;
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -14,15 +15,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "review")
-public class Review  extends BaseEntity{
-//    id          INT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
-//    rate        INT      NOT NULL,
-//    comment     VARCHAR(500),
-//    date        DATETIME NOT NULL,
-//    discountId INT      NOT NULL,
-//    employeeId INT      NOT NULL,
-//    FOREIGN KEY (discountId) REFERENCES discount (id),
-//    FOREIGN KEY (employeeId) REFERENCES employee (id)
+public class Review extends BaseEntity {
 
     @Column(name = "rate")
     private Integer rate;

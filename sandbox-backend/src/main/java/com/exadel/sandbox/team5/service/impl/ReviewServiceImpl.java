@@ -37,5 +37,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void delete(Long id) { reviewDAO.deleteById(id); }
+    public void delete(Long id) {
+        reviewDAO.deleteById(id);
+    }
 }
