@@ -1,0 +1,11 @@
+INSERT INTO company (name) VALUES ('CoralTravel');
+INSERT INTO company (name) VALUES ('Turkish Airlines');
+INSERT INTO company (name) VALUES ('Dominos Pizza');
+INSERT INTO company (name) VALUES ('Sushi house');
+INSERT INTO company (name) VALUES ('Maharaja Yoga');
+INSERT INTO company (name) VALUES ('Intertop Shoes');
+INSERT INTO company (name) VALUES ('Book-Ye');
+INSERT INTO company (name) VALUES ('Tibet Massage Studio');
+INSERT INTO company (name) VALUES ('LuxOptica');
+INSERT INTO company (name) VALUES ('I-store');
+INSERT INTO company (name) VALUES ('Lacoste');
