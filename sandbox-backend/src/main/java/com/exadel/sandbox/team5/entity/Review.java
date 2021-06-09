@@ -26,12 +26,11 @@ public class Review extends BaseEntity {
     @Column(name = "date")
     private Date date;
 
-    //TODO uncomment after discount will be created;
-//    @ManyToOne(cascade= CascadeType.ALL)
-//    @JoinColumn(name = "discountId")
-//    private Discount discount;
+    @ManyToOne
+    @JoinColumn(name = "discountId")
+    private Discount discount;
 
     @ManyToOne
     @JoinColumn(name = "employeeId")
-    private Employee Id;
+    private Employee employee;
 }

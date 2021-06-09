@@ -19,8 +19,7 @@ public class EmployeeDiscount extends BaseEntity {
     @JoinColumn(name = "employeeId")
     private Employee employee;
 
-    //TODO fix after discount creation
-//    @ManyToOne
-//    @JoinColumn(name = "discountId")
-//    private Discount discount;
+    @ManyToOne
+    @JoinColumn(name = "discountId")
+    private Discount discount;
 }
