@@ -24,5 +24,5 @@ public class Company extends AuditableEntity {
     private String name;
 
     @ManyToMany(mappedBy = "companies")
-    Set<Location> locations = new HashSet<>();
+    private Set<Location> locations = new HashSet<>();
 }

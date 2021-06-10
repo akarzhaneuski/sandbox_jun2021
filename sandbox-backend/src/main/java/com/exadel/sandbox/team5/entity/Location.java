@@ -26,5 +26,5 @@ public class Location extends AuditableEntity {
             name = "company_location",
             joinColumns = @JoinColumn(name = "locationId"),
             inverseJoinColumns = @JoinColumn(name = "companyId"))
-    Set<Company> companies = new HashSet<>();
+    private Set<Company> companies = new HashSet<>();
 }
