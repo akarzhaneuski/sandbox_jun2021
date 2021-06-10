@@ -21,7 +21,7 @@ public class Employee extends AuditableEntity {
     private String login;
 
     @Column(name = "password")
-    private String password;
+    private String password;    
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
