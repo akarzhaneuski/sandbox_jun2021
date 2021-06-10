@@ -5,9 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Setter
 @Getter
@@ -25,10 +23,10 @@ public class Discount extends AuditableEntity {
             joinColumns = { @JoinColumn(name = "discountId") },
             inverseJoinColumns = { @JoinColumn(name = "tagId") }
     )
-    Set<Tag> tags = new HashSet<>();
+    private Set<Tag> tags = new HashSet<>();
 
     @ManyToMany(mappedBy = "discounts")
-    private Set<Employee> employee = new HashSet<>();
+    private List<Employee> employee = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name="companyId")
