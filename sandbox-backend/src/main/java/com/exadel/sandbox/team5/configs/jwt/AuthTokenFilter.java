@@ -1,7 +1,6 @@
 package com.exadel.sandbox.team5.configs.jwt;
 
 
-import com.exadel.sandbox.team5.service.security.EmployeeDetailsImpl;
 import com.exadel.sandbox.team5.service.security.EmployeeDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

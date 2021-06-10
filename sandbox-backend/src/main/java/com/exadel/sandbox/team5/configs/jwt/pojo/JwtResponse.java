@@ -1,4 +1,4 @@
-package com.exadel.sandbox.team5.configs.jwt;
+package com.exadel.sandbox.team5.configs.jwt.pojo;
 
 import lombok.Getter;
 import lombok.Setter;

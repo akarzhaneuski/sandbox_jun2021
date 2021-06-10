@@ -1,8 +1,8 @@
 package com.exadel.sandbox.team5;
 
-import com.exadel.sandbox.team5.configs.jwt.JwtResponse;
+import com.exadel.sandbox.team5.configs.jwt.pojo.JwtResponse;
 import com.exadel.sandbox.team5.configs.jwt.JwtUtils;
-import com.exadel.sandbox.team5.configs.jwt.LoginRequest;
+import com.exadel.sandbox.team5.configs.jwt.pojo.LoginRequest;
 import com.exadel.sandbox.team5.dao.EmployeeDAO;
 import com.exadel.sandbox.team5.service.security.EmployeeDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/auth")
-@CrossOrigin(origins = "*" , maxAge = 3600)
+@RequestMapping("/auth")
+@CrossOrigin
 public class AuthController {
 
     @Autowired
@@ -51,3 +51,4 @@ public class AuthController {
                 roles));
     }
 }
+
