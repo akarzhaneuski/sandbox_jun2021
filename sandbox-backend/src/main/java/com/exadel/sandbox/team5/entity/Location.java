@@ -1,10 +1,11 @@
 package com.exadel.sandbox.team5.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -19,10 +20,11 @@ public class Location extends AuditableEntity {
     @Column(name = "city")
     private String city;
 
-//    @ManyToMany
-//    @JoinTable(
-//            name="company_location",
-//            joinColumns = @JoinColumn (name = "locationId"),
-//            inverseJoinColumns = @JoinColumn(name = "companyId"))
-//    Set<Company> companies = new HashSet<>();
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "company_location",
+            joinColumns = @JoinColumn(name = "locationId"),
+            inverseJoinColumns = @JoinColumn(name = "companyId"))
+    private Set<Company> companies = new HashSet<>();
 }
