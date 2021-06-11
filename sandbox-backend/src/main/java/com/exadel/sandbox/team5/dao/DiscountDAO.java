@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DiscountDAO extends JpaRepository<Discount, Long> {
 
-    @Override
     Page<Discount> findAll(Pageable pageable);
 
     Page<Discount> getAllByTagsId(Long id, Pageable pageable);

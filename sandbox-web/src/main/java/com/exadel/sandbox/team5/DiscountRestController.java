@@ -23,14 +23,14 @@ public class DiscountRestController {
 
     @GetMapping("/all")
     public Page<Discount> getAll() {
-        Pageable pageWithFiveElements = PageRequest.of(1, 5);
+        Pageable pageWithFiveElements = PageRequest.of(0, 5);
         return service.getAll(pageWithFiveElements);
     }
 
 
     @GetMapping("/all/{idTag}")
     public Page<Discount> getAllByTag(@PathVariable("idTag") Long idTag) {
-        Pageable pageWithFiveElements = PageRequest.of(1, 5);
+        Pageable pageWithFiveElements = PageRequest.of(0, 5);
         return service.getAllByTagsId(idTag, pageWithFiveElements);
     }
 

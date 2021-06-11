@@ -12,5 +12,6 @@ import org.springframework.stereotype.Repository;
 public interface CompanyDAO extends JpaRepository<Company, Long> {
 
     Page<Company> findAll(Pageable pageable);
+
     Page<Company> findAllByLocationsId(Long id, Pageable pageable);
 }

@@ -4,6 +4,8 @@ import com.exadel.sandbox.team5.dao.ReviewDAO;
 import com.exadel.sandbox.team5.entity.Review;
 import com.exadel.sandbox.team5.service.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,5 +41,15 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void delete(Long id) {
         reviewDAO.deleteById(id);
+    }
+
+    @Override
+    public Page<Review> findAll(Pageable pageable) {
+        return reviewDAO.findAll(pageable);
+    }
+
+    @Override
+    public Page<Review> findByDiscountId(Long id, Pageable pageable) {
+        return reviewDAO.findByDiscountId(id, pageable);
     }
 }

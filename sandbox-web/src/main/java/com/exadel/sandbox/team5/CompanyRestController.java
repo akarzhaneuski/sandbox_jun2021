@@ -26,7 +26,7 @@ public class CompanyRestController {
 
     @GetMapping("/all")
     public Page<Company> getAll() {
-        Pageable pageWithFiveElements = PageRequest.of(1, 5);
+        Pageable pageWithFiveElements = PageRequest.of(0, 5);
         return companyService.findAll(pageWithFiveElements);
     }
 
@@ -48,7 +48,7 @@ public class CompanyRestController {
 
     @GetMapping("/{locationId}/companies")
     public Page<Company> getCompaniesByLocation(@PathVariable Long locationId) {
-        Pageable pageWithFiveElements = PageRequest.of(1, 5);
+        Pageable pageWithFiveElements = PageRequest.of(0, 5);
         return companyService.findAllByLocationsId(locationId, pageWithFiveElements);
     }
 }
