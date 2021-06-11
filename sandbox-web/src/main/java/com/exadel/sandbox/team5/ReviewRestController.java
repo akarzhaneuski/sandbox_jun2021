@@ -1,20 +1,17 @@
 package com.exadel.sandbox.team5;
 
-import com.exadel.sandbox.team5.entity.DemoEntity;
 import com.exadel.sandbox.team5.entity.Review;
 import com.exadel.sandbox.team5.service.ReviewService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/discount")
+@RequestMapping("/review")
 @RequiredArgsConstructor
 public class ReviewRestController {
     private final ReviewService service;
