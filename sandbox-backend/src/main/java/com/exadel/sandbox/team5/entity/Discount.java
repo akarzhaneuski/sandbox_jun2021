@@ -24,9 +24,11 @@ public class Discount extends AuditableEntity {
             inverseJoinColumns = { @JoinColumn(name = "tagId") }
     )
     private Set<Tag> tags = new HashSet<>();
-
+/*
+    Waiting for adding annotation ManyToMany from Employee
     @ManyToMany(mappedBy = "discounts")
     private List<Employee> employee = new ArrayList<>();
+*/
 
     @ManyToOne
     @JoinColumn(name="companyId")
