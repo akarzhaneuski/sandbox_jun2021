@@ -28,6 +28,7 @@ public class Discount extends AuditableEntity {
     @ManyToMany(mappedBy = "discounts")
     private List<Employee> employee = new ArrayList<>();
 
+
     @ManyToOne
     @JoinColumn(name="companyId")
     private Company company;

@@ -7,9 +7,9 @@ spring:
   application:
     name: sandbox
   datasource:
-    url: jdbc:mysql://localhost:3306/sandbox?serverTimezone=UTC&createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
-    username: root
-    password: root
+    url: ${JDBC_URL:jdbc:mysql://localhost:3306/sandbox?serverTimezone=UTC&createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true}
+    username: ${JDBC_USER:root}
+    password: ${JDBC_PASSWORD:root}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     generate-ddl: false
