@@ -4,6 +4,8 @@ import com.exadel.sandbox.team5.dao.CompanyDAO;
 import com.exadel.sandbox.team5.entity.Company;
 import com.exadel.sandbox.team5.service.CompanyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +24,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<Company> getAll() {
+    public List<Company> getAll(){
         return dao.findAll();
     }
 
@@ -42,7 +44,12 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<Company> getCompaniesByLocation(Long id) {
-        return dao.findAllByLocationsId(id);
+    public Page<Company> findAll(Pageable pageable) {
+        return dao.findAll(pageable);
+    }
+
+    @Override
+    public Page<Company> findAllByLocationsId(Long id, Pageable pageable) {
+        return dao.findAllByLocationsId(id, pageable);
     }
 }

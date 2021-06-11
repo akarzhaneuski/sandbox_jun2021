@@ -5,6 +5,9 @@ import com.exadel.sandbox.team5.service.CompanyService;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,8 +25,9 @@ public class CompanyRestController {
     }
 
     @GetMapping("/all")
-    public List<Company> getAll() {
-        return companyService.getAll();
+    public Page<Company> getAll() {
+        Pageable pageWithFiveElements = PageRequest.of(1, 5);
+        return companyService.findAll(pageWithFiveElements);
     }
 
     @PostMapping
@@ -43,7 +47,8 @@ public class CompanyRestController {
     }
 
     @GetMapping("/{locationId}/companies")
-    public List<Company> getCompaniesByLocation(@PathVariable Long locationId) {
-        return companyService.getCompaniesByLocation(locationId);
+    public Page<Company> getCompaniesByLocation(@PathVariable Long locationId) {
+        Pageable pageWithFiveElements = PageRequest.of(1, 5);
+        return companyService.findAllByLocationsId(locationId, pageWithFiveElements);
     }
 }
