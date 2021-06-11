@@ -3,6 +3,9 @@ package com.exadel.sandbox.team5;
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.service.DiscountService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +24,9 @@ public class DiscountRestController {
     }
 
     @GetMapping("/all")
-    public List<Discount> getAll() {
-        return service.getAll();
+    public Page<Discount> getAll() {
+        Pageable pageWithFiveElements = PageRequest.of(1, 5);
+        return service.getAll(pageWithFiveElements);
     }
 
     @PostMapping
