@@ -2,8 +2,6 @@ package com.exadel.sandbox.team5.service.impl;
 
 import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.entity.Discount;
-import com.exadel.sandbox.team5.entity.Tag;
-import com.exadel.sandbox.team5.service.CRUDService;
 import com.exadel.sandbox.team5.service.DiscountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -36,8 +34,8 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public Page<Discount> getAllByTags(Tag tag, Pageable pageable) {
-        return discountDAO.findByTags(tag, pageable);
+    public Page<Discount> getAllByTags(Long idTag, Pageable pageable) {
+        return discountDAO.findByTags(idTag, pageable);
     }
 
     @Override
