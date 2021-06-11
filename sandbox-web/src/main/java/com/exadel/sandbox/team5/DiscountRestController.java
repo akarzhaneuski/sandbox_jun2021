@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.entity.Discount;
+import com.exadel.sandbox.team5.entity.Tag;
 import com.exadel.sandbox.team5.service.DiscountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,13 @@ public class DiscountRestController {
     public Page<Discount> getAll() {
         Pageable pageWithFiveElements = PageRequest.of(1, 5);
         return service.getAll(pageWithFiveElements);
+    }
+
+
+    @GetMapping("/all/{tag}")
+    public Page<Discount> getAllByTag(@PathVariable("tag") Tag tag) {
+        Pageable pageWithFiveElements = PageRequest.of(1, 5);
+        return service.getAllByTags(tag, pageWithFiveElements);
     }
 
     @PostMapping

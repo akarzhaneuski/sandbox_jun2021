@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface DiscountService extends CRUDService<Discount> {
     Page<Discount> getAll(Pageable pageable);
+
     Page<Discount> getAllByTags(Tag tag, Pageable pageable);
 
 }
