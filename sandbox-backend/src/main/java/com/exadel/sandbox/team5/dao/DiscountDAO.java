@@ -12,5 +12,5 @@ public interface DiscountDAO extends JpaRepository<Discount, Long> {
     @Override
     Page<Discount> findAll(Pageable pageable);
 
-    Page<Discount> findByTags(Long idTag, Pageable pageable);
+    Page<Discount> getAllByTagsId(Long id, Pageable pageable);
 }

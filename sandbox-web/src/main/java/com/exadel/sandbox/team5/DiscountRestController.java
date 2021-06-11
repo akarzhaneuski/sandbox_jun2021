@@ -31,7 +31,7 @@ public class DiscountRestController {
     @GetMapping("/all/{idTag}")
     public Page<Discount> getAllByTag(@PathVariable("idTag") Long idTag) {
         Pageable pageWithFiveElements = PageRequest.of(1, 5);
-        return service.getAllByTags(idTag, pageWithFiveElements);
+        return service.getAllByTagsId(idTag, pageWithFiveElements);
     }
 
     @PostMapping

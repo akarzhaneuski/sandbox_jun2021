@@ -34,8 +34,8 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public Page<Discount> getAllByTags(Long idTag, Pageable pageable) {
-        return discountDAO.findByTags(idTag, pageable);
+    public Page<Discount> getAllByTagsId(Long id, Pageable pageable) {
+        return discountDAO.getAllByTagsId(id, pageable);
     }
 
     @Override
