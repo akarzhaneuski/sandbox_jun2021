@@ -19,13 +19,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "DEMO_TABLE")
-public class DemoEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-//    @GenericGenerator(name = "native", strategy = "native")
-    @Column(name = "ID")
-    private Long id;
+public class DemoEntity extends BaseEntity {
 
     @Column(name = "SOME_FIELD")
     private String someField;

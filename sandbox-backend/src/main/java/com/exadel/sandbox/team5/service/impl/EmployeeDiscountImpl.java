@@ -11,33 +11,9 @@ import java.util.List;
 
 @Transactional
 @Service
-@RequiredArgsConstructor
-public class EmployeeDiscountImpl implements EmployeeDiscountService {
+public class EmployeeDiscountImpl extends AbstractService<EmployeeDiscount, EmployeeDiscountDAO> {
 
-    private final EmployeeDiscountDAO employeeDiscountDAO;
-
-    @Override
-    public EmployeeDiscount getById(Long id) {
-        return employeeDiscountDAO.findById(id).orElse(null);
-    }
-
-    @Override
-    public List<EmployeeDiscount> getAll() {
-        return employeeDiscountDAO.findAll();
-    }
-
-    @Override
-    public EmployeeDiscount save(EmployeeDiscount employeeDiscount) {
-        return employeeDiscountDAO.save(employeeDiscount);
-    }
-
-    @Override
-    public EmployeeDiscount update(EmployeeDiscount employeeDiscount) {
-        return employeeDiscountDAO.save(employeeDiscount);
-    }
-
-    @Override
-    public void delete(Long id) {
-        employeeDiscountDAO.deleteById(id);
+    public EmployeeDiscountImpl(EmployeeDiscountDAO repository) {
+        super(repository);
     }
 }

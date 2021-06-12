@@ -13,34 +13,9 @@ import lombok.RequiredArgsConstructor;
 
 @Transactional
 @Service
-@RequiredArgsConstructor
-public class DemoServiceImpl implements DemoService {
+public class DemoServiceImpl extends AbstractService<DemoEntity, DemoDAO> {
 
-    private final DemoDAO dao;
-
-    @Override
-    public DemoEntity getById(Long id) {
-        return dao.findById(id).orElse(null);
+    public DemoServiceImpl(DemoDAO repository) {
+        super(repository);
     }
-
-    @Override
-    public List<DemoEntity> getAll() {
-        return dao.findAll();
-    }
-
-    @Override
-    public DemoEntity save(DemoEntity demoEntity) {
-        return dao.save(demoEntity);
-    }
-
-    @Override
-    public DemoEntity update(DemoEntity demoEntity) {
-        return dao.save(demoEntity);
-    }
-
-    @Override
-    public void delete(Long id) {
-        dao.deleteById(id);
-    }
-
 }

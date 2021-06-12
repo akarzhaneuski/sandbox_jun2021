@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.exadel.sandbox.team5.entity.DemoEntity;
 
 @Repository
-public interface DemoDAO extends JpaRepository<DemoEntity, Long> {
+public interface DemoDAO extends CommonRepository<DemoEntity> {
 }

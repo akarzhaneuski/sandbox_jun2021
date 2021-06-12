@@ -6,38 +6,15 @@ import com.exadel.sandbox.team5.service.CRUDService;
 import com.exadel.sandbox.team5.service.DiscountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Transactional
 @Service
-@RequiredArgsConstructor
-public class DiscountServiceImpl implements DiscountService {
+public class DiscountServiceImpl extends AbstractService<Discount, DiscountDAO> {
 
-    private final DiscountDAO discountDAO;
-
-    @Override
-    public Discount getById(Long id) {
-        return discountDAO.findById(id).orElse(null);
-    }
-
-    @Override
-    public List<Discount> getAll() {
-        return discountDAO.findAll();
-    }
-
-    @Override
-    public Discount save(Discount discount) {
-        return discountDAO.saveAndFlush(discount);
-    }
-
-    @Override
-    public Discount update(Discount discount) {
-        return discountDAO.save(discount);
-    }
-
-    @Override
-    public void delete(Long id) {
-        discountDAO.deleteById(id);
+    public DiscountServiceImpl(DiscountDAO repository) {
+        super(repository);
     }
 }
