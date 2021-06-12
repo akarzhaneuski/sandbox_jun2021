@@ -12,7 +12,7 @@ import java.util.List;
 
 @Transactional
 @Service
-public class DiscountServiceImpl extends AbstractService<Discount, DiscountDAO> {
+public class DiscountServiceImpl extends AbstractService<Discount, DiscountDAO> implements DiscountService {
 
     public DiscountServiceImpl(DiscountDAO repository) {
         super(repository);

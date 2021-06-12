@@ -11,7 +11,7 @@ import java.util.List;
 
 @Transactional
 @Service
-public class EmployeeDiscountImpl extends AbstractService<EmployeeDiscount, EmployeeDiscountDAO> {
+public class EmployeeDiscountImpl extends AbstractService<EmployeeDiscount, EmployeeDiscountDAO> implements EmployeeDiscountService {
 
     public EmployeeDiscountImpl(EmployeeDiscountDAO repository) {
         super(repository);

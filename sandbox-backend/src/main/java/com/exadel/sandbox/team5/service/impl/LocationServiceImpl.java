@@ -11,7 +11,7 @@ import java.util.List;
 
 @Transactional
 @Service
-public class LocationServiceImpl extends AbstractService<Location, LocationDAO> {
+public class LocationServiceImpl extends AbstractService<Location, LocationDAO> implements LocationService {
 
     public LocationServiceImpl(LocationDAO repository) {
         super(repository);

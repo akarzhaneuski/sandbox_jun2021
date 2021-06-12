@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @Transactional
 @Service
-public class DemoServiceImpl extends AbstractService<DemoEntity, DemoDAO> {
+public class DemoServiceImpl extends AbstractService<DemoEntity, DemoDAO> implements DemoService{
 
     public DemoServiceImpl(DemoDAO repository) {
         super(repository);
