@@ -1,7 +1,11 @@
 server:
+  error:
+    include-message: always
+    include-binding-errors: always
   port: 8080
   servlet:
     context-path: /api
+
 
 spring:
   application:
@@ -22,3 +26,5 @@ logging:
   level:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org.hibernate.SQL: DEBUG
+
+
