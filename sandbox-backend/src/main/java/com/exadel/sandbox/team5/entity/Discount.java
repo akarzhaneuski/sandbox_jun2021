@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team5.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,12 +18,8 @@ import java.util.*;
 @Table(name = "discount")
 public class Discount extends AuditableEntity {
 
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-            name = "discount_tag",
-            joinColumns = { @JoinColumn(name = "discountId") },
-            inverseJoinColumns = { @JoinColumn(name = "tagId") }
-    )
+
+    @ManyToMany(mappedBy = "discounts")
     private Set<Tag> tags = new HashSet<>();
 
     @ManyToMany(mappedBy = "discounts")

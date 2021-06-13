@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team5.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,7 +19,13 @@ import java.util.Set;
 @Table(name = "tag")
 public class Tag extends BaseEntity {
 
-    @ManyToMany(mappedBy = "tags")
+    @JsonIgnore
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "discount_tag",
+            joinColumns = { @JoinColumn(name = "tagId") },
+            inverseJoinColumns = { @JoinColumn(name = "discountId") }
+    )
     private Set<Discount> discounts = new HashSet<>();
 
     @Column(name = "tagName")

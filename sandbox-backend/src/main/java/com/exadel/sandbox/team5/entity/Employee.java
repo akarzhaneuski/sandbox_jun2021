@@ -33,7 +33,7 @@ public class Employee extends AuditableEntity {
 
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
-            name = "employee_tag",
+            name = "employee_discount",
             joinColumns = { @JoinColumn(name = "employeeId") },
             inverseJoinColumns = { @JoinColumn(name = "discountId") }
     )
