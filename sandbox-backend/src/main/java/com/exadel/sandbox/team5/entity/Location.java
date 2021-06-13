@@ -21,7 +21,7 @@ public class Location extends AuditableEntity {
     private String city;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "company_location",
             joinColumns = @JoinColumn(name = "locationId"),

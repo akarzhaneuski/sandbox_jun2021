@@ -1,7 +1,7 @@
 package com.exadel.sandbox.team5.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -26,10 +26,12 @@ public class Review extends BaseEntity {
     @Column(name = "date")
     private Date date;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "discountId")
     private Discount discount;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "employeeId")
     private Employee employee;

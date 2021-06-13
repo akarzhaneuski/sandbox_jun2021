@@ -1,10 +1,10 @@
 package com.exadel.sandbox.team5.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.*;
 
 @Setter
@@ -17,6 +17,7 @@ import java.util.*;
 @Table(name = "discount")
 public class Discount extends AuditableEntity {
 
+    @JsonIgnore
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
             name = "discount_tag",
@@ -25,10 +26,11 @@ public class Discount extends AuditableEntity {
     )
     private Set<Tag> tags = new HashSet<>();
 
-    @ManyToMany(mappedBy = "discounts")
-    private List<Employee> employee = new ArrayList<>();
+//    @ManyToMany(mappedBy = "discounts")
+//    private List<Employee> employee = new ArrayList<>();
 
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="companyId")
     private Company company;
@@ -52,5 +54,9 @@ public class Discount extends AuditableEntity {
 
     @Column(name = "promocode")
     private String promoCode;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "discount")
+    Set<EmployeeDiscount> employeeDiscounts = new HashSet<>();
 
 }

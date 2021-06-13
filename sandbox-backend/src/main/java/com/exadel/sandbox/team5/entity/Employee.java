@@ -1,12 +1,11 @@
 package com.exadel.sandbox.team5.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -31,11 +30,15 @@ public class Employee extends AuditableEntity {
     @Column(name = "locationId")
     private Long locationId;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-            name = "employee_tag",
-            joinColumns = { @JoinColumn(name = "employeeId") },
-            inverseJoinColumns = { @JoinColumn(name = "discountId") }
-    )
-    private List<Discount> discounts;
+//    @ManyToMany(cascade = { CascadeType.ALL })
+//    @JoinTable(
+//            name = "employee_discount",
+//            joinColumns = { @JoinColumn(name = "employeeId") },
+//            inverseJoinColumns = { @JoinColumn(name = "discountId") }
+//    )
+//    private List<Discount> discounts;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+    Set<EmployeeDiscount> employeeDiscounts = new HashSet<>();
 }

@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team5.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -23,6 +24,7 @@ public class Company extends AuditableEntity {
     @Column(name = "name")
     private String name;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "companies")
     private Set<Location> locations = new HashSet<>();
 }
