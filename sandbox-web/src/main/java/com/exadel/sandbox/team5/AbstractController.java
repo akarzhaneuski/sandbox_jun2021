@@ -3,37 +3,38 @@ package com.exadel.sandbox.team5;
 import com.exadel.sandbox.team5.entity.BaseEntity;
 import com.exadel.sandbox.team5.service.CRUDService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequiredArgsConstructor
-public abstract class AbstractController<E extends BaseEntity, S extends CRUDService<E>> implements CommonController<E> {
+public abstract class AbstractController<E extends BaseEntity, S extends CRUDService<E>>{
 
     protected final S service;
 
-    @Override
-    public E getDemo(Long id) {
+    @GetMapping("/{id}")
+    public E getById(@PathVariable Long id) {
         return service.getById(id);
     }
 
-    @Override
+    @GetMapping("/all")
     public List getAll() {
         return service.getAll();
     }
 
-    @Override
+    @PostMapping
     public E save(E entity) {
         return service.save(entity);
     }
 
-    @Override
-    public E update(Long id, E entity) {
+    @PutMapping("/{id}")
+    public E update(@PathVariable Long id, E entity) {
         entity.setId(id);
         return service.update(entity);
     }
 
-    @Override
-    public void delete(Long id) {
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
         service.delete(id);
     }
 }
