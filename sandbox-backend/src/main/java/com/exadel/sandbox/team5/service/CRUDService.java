@@ -15,4 +15,6 @@ public interface CRUDService<T extends BaseEntity> {
     T update(T employee);
 
     void delete(Long id);
+
+    List<T> getListEntityByOtherEntityId(Long id);
 }

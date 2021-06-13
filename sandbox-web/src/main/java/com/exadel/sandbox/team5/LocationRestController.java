@@ -1,44 +1,15 @@
 package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.entity.Location;
-import com.exadel.sandbox.team5.service.LocationService;
 
-import lombok.RequiredArgsConstructor;
-
+import com.exadel.sandbox.team5.service.impl.LocationServiceImpl;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/location")
-@RequiredArgsConstructor
-public class LocationRestController {
+public class LocationRestController extends AbstractController<Location, LocationServiceImpl> {
 
-    private final LocationService service;
-
-    @GetMapping("/{id}")
-    public Location getLocation(@PathVariable Long id){
-        return service.getById(id);
-    }
-
-    @GetMapping("/all")
-    public List<Location> getAll(){
-        return service.getAll();
-    }
-
-    @PostMapping
-    public Location save(@RequestBody Location entity){
-        return service.save(entity);
-    }
-
-    @PutMapping("/{id}")
-    public Location update(@PathVariable Long id, @RequestBody Location entity){
-        entity.setId(id);
-        return service.update(entity);
-    }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
-        service.delete(id);
+    public LocationRestController(LocationServiceImpl service) {
+        super(service);
     }
 }
