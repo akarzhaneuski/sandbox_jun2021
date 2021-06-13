@@ -2,7 +2,6 @@ package com.exadel.sandbox.team5.service.impl;
 
 import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.entity.Discount;
-import com.exadel.sandbox.team5.service.CRUDService;
 import com.exadel.sandbox.team5.service.DiscountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public Discount getById(Long id) {
-        return discountDAO.findById(id).orElse(null);
+        return discountDAO.findById(id).orElseThrow();
     }
 
     @Override
