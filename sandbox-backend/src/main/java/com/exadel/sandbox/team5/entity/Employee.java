@@ -41,4 +41,9 @@ public class Employee extends AuditableEntity {
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
     Set<EmployeeDiscount> employeeDiscounts = new HashSet<>();
+
+//    @JsonIgnore
+//    @ManyToOne
+//    @JoinColumn(name="location_Id")
+//    private Location location;
 }

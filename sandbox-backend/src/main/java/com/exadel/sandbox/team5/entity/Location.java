@@ -27,4 +27,8 @@ public class Location extends AuditableEntity {
             joinColumns = @JoinColumn(name = "locationId"),
             inverseJoinColumns = @JoinColumn(name = "companyId"))
     private Set<Company> companies = new HashSet<>();
+
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "location")
+//    Set<Employee> employees = new HashSet<>();
 }
