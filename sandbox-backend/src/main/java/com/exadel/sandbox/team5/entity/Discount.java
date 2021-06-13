@@ -17,20 +17,19 @@ import java.util.*;
 @Table(name = "discount")
 public class Discount extends AuditableEntity {
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "discount_tag",
-            joinColumns = { @JoinColumn(name = "discountId") },
-            inverseJoinColumns = { @JoinColumn(name = "tagId") }
+            joinColumns = {@JoinColumn(name = "discountId")},
+            inverseJoinColumns = {@JoinColumn(name = "tagId")}
     )
     private Set<Tag> tags = new HashSet<>();
 
     @ManyToMany(mappedBy = "discounts")
     private List<Employee> employee = new ArrayList<>();
 
-
     @ManyToOne
-    @JoinColumn(name="companyId")
+    @JoinColumn(name = "companyId")
     private Company company;
 
     @Column(name = "name")
@@ -52,5 +51,4 @@ public class Discount extends AuditableEntity {
 
     @Column(name = "promocode")
     private String promoCode;
-
 }

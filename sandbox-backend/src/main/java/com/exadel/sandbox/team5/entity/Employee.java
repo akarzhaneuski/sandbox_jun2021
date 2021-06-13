@@ -5,6 +5,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,11 +32,11 @@ public class Employee extends AuditableEntity {
     @Column(name = "locationId")
     private Long locationId;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
-            name = "employee_tag",
-            joinColumns = { @JoinColumn(name = "employeeId") },
-            inverseJoinColumns = { @JoinColumn(name = "discountId") }
+            name = "employee_discount",
+            joinColumns = {@JoinColumn(name = "employeeId")},
+            inverseJoinColumns = {@JoinColumn(name = "discountId")}
     )
-    private List<Discount> discounts;
+    private List<Discount> discounts = new ArrayList<>();
 }
