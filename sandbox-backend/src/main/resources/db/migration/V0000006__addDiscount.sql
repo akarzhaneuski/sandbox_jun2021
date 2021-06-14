@@ -6,3 +6,4 @@ INSERT INTO discount (name, description, periodStart, periodEnd, promocode)
 VALUES ('Cinema', 'Free ticket', '10.05.2021', '15.07.2021','F4U');
 INSERT INTO discount (name, description, periodStart, periodEnd, promocode)
 VALUES ('SportLife', 'Free Month', '10.05.2021', '15.07.2021','BICEPS');
+
