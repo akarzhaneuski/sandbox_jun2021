@@ -1,9 +1,7 @@
 package com.exadel.sandbox.team5;
 
-import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.service.DiscountService;
-import error.MyEntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +14,10 @@ import java.util.List;
 public class DiscountRestController {
 
     private final DiscountService service;
-    private final DiscountDAO discountDAO;
 
     @GetMapping("/{id}")
     public Discount getDiscount(@PathVariable Long id) {
-//        return service.getById(id);
-        return discountDAO.findById(id).orElseThrow(()->new MyEntityNotFoundException(id));
+        return service.getById(id);
     }
 
     @GetMapping("/all")
