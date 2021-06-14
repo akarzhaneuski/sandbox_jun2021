@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/demo")
-public class DemoRestController extends AbstractController<DemoEntity, DemoServiceImpl> {
+public class DemoRestControllerImpl extends BaseControllerImpl<DemoEntity, DemoServiceImpl> {
 
-    DemoRestController(DemoServiceImpl service) {
+    DemoRestControllerImpl(DemoServiceImpl service) {
         super(service);
     }
 }

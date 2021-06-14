@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RequiredArgsConstructor
-public abstract class AbstractController<E extends BaseEntity, S extends CRUDService<E>>{
+public class BaseControllerImpl<E extends BaseEntity, S extends CRUDService<E>>{
 
     protected final S service;
 

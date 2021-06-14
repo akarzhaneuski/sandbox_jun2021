@@ -11,14 +11,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/company")
-public class CompanyRestController extends AbstractController<Company, CompanyServiceImpl> {
+public class CompanyRestControllerImpl extends BaseControllerImpl<Company, CompanyServiceImpl> {
 
-    CompanyRestController(CompanyServiceImpl service) {
+    CompanyRestControllerImpl(CompanyServiceImpl service) {
         super(service);
     }
 
     @GetMapping("/{locationId}/companies")
     public List<Company> getCompaniesByLocation(@PathVariable Long locationId) {
-        return service.getListEntityByOtherEntityId(locationId);
+        return service.getCompaniesByLocation(locationId);
     }
 }

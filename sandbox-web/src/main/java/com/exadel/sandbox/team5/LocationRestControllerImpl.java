@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/location")
-public class LocationRestController extends AbstractController<Location, LocationServiceImpl> {
+public class LocationRestControllerImpl extends BaseControllerImpl<Location, LocationServiceImpl> {
 
-    public LocationRestController(LocationServiceImpl service) {
+    public LocationRestControllerImpl(LocationServiceImpl service) {
         super(service);
     }
 }

@@ -3,12 +3,16 @@ package com.exadel.sandbox.team5.service.impl;
 import com.exadel.sandbox.team5.dao.CommonRepository;
 import com.exadel.sandbox.team5.entity.BaseEntity;
 import com.exadel.sandbox.team5.service.CRUDService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 @RequiredArgsConstructor
-abstract class AbstractService<E extends BaseEntity, R extends CommonRepository<E>> implements CRUDService<E> {
+@Getter
+class CRUDServiceImpl<E extends BaseEntity, R extends CommonRepository<E>> implements CRUDService<E> {
 
     protected final R repository;
 
@@ -30,9 +34,5 @@ abstract class AbstractService<E extends BaseEntity, R extends CommonRepository<
 
     public void delete(Long id) {
         repository.deleteById(id);
-    }
-
-    public List<E> getListEntityByOtherEntityId(Long id) {
-        return null;
     }
 }

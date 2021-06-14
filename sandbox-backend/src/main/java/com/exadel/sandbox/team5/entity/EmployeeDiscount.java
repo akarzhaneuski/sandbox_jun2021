@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Table(name = "employee_discount")
 public class EmployeeDiscount extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "employeeId")
     private Employee employee;
 

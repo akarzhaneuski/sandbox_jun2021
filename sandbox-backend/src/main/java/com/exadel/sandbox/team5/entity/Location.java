@@ -21,14 +21,14 @@ public class Location extends AuditableEntity {
     private String city;
 
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "company_location",
             joinColumns = @JoinColumn(name = "locationId"),
             inverseJoinColumns = @JoinColumn(name = "companyId"))
     private Set<Company> companies = new HashSet<>();
 
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "location")
-//    Set<Employee> employees = new HashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "locationId")
+    Set<Employee> employees = new HashSet<>();
 }

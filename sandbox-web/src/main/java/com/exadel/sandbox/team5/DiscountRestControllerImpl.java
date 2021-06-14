@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/discount")
-public class DiscountRestController extends AbstractController<Discount, DiscountServiceImpl> {
+public class DiscountRestControllerImpl extends BaseControllerImpl<Discount, DiscountServiceImpl> {
 
-    DiscountRestController(DiscountServiceImpl service) {
+    DiscountRestControllerImpl(DiscountServiceImpl service) {
         super(service);
     }
 }

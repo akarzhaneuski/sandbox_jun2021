@@ -27,15 +27,12 @@ public class Employee extends AuditableEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(name = "locationId")
-    private Long locationId;
-
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+    @OneToMany(mappedBy = "employee")
     Set<EmployeeDiscount> employeeDiscounts = new HashSet<>();
 
-//    @JsonIgnore
-//    @ManyToOne
-//    @JoinColumn(name="location_Id")
-//    private Location location;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name="locationId")
+    private Location locationId;
 }
