@@ -18,8 +18,8 @@ import java.util.Set;
 @Table(name = "tag")
 public class Tag extends BaseEntity {
 
-    @ManyToMany(mappedBy = "tags")
-    private Set<Discount> discounts = new HashSet<>();
+    /*@ManyToMany(mappedBy = "tags")
+    private Set<Discount> discounts = new HashSet<>();*/
 
     @Column(name = "tagName")
     private String name;

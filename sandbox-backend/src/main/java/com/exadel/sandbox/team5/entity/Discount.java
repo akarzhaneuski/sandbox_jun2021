@@ -25,8 +25,8 @@ public class Discount extends AuditableEntity {
     )
     private Set<Tag> tags = new HashSet<>();
 
-    @ManyToMany(mappedBy = "discounts")
-    private List<Employee> employee = new ArrayList<>();
+   /* @ManyToMany(mappedBy = "discounts")
+    private List<Employee> employee = new ArrayList<>();*/
 
 
     @ManyToOne
