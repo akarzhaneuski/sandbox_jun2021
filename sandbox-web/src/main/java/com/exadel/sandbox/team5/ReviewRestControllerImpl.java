@@ -2,10 +2,7 @@ package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.entity.Review;
 import com.exadel.sandbox.team5.service.impl.ReviewServiceImpl;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,8 +14,13 @@ public class ReviewRestControllerImpl extends BaseControllerImpl<Review, ReviewS
         super(service);
     }
 
-    @GetMapping("/{discountId}/reviews")
-    public List<Review> getReviewByDiscountId(@PathVariable Long discountId) {
-        return service.getReviewsByDiscountId(discountId);
+//    @GetMapping("/{discountId}/reviews")
+//    public List<Review> getReviewByDiscountId(@PathVariable Long discountId) {
+//        return service.getReviewsByDiscountId(discountId);
+//    }
+
+    @GetMapping("/discountId")
+    public List<Review> getReviewByDiscountId(@RequestParam Long id) {
+        return service.getReviewsByDiscountId(id);
     }
 }
