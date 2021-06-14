@@ -19,15 +19,6 @@ import java.util.Set;
 @Table(name = "tag")
 public class Tag extends BaseEntity {
 
-    @JsonIgnore
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-            name = "discount_tag",
-            joinColumns = { @JoinColumn(name = "tagId") },
-            inverseJoinColumns = { @JoinColumn(name = "discountId") }
-    )
-    private Set<Discount> discounts = new HashSet<>();
-
     @Column(name = "tagName")
     private String name;
 }

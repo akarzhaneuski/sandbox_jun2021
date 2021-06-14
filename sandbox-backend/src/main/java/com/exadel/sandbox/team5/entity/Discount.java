@@ -19,15 +19,16 @@ import java.util.*;
 public class Discount extends AuditableEntity {
 
 
-    @ManyToMany(mappedBy = "discounts")
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "discount_tag",
+            joinColumns = { @JoinColumn(name = "discountId") },
+            inverseJoinColumns = { @JoinColumn(name = "tagId") }
+    )
     private Set<Tag> tags = new HashSet<>();
 
-    @ManyToMany(mappedBy = "discounts")
-    private List<Employee> employee = new ArrayList<>();
-
-
     @ManyToOne
-    @JoinColumn(name="companyId")
+    @JoinColumn(name = "companyId")
     private Company company;
 
     @Column(name = "name")
