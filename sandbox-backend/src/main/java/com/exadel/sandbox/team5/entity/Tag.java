@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team5.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,9 +18,6 @@ import java.util.Set;
 @Entity
 @Table(name = "tag")
 public class Tag extends BaseEntity {
-
-    @ManyToMany(mappedBy = "tags")
-    private Set<Discount> discounts = new HashSet<>();
 
     @Column(name = "tagName")
     private String name;
