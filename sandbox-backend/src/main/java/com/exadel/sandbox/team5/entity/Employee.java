@@ -30,14 +30,6 @@ public class Employee extends AuditableEntity {
     @Column(name = "locationId")
     private Long locationId;
 
-//    @ManyToMany(cascade = { CascadeType.ALL })
-//    @JoinTable(
-//            name = "employee_discount",
-//            joinColumns = { @JoinColumn(name = "employeeId") },
-//            inverseJoinColumns = { @JoinColumn(name = "discountId") }
-//    )
-//    private List<Discount> discounts;
-
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
     Set<EmployeeDiscount> employeeDiscounts = new HashSet<>();
