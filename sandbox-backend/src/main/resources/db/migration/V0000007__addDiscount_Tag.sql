@@ -1,0 +1,12 @@
+INSERT INTO discount_tag (discountId, tagId) VALUES ('1', '1');
+INSERT INTO discount_tag (discountId, tagId) VALUES ('1', '2');
+INSERT INTO discount_tag (discountId, tagId) VALUES ('1', '3');
+INSERT INTO discount_tag (discountId, tagId) VALUES ('2', '1');
+INSERT INTO discount_tag (discountId, tagId) VALUES ('2', '2');
+INSERT INTO discount_tag (discountId, tagId) VALUES ('2', '3');
+INSERT INTO discount_tag (discountId, tagId) VALUES ('3', '1');
+INSERT INTO discount_tag (discountId, tagId) VALUES ('3', '2');
+INSERT INTO discount_tag (discountId, tagId) VALUES ('3', '3');
+INSERT INTO discount_tag (discountId, tagId) VALUES ('4', '1');
+INSERT INTO discount_tag (discountId, tagId) VALUES ('4', '2');
+INSERT INTO discount_tag (discountId, tagId) VALUES ('4', '3');
