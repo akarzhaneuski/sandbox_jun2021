@@ -1,26 +1,24 @@
 package com.exadel.sandbox.team5.dao.util;
 
-import org.springframework.data.domain.PageRequest;
-
-import java.awt.print.Pageable;
 import java.util.List;
 
-public class SearchResult {
+public class SearchResult<T> {
     private int totalCount;
-    private PageRequest result;
+    private List<T> results;
 
-    private SearchResult(){}
+    private SearchResult() {
+    }
 
-    public SearchResult(int totalCount, PageRequest result) {
+    public SearchResult(int totalCount, List<T> results) {
         this.totalCount = totalCount;
-        this.result = result;
+        this.results = results;
     }
 
     public int getTotalCount() {
         return totalCount;
     }
 
-    public PageRequest getResult() {
-        return result;
+    public List<T> getResults() {
+        return results;
     }
 }

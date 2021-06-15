@@ -1,30 +1,35 @@
 package com.exadel.sandbox.team5.dao.util;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.awt.print.Pageable;
-
-public class SearchCriteria {
+public class SearchCriteria<T> {
     private int page;
     private int size;
-    private String properties;
+    private String[] parameters;
+    private JpaRepository repository;
 
-    private SearchCriteria(){}
+    private SearchCriteria() {
+    }
 
-    public SearchCriteria(int page, int size, String properties) {
+    public SearchCriteria(JpaRepository repository, int page, int size, String... parameters) {
+        this.repository = repository;
         this.page = page;
         this.size = size;
-        this.properties = properties;
+        this.parameters = parameters;
     }
 
-    public SearchResult findByAsc(){
-        PageRequest page = PageRequest.of(this.page, this.size, Sort.Direction.ASC, this.properties);
-        return new SearchResult(page.getPageSize(), page);
+    public SearchResult<T> findByAsc() {
+        PageRequest pageRequest = PageRequest.of(this.page, this.size, Sort.Direction.ASC, this.parameters);
+        Page<T> page = repository.findAll(pageRequest);
+        return new SearchResult<T>(page.getNumberOfElements(), page.getContent());
     }
 
-    public SearchResult findByDesc(){
-        PageRequest page = PageRequest.of(this.page, this.size, Sort.Direction.DESC, this.properties);
-        return new SearchResult(page.getPageSize(), page);
+    public SearchResult<T> findByDesc() {
+        PageRequest pageRequest = PageRequest.of(this.page, this.size, Sort.Direction.DESC, this.parameters);
+        Page<T> page = repository.findAll(pageRequest);
+        return new SearchResult<T>(page.getNumberOfElements(), page.getContent());
     }
 }
