@@ -24,7 +24,7 @@ public class Location extends AuditableEntity {
     @ManyToMany
     @JoinTable(
             name = "company_location",
-            joinColumns = @JoinColumn(name = "locationId"),
-            inverseJoinColumns = @JoinColumn(name = "companyId"))
+            joinColumns = @JoinColumn(name = "locationId", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "companyId", referencedColumnName = "id"))
     private Set<Company> companies = new HashSet<>();
 }
