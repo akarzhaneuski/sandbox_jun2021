@@ -34,6 +34,8 @@ public class Discount extends AuditableEntity {
     @Column(name = "name")
     private String name;
 
+    private String fileName;
+
     @Column(name = "description")
     private String description;
 
