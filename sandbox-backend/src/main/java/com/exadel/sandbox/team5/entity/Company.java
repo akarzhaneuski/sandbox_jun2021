@@ -23,6 +23,10 @@ public class Company extends AuditableEntity {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "companies")
+    @ManyToMany
+    @JoinTable(
+            name = "company_location",
+            joinColumns = @JoinColumn(name = "companyId", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "locationId", referencedColumnName = "id"))
     private Set<Location> locations = new HashSet<>();
 }
