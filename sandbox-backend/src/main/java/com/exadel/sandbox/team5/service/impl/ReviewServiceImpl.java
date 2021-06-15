@@ -40,4 +40,9 @@ public class ReviewServiceImpl implements ReviewService {
     public void delete(Long id) {
         reviewDAO.deleteById(id);
     }
+
+    @Override
+    public List<Review> getReviewsByDiscount(Long id) {
+        return reviewDAO.findAllByDiscountId(id);
+    }
 }

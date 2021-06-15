@@ -16,10 +16,10 @@ import javax.persistence.*;
 public class EmployeeDiscount extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name = "employeeId")
+    @JoinColumn(name = "employeeId", referencedColumnName = "id")
     private Employee employee;
 
     @ManyToOne
-    @JoinColumn(name = "discountId")
+    @JoinColumn(name = "discountId", referencedColumnName = "id")
     private Discount discount;
 }
