@@ -6,29 +6,29 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public class SearchCriteria<T> {
-    private int page;
-    private int size;
+    private int pageNum;
+    private int pageSize;
     private String[] parameters;
     private JpaRepository repository;
 
     private SearchCriteria() {
     }
 
-    public SearchCriteria(JpaRepository repository, int page, int size, String... parameters) {
+    public SearchCriteria(JpaRepository repository, int pageNum, int pageSize, String... parameters) {
         this.repository = repository;
-        this.page = page;
-        this.size = size;
+        this.pageNum = pageNum;
+        this.pageSize = pageSize;
         this.parameters = parameters;
     }
 
     public SearchResult<T> findByAsc() {
-        PageRequest pageRequest = PageRequest.of(this.page, this.size, Sort.Direction.ASC, this.parameters);
+        PageRequest pageRequest = PageRequest.of(this.pageNum, this.pageSize, Sort.Direction.ASC, this.parameters);
         Page<T> page = repository.findAll(pageRequest);
         return new SearchResult<T>(page.getNumberOfElements(), page.getContent());
     }
 
     public SearchResult<T> findByDesc() {
-        PageRequest pageRequest = PageRequest.of(this.page, this.size, Sort.Direction.DESC, this.parameters);
+        PageRequest pageRequest = PageRequest.of(this.pageNum, this.pageSize, Sort.Direction.DESC, this.parameters);
         Page<T> page = repository.findAll(pageRequest);
         return new SearchResult<T>(page.getNumberOfElements(), page.getContent());
     }
