@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EmployeeDAO extends JpaRepository<Employee, Long> {
+
+    public Employee getByLogin(String login);
 }

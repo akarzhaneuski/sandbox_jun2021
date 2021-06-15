@@ -6,6 +6,7 @@ import com.exadel.sandbox.team5.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Transactional
@@ -14,9 +15,15 @@ import java.util.List;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeDAO employeeDAO;
+
     @Override
     public Employee getById(Long id) {
         return employeeDAO.findById(id).orElse(null);
+    }
+
+    @Override
+    public Employee getByLogin(String login) {
+        return employeeDAO.getByLogin(login);
     }
 
     @Override
