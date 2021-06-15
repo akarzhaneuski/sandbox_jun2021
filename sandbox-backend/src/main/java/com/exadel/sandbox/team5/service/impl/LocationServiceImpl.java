@@ -5,7 +5,7 @@ import com.exadel.sandbox.team5.entity.Location;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LocationServiceImpl extends CRUDServiceImpl<Location, LocationDAO> {
+public class LocationServiceImpl extends CRUDServiceImpl<Location> {
 
     public LocationServiceImpl(LocationDAO repository) {
         super(repository);

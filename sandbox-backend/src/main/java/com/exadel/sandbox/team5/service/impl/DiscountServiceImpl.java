@@ -5,7 +5,7 @@ import com.exadel.sandbox.team5.entity.Discount;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DiscountServiceImpl extends CRUDServiceImpl<Discount, DiscountDAO> {
+public class DiscountServiceImpl extends CRUDServiceImpl<Discount> {
 
     public DiscountServiceImpl(DiscountDAO repository) {
         super(repository);

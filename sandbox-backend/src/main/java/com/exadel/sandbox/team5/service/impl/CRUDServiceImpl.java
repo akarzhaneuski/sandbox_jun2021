@@ -12,9 +12,9 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 @Getter
-class CRUDServiceImpl<E extends BaseEntity, R extends CommonRepository<E>> implements CRUDService<E> {
+class CRUDServiceImpl<E extends BaseEntity> implements CRUDService<E> {
 
-    protected final R repository;
+    protected final CommonRepository<E> repository;
 
     public E getById(Long id) {
         return repository.findById(id).orElse(null);
