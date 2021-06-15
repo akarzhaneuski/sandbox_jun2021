@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team5.service.impl;
 
 import com.exadel.sandbox.team5.dao.DiscountDAO;
+import com.exadel.sandbox.team5.dao.TagDAO;
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.service.DiscountService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.List;
 public class DiscountServiceImpl implements DiscountService {
 
     private final DiscountDAO discountDAO;
+    private final TagDAO tagDAO;
 
     @Override
     public Discount getById(Long id) {
@@ -40,4 +42,5 @@ public class DiscountServiceImpl implements DiscountService {
     public void delete(Long id) {
         discountDAO.deleteById(id);
     }
+
 }

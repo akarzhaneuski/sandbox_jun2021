@@ -1,22 +1,19 @@
 package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.entity.Discount;
-import com.exadel.sandbox.team5.entity.Review;
 import com.exadel.sandbox.team5.service.DiscountService;
-import com.exadel.sandbox.team5.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/discounts")
+@RequestMapping("/discount")
 @RequiredArgsConstructor
 
 public class DiscountRestController {
 
     private final DiscountService service;
-    private final ReviewService reviewService;
 
     @GetMapping("/{id}")
     public Discount getDiscount(@PathVariable Long id) {
@@ -42,11 +39,6 @@ public class DiscountRestController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         service.delete(id);
-    }
-
-    @GetMapping("/{discountId}/reviews")
-    public List<Review> getReviewsByDiscount(@PathVariable Long discountId) {
-        return reviewService.getReviewsByDiscount(discountId);
     }
 
 }

@@ -1,12 +1,12 @@
 package com.exadel.sandbox.team5.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.*;
 
 @Setter
 @Getter
@@ -19,11 +19,11 @@ import java.util.Set;
 public class Discount extends AuditableEntity {
 
 
-    @ManyToMany
+    @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
             name = "discount_tag",
-            joinColumns = {@JoinColumn(name = "discountId")},
-            inverseJoinColumns = {@JoinColumn(name = "tagId")}
+            joinColumns = { @JoinColumn(name = "discountId") },
+            inverseJoinColumns = { @JoinColumn(name = "tagId") }
     )
     private Set<Tag> tags = new HashSet<>();
 
