@@ -6,6 +6,7 @@ import com.exadel.sandbox.team5.service.CRUDService;
 import com.exadel.sandbox.team5.service.DiscountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -24,6 +25,11 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public List<Discount> getAll() {
         return discountDAO.findAll();
+    }
+
+    @Override
+    public List<Discount> getByNameContaining(String searchWord) {
+        return discountDAO.findByNameContaining(searchWord);
     }
 
     @Override

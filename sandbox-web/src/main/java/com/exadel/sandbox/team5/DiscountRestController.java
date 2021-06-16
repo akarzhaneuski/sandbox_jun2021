@@ -25,6 +25,11 @@ public class DiscountRestController {
         return service.getAll();
     }
 
+    @GetMapping("/search")
+    public List<Discount> getBySearchWord(@PathVariable String searchWord) {
+        return service.getByNameContaining(searchWord);
+    }
+
     @PostMapping
     public Discount save(@RequestBody Discount entity) {
         return service.save(entity);
