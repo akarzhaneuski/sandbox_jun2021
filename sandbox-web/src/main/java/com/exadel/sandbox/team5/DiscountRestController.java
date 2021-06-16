@@ -25,9 +25,10 @@ public class DiscountRestController {
     public List<Discount> getAll() {
         return service.getAll();
     }
+
     //Возвращаю при пустом поле поиска или отсутсвие заданых критериев пока пустой список
     @GetMapping("/search")
-    public List<Discount> getBySearchWord(@PathVariable String searchWord) {
+    public List<Discount> getBySearchWord(@RequestParam String searchWord) {
         List<Discount> result = new ArrayList<>();
         if (searchWord != null && !searchWord.isEmpty()) {
             result = service.getByNameContaining(searchWord);
@@ -53,6 +54,5 @@ public class DiscountRestController {
     public void delete(@PathVariable Long id) {
         service.delete(id);
     }
-
 }
 
