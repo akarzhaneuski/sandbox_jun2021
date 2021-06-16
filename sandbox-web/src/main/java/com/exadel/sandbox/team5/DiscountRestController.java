@@ -1,8 +1,10 @@
 package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.entity.Discount;
+import com.exadel.sandbox.team5.entity.EmployeeDiscount;
 import com.exadel.sandbox.team5.entity.Review;
 import com.exadel.sandbox.team5.service.DiscountService;
+import com.exadel.sandbox.team5.service.EmployeeDiscountService;
 import com.exadel.sandbox.team5.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,7 @@ public class DiscountRestController {
 
     private final DiscountService service;
     private final ReviewService reviewService;
+    private final EmployeeDiscountService employeeDiscountService;
 
     @GetMapping("/{id}")
     public Discount getDiscount(@PathVariable Long id) {
@@ -48,6 +51,13 @@ public class DiscountRestController {
     public List<Review> getReviewsByDiscount(@PathVariable Long discountId) {
         return reviewService.getReviewsByDiscount(discountId);
     }
+
+
+    @PostMapping("/{discountId}/order")
+    public EmployeeDiscount saveOrder(@PathVariable Long discountId) {
+        return employeeDiscountService.saveOrder(discountId);
+    }
+
 
 }
 
