@@ -33,6 +33,11 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
+    public List<Discount> getByDescriptionContaining(String searchWord) {
+        return discountDAO.findByDescriptionContaining(searchWord);
+    }
+
+    @Override
     public Discount save(Discount discount) {
         return discountDAO.saveAndFlush(discount);
     }

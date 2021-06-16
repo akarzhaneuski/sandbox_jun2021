@@ -10,4 +10,6 @@ import java.util.List;
 public interface DiscountDAO extends JpaRepository<Discount, Long> {
 
     List<Discount> findByNameContaining(String name);
+    List<Discount> findByDescriptionContaining(String name);
+
 }

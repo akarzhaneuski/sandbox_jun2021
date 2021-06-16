@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface DiscountService extends CRUDService<Discount> {
     List<Discount> getByNameContaining(String searchWord);
+    List<Discount> getByDescriptionContaining(String searchWord);
 }

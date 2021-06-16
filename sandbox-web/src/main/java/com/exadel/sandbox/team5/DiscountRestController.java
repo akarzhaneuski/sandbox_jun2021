@@ -5,6 +5,7 @@ import com.exadel.sandbox.team5.service.DiscountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,10 +25,17 @@ public class DiscountRestController {
     public List<Discount> getAll() {
         return service.getAll();
     }
-
+    //Возвращаю при пустом поле поиска или отсутсвие заданых критериев пока пустой список
     @GetMapping("/search")
     public List<Discount> getBySearchWord(@PathVariable String searchWord) {
-        return service.getByNameContaining(searchWord);
+        List<Discount> result = new ArrayList<>();
+        if (searchWord != null && !searchWord.isEmpty()) {
+            result = service.getByNameContaining(searchWord);
+            if (result.isEmpty()) {
+                result = service.getByDescriptionContaining(searchWord);
+            }
+        }
+        return result;
     }
 
     @PostMapping
