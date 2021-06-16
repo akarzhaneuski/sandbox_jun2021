@@ -1,11 +1,12 @@
 package com.exadel.sandbox.team5.dao.util;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 
 public class SearchCriteria {
     private PageRequest pageRequest;
+    private List<String> properties;
 
     private SearchCriteria() {
     }
@@ -14,9 +15,16 @@ public class SearchCriteria {
         this.pageRequest = pageRequest;
     }
 
-    public <T, U> Page<T> find(JpaRepository<T, U> repository) {
-        return repository.findAll(pageRequest);
+    public SearchCriteria(PageRequest pageRequest, List<String> properties) {
+        this.pageRequest = pageRequest;
+        this.properties = properties;
     }
 
+    public PageRequest getPageRequest() {
+        return pageRequest;
+    }
 
+    public List<String> getProperties() {
+        return properties;
+    }
 }
