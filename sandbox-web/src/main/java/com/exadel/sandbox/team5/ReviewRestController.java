@@ -24,7 +24,7 @@ public class ReviewRestController {
     }
 
     @PostMapping
-    public Review save(Review entity) {
+    public Review save(@RequestBody Review entity) {
         return service.save(entity);
     }
 
