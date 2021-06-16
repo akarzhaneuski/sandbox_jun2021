@@ -1,6 +1,6 @@
 package com.exadel.sandbox.team5;
 
-import com.exadel.sandbox.team5.entity.Discount;
+import com.exadel.sandbox.team5.dto.DiscountDTO;
 import com.exadel.sandbox.team5.service.DiscountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,22 +16,22 @@ public class DiscountRestController {
     private final DiscountService service;
 
     @GetMapping("/{id}")
-    public Discount getDiscount(@PathVariable Long id) {
+    public DiscountDTO getDiscount(@PathVariable Long id) {
         return service.getById(id);
     }
 
     @GetMapping("/all")
-    public List<Discount> getAll() {
+    public List<DiscountDTO> getAll() {
         return service.getAll();
     }
 
     @PostMapping
-    public Discount save(@RequestBody Discount entity) {
+    public DiscountDTO save(@RequestBody DiscountDTO entity) {
         return service.save(entity);
     }
 
     @PutMapping("/{id}")
-    public Discount update(@PathVariable Long id, @RequestBody Discount entity) {
+    public DiscountDTO update(@PathVariable Long id, @RequestBody DiscountDTO entity) {
         entity.setId(id);
         return service.update(entity);
     }
