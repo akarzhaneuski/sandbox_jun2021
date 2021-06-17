@@ -13,11 +13,13 @@ public class MapperConverter {
 
     private final ModelMapper modelMapper;
 
-    public <T, K> K map(T discount, Class<K> kClass) {
-        return modelMapper.map(discount, kClass);
+    public <T, K> K map(T entity, Class<K> kClass) {
+        return modelMapper.map(entity, kClass);
     }
 
-    public <E, K> List<K> convertList(List<E> list) {
-        return modelMapper.map(list, new TypeToken<List<K>>() {}.getType());
+    public <E, K> List<K> mapAll(List<E> entityList, Class<K> kClass) {
+        return entityList.stream()
+                .map(entity -> map(entity, kClass))
+                .toList();
     }
 }

@@ -28,8 +28,7 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public List<DiscountDto> getAll() {
-        List<Discount> discounts = discountDAO.findAll();
-        return mapper.convertList(discounts);
+        return mapper.mapAll(discountDAO.findAll(), DiscountDto.class);
     }
 
     @Override
