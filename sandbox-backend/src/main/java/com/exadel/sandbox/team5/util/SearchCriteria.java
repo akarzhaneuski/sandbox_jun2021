@@ -1,51 +1,27 @@
 package com.exadel.sandbox.team5.util;
 
+import org.springframework.boot.autoconfigure.cassandra.CassandraProperties;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.util.Date;
 import java.util.List;
 
 public class SearchCriteria {
     private PageRequest pageRequest;
-    private Date date;
+    /*private Date date;
     private List<String> properties;
-    private long number;
+    private long number;*/
 
     private SearchCriteria() {
     }
 
-    public SearchCriteria(PageRequest pageRequest, Date date, List<String> properties, long number) {
-        this.pageRequest = pageRequest;
-        this.date = date;
-        this.properties = properties;
-        this.number = number;
-    }
-
-    public SearchCriteria(PageRequest pageRequest, Date date, List<String> properties) {
-        this.pageRequest = pageRequest;
-        this.date = date;
-        this.properties = properties;
-    }
-
-    public SearchCriteria(PageRequest pageRequest, Date date) {
-        this.pageRequest = pageRequest;
-        this.date = date;
-    }
-
-    public SearchCriteria(PageRequest pageRequest) {
-        this.pageRequest = pageRequest;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public List<String> getProperties() {
-        return properties;
-    }
-
-    public long getNumber() {
-        return number;
+    public SearchCriteria(int pageNum, int itemsPerPage, Sort.Direction direction,
+                          Date date, List<String> properties, long number) {
+        properties.add(date.toString());
+        properties.add(""+number);
+        this.pageRequest = PageRequest.of(pageNum, itemsPerPage, direction,
+                String.valueOf(properties));
     }
 
     public PageRequest getPageRequest() {
