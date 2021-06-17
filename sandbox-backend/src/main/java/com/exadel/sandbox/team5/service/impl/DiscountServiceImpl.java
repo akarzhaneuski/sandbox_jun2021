@@ -7,6 +7,7 @@ import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -61,5 +62,10 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public void delete(Long id) {
         discountDAO.deleteById(id);
+    }
+
+    @Override
+    public Page<Discount> getByFilters(SearchCriteria searchCriteria) {
+        return discountDAO.findAll(searchCriteria.getRequest);
     }
 }

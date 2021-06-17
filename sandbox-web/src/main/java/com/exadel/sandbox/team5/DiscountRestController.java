@@ -7,6 +7,7 @@ import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.ReviewService;
 import com.exadel.sandbox.team5.service.impl.OrderServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -64,6 +65,12 @@ public class DiscountRestController {
                 return orderService.invalidatePromoCode(discountId, promoCode);
     }
 
+
+
+    @GetMapping("/search")
+    public Page<Discount> getByFilters(@RequestBody SearchCriteria searchCriteria){
+        return service.getByFilters(searchCriteria);
+    }
 
 }
 
