@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Transactional
@@ -29,9 +30,15 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public List<Discount> getByNameOrDescriptionContaining(String searchWord) {
-        List<Discount> result = discountDAO.findByNameContaining(searchWord);
+        List<Discount> result = new ArrayList<>();
+        if (searchWord != null && !searchWord.isEmpty()) {
+            result = discountDAO.findByNameContaining(searchWord);
+            if (result.isEmpty()) {
+                result = discountDAO.findByDescriptionContaining(searchWord);
+            }
+        }
         if (result.isEmpty()) {
-            result = discountDAO.findByDescriptionContaining(searchWord);
+            result = discountDAO.findAll();
         }
         return result;
     }

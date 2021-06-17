@@ -28,14 +28,7 @@ public class DiscountRestController {
 
     @GetMapping("/search")
     public List<Discount> search(@RequestParam String searchText) {
-        List<Discount> result = new ArrayList<>();
-        if (searchText != null && !searchText.isEmpty()) {
-            result = service.getByNameOrDescriptionContaining(searchText);
-        }
-        if (result.isEmpty()) {
-            result = service.getAll();
-        }
-        return result;
+        return service.getByNameOrDescriptionContaining(searchText);
     }
 
     @PostMapping
