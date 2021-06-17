@@ -66,6 +66,6 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public Page<Discount> getByFilters(SearchCriteria searchCriteria) {
-        return discountDAO.findAll(searchCriteria.getRequest);
+        return discountDAO.findAll(searchCriteria.getPageRequest);
     }
 }
