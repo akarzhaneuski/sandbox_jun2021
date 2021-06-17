@@ -1,7 +1,7 @@
 package com.exadel.sandbox.team5;
 
-import com.exadel.sandbox.team5.entity.Discount;
-import com.exadel.sandbox.team5.entity.Review;
+import com.exadel.sandbox.team5.dto.DiscountDto;
+
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -19,22 +19,22 @@ public class DiscountRestController {
     private final ReviewService reviewService;
 
     @GetMapping("/{id}")
-    public Discount getDiscount(@PathVariable Long id) {
+    public DiscountDto getDiscount(@PathVariable Long id) {
         return service.getById(id);
     }
 
     @GetMapping("/all")
-    public List<Discount> getAll() {
+    public List<DiscountDto> getAll() {
         return service.getAll();
     }
 
     @PostMapping
-    public Discount save(@RequestBody Discount entity) {
+    public DiscountDto save(@RequestBody DiscountDto entity) {
         return service.save(entity);
     }
 
     @PutMapping("/{id}")
-    public Discount update(@PathVariable Long id, @RequestBody Discount entity) {
+    public DiscountDto update(@PathVariable Long id, @RequestBody DiscountDto entity) {
         entity.setId(id);
         return service.update(entity);
     }
