@@ -52,7 +52,7 @@ public class DiscountRestController {
     }
 
     @GetMapping("/search")
-    public Page<Discount> getByFilters(@RequestBody SearchCriteria searchCriteria){
+    public Page<Discount> getByCriteria(@RequestBody SearchCriteria searchCriteria){
         return service.getByFilters(searchCriteria);
     }
 
