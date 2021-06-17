@@ -35,11 +35,9 @@ public class DiscountRestController {
         entity.setId(id);
         return service.update(entity);
     }
-
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         service.delete(id);
     }
-
 }
 
