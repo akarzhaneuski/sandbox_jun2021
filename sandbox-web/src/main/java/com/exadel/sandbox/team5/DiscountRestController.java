@@ -4,6 +4,8 @@ import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.entity.Orders;
 import com.exadel.sandbox.team5.entity.Review;
 import com.exadel.sandbox.team5.service.*;
+import com.exadel.sandbox.team5.service.Validation.AddOrder;
+import com.exadel.sandbox.team5.service.Validation.InvalidateOrder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,12 +14,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/discounts")
 @RequiredArgsConstructor
-
 public class DiscountRestController {
 
     private final DiscountService service;
     private final ReviewService reviewService;
-    private final PromoCodeValidation promoCodeValidation;
+    private final AddOrder addOrder;
+    private final InvalidateOrder invalidateOrder;
 
     @GetMapping("/{id}")
     public Discount getDiscount(@PathVariable Long id) {
@@ -52,13 +54,12 @@ public class DiscountRestController {
 
     @PostMapping("/{discountId}/order")
     public Orders saveOrder(@PathVariable Long discountId) {
-        return promoCodeValidation.validate(discountId);
+        return addOrder.createOrder(discountId);
     }
 
     @GetMapping("/{discountId}/{promoCode}/validate")
-    public void getDiscount(@PathVariable Long discountId, @PathVariable String promoCode) {
-
-
+    public Orders invalidatePromoCode(@PathVariable Long discountId, @PathVariable String promoCode) {
+        return invalidateOrder.invalidatePromoCode(discountId, promoCode);
     }
 
 

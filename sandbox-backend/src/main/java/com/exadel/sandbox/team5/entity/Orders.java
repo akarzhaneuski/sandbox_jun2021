@@ -28,7 +28,7 @@ public class Orders extends BaseEntity {
     private String employeePromocode;
 
     @Column(name = "promoCodeStatus")
-    private boolean promoCodeStatus;
+    private Boolean promoCodeStatus;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "promoCodePeriodStart")
