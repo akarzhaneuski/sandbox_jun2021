@@ -5,6 +5,5 @@ import com.exadel.sandbox.team5.entity.Discount;
 import java.util.List;
 
 public interface DiscountService extends CRUDService<Discount> {
-    List<Discount> getByNameContaining(String searchWord);
-    List<Discount> getByDescriptionContaining(String searchWord);
+    List<Discount> getByNameOrDescriptionContaining(String searchWord);
 }

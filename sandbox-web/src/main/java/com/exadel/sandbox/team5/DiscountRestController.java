@@ -26,15 +26,14 @@ public class DiscountRestController {
         return service.getAll();
     }
 
-    //Возвращаю при пустом поле поиска или отсутсвие заданых критериев пока пустой список
     @GetMapping("/search")
-    public List<Discount> getBySearchWord(@RequestParam String searchWord) {
+    public List<Discount> search(@RequestParam String searchText) {
         List<Discount> result = new ArrayList<>();
-        if (searchWord != null && !searchWord.isEmpty()) {
-            result = service.getByNameContaining(searchWord);
-            if (result.isEmpty()) {
-                result = service.getByDescriptionContaining(searchWord);
-            }
+        if (searchText != null && !searchText.isEmpty()) {
+            result = service.getByNameOrDescriptionContaining(searchText);
+        }
+        if (result.isEmpty()) {
+            result = service.getAll();
         }
         return result;
     }

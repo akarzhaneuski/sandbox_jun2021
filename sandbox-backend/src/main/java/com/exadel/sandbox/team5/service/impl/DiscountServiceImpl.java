@@ -28,13 +28,12 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public List<Discount> getByNameContaining(String searchWord) {
-        return discountDAO.findByNameContaining(searchWord);
-    }
-
-    @Override
-    public List<Discount> getByDescriptionContaining(String searchWord) {
-        return discountDAO.findByDescriptionContaining(searchWord);
+    public List<Discount> getByNameOrDescriptionContaining(String searchWord) {
+        List<Discount> result = discountDAO.findByNameContaining(searchWord);
+        if (result.isEmpty()) {
+            result = discountDAO.findByDescriptionContaining(searchWord);
+        }
+        return result;
     }
 
     @Override
