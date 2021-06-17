@@ -1,25 +1,23 @@
 package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.entity.Discount;
-import com.exadel.sandbox.team5.entity.EmployeeDiscount;
+import com.exadel.sandbox.team5.entity.Orders;
 import com.exadel.sandbox.team5.entity.Review;
-import com.exadel.sandbox.team5.service.DiscountService;
-import com.exadel.sandbox.team5.service.EmployeeDiscountService;
-import com.exadel.sandbox.team5.service.ReviewService;
+import com.exadel.sandbox.team5.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/discount")
+@RequestMapping("/discounts")
 @RequiredArgsConstructor
 
 public class DiscountRestController {
 
     private final DiscountService service;
     private final ReviewService reviewService;
-    private final EmployeeDiscountService employeeDiscountService;
+    private final PromoCodeValidation promoCodeValidation;
 
     @GetMapping("/{id}")
     public Discount getDiscount(@PathVariable Long id) {
@@ -52,10 +50,15 @@ public class DiscountRestController {
         return reviewService.getReviewsByDiscount(discountId);
     }
 
-
     @PostMapping("/{discountId}/order")
-    public EmployeeDiscount saveOrder(@PathVariable Long discountId) {
-        return employeeDiscountService.saveOrder(discountId);
+    public Orders saveOrder(@PathVariable Long discountId) {
+        return promoCodeValidation.validate(discountId);
+    }
+
+    @GetMapping("/{discountId}/{promoCode}/validate")
+    public void getDiscount(@PathVariable Long discountId, @PathVariable String promoCode) {
+
+
     }
 
 
