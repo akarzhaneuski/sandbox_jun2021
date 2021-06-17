@@ -6,6 +6,7 @@ import com.exadel.sandbox.team5.entity.Review;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,5 +50,11 @@ public class DiscountRestController {
     public List<Review> getReviewsByDiscount(@PathVariable Long discountId) {
         return reviewService.getReviewsByDiscount(discountId);
     }
+
+    @GetMapping("/search")
+    public Page<Discount> getByFilters(@RequestBody SearchCriteria searchCriteria){
+        return service.getByFilters(searchCriteria);
+    }
+
 }
 
