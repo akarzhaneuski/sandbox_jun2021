@@ -1,6 +1,6 @@
 package com.exadel.sandbox.team5.service;
 
-import com.exadel.sandbox.team5.dto.DiscountDTO;
+import com.exadel.sandbox.team5.dto.DiscountDto;
 
-public interface DiscountService extends CRUDService<DiscountDTO> {
+public interface DiscountService extends CRUDService<DiscountDto> {
 }
