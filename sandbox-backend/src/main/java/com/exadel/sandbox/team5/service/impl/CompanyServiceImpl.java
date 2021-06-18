@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Transactional
 @Service
@@ -18,7 +19,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company getById(Long id) {
-        return dao.findById(id).orElse(null);
+        return dao.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional
@@ -18,7 +19,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public Review getById(Long id) {
-        return reviewDAO.findById(id).orElse(null);
+        return reviewDAO.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     @Override

@@ -18,7 +18,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class RestExceptionHandler {
 
     @ExceptionHandler(NoSuchElementException.class)
-    protected ResponseEntity<Object> handleEntityNotFoundEx(NoSuchElementException ex, WebRequest request) {
+    public ResponseEntity<Object> handleEntityNotFoundEx(NoSuchElementException ex, WebRequest request) {
         log.error("Cannot find entity by Id", ex);
         ApiError apiError = new ApiError("Entity Not Found Exception ", ex.getMessage());
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
@@ -33,8 +33,8 @@ public class RestExceptionHandler {
 
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex,
-                                                                      WebRequest request) {
+    public ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex,
+                                                                   WebRequest request) {
         log.error("Method argument type mismatch", ex);
         ApiError apiError = new ApiError();
         apiError.setMessage(String.format("The parameter '%s' of value '%s' could not be converted to type '%s'",
@@ -44,7 +44,7 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
+    public ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
         log.error("Internal Exception", ex);
         ApiError apiError = new ApiError("Internal Exception", ex.getMessage());
         return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);

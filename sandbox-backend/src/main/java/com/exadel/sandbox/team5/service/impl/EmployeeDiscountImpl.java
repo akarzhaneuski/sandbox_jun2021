@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Transactional
 @Service
@@ -18,7 +19,7 @@ public class EmployeeDiscountImpl implements EmployeeDiscountService {
 
     @Override
     public EmployeeDiscount getById(Long id) {
-        return employeeDiscountDAO.findById(id).orElse(null);
+        return employeeDiscountDAO.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
