@@ -1,11 +1,11 @@
 package com.exadel.sandbox.team5;
 
+import com.exadel.sandbox.team5.entity.BookingList;
 import com.exadel.sandbox.team5.entity.Discount;
-import com.exadel.sandbox.team5.entity.Orders;
 import com.exadel.sandbox.team5.entity.Review;
-import com.exadel.sandbox.team5.service.*;
-import com.exadel.sandbox.team5.service.Validation.AddOrder;
-import com.exadel.sandbox.team5.service.Validation.InvalidateOrder;
+import com.exadel.sandbox.team5.service.DiscountService;
+import com.exadel.sandbox.team5.service.ReviewService;
+import com.exadel.sandbox.team5.service.impl.BookingListServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +18,7 @@ public class DiscountRestController {
 
     private final DiscountService service;
     private final ReviewService reviewService;
-    private final AddOrder addOrder;
-    private final InvalidateOrder invalidateOrder;
+    private final BookingListServiceImpl bookingListService;
 
     @GetMapping("/{id}")
     public Discount getDiscount(@PathVariable Long id) {
@@ -53,13 +52,13 @@ public class DiscountRestController {
     }
 
     @PostMapping("/{discountId}/order")
-    public Orders saveOrder(@PathVariable Long discountId) {
-        return addOrder.createOrder(discountId);
+    public BookingList saveOrder(@PathVariable Long discountId) {
+        return bookingListService.createOrder(discountId);
     }
 
     @GetMapping("/{discountId}/{promoCode}/validate")
-    public Orders invalidatePromoCode(@PathVariable Long discountId, @PathVariable String promoCode) {
-        return invalidateOrder.invalidatePromoCode(discountId, promoCode);
+    public BookingList invalidatePromoCode(@PathVariable Long discountId, @PathVariable String promoCode) {
+        return bookingListService.invalidatePromoCode(discountId, promoCode);
     }
 
 

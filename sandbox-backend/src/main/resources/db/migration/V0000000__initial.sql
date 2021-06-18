@@ -80,15 +80,11 @@ CREATE TABLE discount_tag
     FOREIGN KEY (tagId) REFERENCES tag (id)
 );
 
-CREATE TABLE orders
+CREATE TABLE employee_discount
 (
     id         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeId INT NOT NULL,
     discountId INT NOT NULL,
-    employeePromocode VARCHAR (255)  NOT NULL,
-    promoCodeStatus BOOLEAN NOT NULL,
-    promoCodePeriodStart   DATETIME  NOT NULL,
-    promoCodePeriodEnd   DATETIME NOT NULL,
     FOREIGN KEY (employeeId) REFERENCES employee (id),
     FOREIGN KEY (discountId) REFERENCES discount (id)
 );

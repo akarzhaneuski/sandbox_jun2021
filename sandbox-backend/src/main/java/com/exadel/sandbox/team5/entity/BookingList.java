@@ -13,8 +13,8 @@ import java.util.Date;
 
 
 @Entity
-@Table(name = "orders")
-public class Orders extends BaseEntity {
+@Table(name = "bookingList")
+public class BookingList extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "employeeId", referencedColumnName = "id")
