@@ -2,6 +2,7 @@ package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.DiscountDto;
 
+import com.exadel.sandbox.team5.entity.Review;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,5 @@ public class DiscountRestController {
     public List<Review> getReviewsByDiscount(@PathVariable Long discountId) {
         return reviewService.getReviewsByDiscount(discountId);
     }
-
 }
 
