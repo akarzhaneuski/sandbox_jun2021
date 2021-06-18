@@ -76,7 +76,7 @@ echo JAVA_HOME = "%JAVA_HOME%" >&2
 echo Please set the JAVA_HOME variable in your environment to match the >&2
 echo location of your Java installation. >&2
 echo.
-goto error
+goto com.exadel.sandbox.team5.error
 
 @REM ==== END VALIDATION ====
 

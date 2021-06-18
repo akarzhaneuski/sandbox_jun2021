@@ -1,13 +1,10 @@
 package com.exadel.sandbox.team5.service.impl;
 
 import com.exadel.sandbox.team5.dao.DiscountDAO;
-import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.entity.Discount;
-import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -17,30 +14,25 @@ import java.util.List;
 public class DiscountServiceImpl implements DiscountService {
 
     private final DiscountDAO discountDAO;
-    private final MapperConverter mapper;
 
     @Override
-    public DiscountDto getById(Long id) {
-        return discountDAO.findById(id)
-                .map(discount -> mapper.map(discount, DiscountDto.class))
-                .orElse(null);
+    public Discount getById(Long id) {
+        return discountDAO.findById(id).orElseThrow();
     }
 
     @Override
-    public List<DiscountDto> getAll() {
-        List<Discount> discounts = discountDAO.findAll();
-        return mapper.convertList(discounts);
+    public List<Discount> getAll() {
+        return discountDAO.findAll();
     }
 
     @Override
-    public DiscountDto save(DiscountDto discount) {
-        Discount dis = mapper.map(discount, Discount.class);
-        return mapper.map(discountDAO.saveAndFlush(dis), DiscountDto.class);
+    public Discount save(Discount discount) {
+        return discountDAO.saveAndFlush(discount);
     }
 
     @Override
-    public DiscountDto update(DiscountDto discount) {
-        return this.save(discount);
+    public Discount update(Discount discount) {
+        return discountDAO.save(discount);
     }
 
     @Override
