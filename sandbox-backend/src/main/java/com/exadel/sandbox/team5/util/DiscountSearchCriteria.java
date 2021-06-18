@@ -7,12 +7,9 @@ import java.util.List;
 
 @Getter
 public class DiscountSearchCriteria extends SearchCriteria {
-    private List<String> tags;
-    private String selectInput;
-    private String searchText;
-
-    private DiscountSearchCriteria() {
-    }
+    private final List<String> tags;
+    private final String selectInput;
+    private final String searchText;
 
     public DiscountSearchCriteria(PageRequest pageRequest, List<String> tags, String selectInput, String searchText) {
         super(pageRequest);

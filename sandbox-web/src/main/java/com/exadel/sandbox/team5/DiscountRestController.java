@@ -5,6 +5,7 @@ import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.entity.Review;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.ReviewService;
+import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -51,10 +52,9 @@ public class DiscountRestController {
         return reviewService.getReviewsByDiscount(discountId);
     }
 
-    @GetMapping("/search")
-    public Page<Discount> getByCriteria(@RequestBody SearchCriteria searchCriteria){
-        return service.getByFilters(searchCriteria);
+    @PostMapping("/search")
+    public Page<Discount> getByCriteria(@RequestBody DiscountSearchCriteria searchCriteria){
+        return service.getByCriteria(searchCriteria);
     }
-
 }
 
