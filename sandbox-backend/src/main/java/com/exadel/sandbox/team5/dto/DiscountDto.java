@@ -23,4 +23,5 @@ public class DiscountDto extends BaseEntity {
     private String promoCode;
     private Set<Tag> tags;
     private Set<CompanyDto> companies;
+    private Double rate;
 }
