@@ -1,7 +1,6 @@
 package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.DiscountDto;
-
 import com.exadel.sandbox.team5.entity.Review;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.ReviewService;
@@ -53,7 +52,7 @@ public class DiscountRestController {
     }
 
     @PostMapping("/search")
-    public Page<Discount> getByCriteria(@RequestBody DiscountSearchCriteria searchCriteria){
+    public Page<DiscountDto> getByCriteria(@RequestBody DiscountSearchCriteria searchCriteria) {
         return service.getByCriteria(searchCriteria);
     }
 }
