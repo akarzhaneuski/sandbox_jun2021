@@ -7,7 +7,6 @@ import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
