@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Transactional
 @Service
@@ -16,7 +17,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeDAO employeeDAO;
     @Override
     public Employee getById(Long id) {
-        return employeeDAO.findById(id).orElse(null);
+        return employeeDAO.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     @Override

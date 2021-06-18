@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -26,7 +27,7 @@ public class DiscountServiceImpl implements DiscountService {
     public DiscountDto getById(Long id) {
         DiscountDto discountId = discountDAO.findById(id)
                 .map(discount -> mapper.map(discount, DiscountDto.class))
-                .orElse(null);
+                .orElseThrow(NoSuchElementException::new);
         discountId = setAvarageRate(discountId);
         return discountId;
     }
