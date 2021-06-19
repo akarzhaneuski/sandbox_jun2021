@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface BookingListDAO extends JpaRepository<BookingList, Long> {
 
-    List<BookingList> getAllByEmployeeId(Long id);
+    List<BookingList> findAllByEmployeeId(Long id);
 
     BookingList getBookingListByDiscountIdAndEmployeePromocode(Long id, String promoCode);
 
