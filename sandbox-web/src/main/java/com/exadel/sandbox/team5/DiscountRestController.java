@@ -1,8 +1,11 @@
 package com.exadel.sandbox.team5;
 
-import com.exadel.sandbox.team5.entity.Discount;
+import com.exadel.sandbox.team5.dto.DiscountDto;
+import com.exadel.sandbox.team5.entity.BookingList;
+import com.exadel.sandbox.team5.entity.Review;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.ReviewService;
+import com.exadel.sandbox.team5.service.impl.BookingListServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,10 +14,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/discounts")
 @RequiredArgsConstructor
+
 public class DiscountRestController {
 
     private final DiscountService service;
-    private final ReviewService reviewService;
     private final ReviewService reviewService;
     private final BookingListServiceImpl bookingListService;
 
