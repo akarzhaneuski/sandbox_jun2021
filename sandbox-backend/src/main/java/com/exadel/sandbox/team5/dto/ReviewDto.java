@@ -1,6 +1,5 @@
 package com.exadel.sandbox.team5.dto;
 
-import com.exadel.sandbox.team5.entity.BaseEntity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class ReviewDto extends BaseEntity {
+public class ReviewDto extends IdentifierDto {
 
     private Integer rate;
     private String comment;

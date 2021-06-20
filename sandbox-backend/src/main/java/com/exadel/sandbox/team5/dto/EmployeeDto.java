@@ -1,6 +1,5 @@
 package com.exadel.sandbox.team5.dto;
 
-import com.exadel.sandbox.team5.entity.BaseEntity;
 import com.exadel.sandbox.team5.entity.Role;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -11,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class EmployeeDto extends BaseEntity {
+public class EmployeeDto extends IdentifierDto {
 
     private String login;
     private LocationDto location;
