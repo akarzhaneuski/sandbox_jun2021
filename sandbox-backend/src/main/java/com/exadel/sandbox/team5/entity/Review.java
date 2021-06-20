@@ -18,7 +18,7 @@ import java.util.Date;
 public class Review extends BaseEntity {
 
     @Column(name = "rate")
-    private Long rate;
+    private int rate;
 
     @Column(name = "comment")
     private String comment;
