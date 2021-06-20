@@ -30,6 +30,7 @@ public class BookingListServiceImpl implements BookingListService {
     private final DiscountService discountService;
     private final MapperConverter mapper;
     private final int maxOrderSize = 1;
+    private final int amountDiscountDays = 7;
 
     @Override
     public BookingList getById(Long id) {
@@ -83,7 +84,7 @@ public class BookingListServiceImpl implements BookingListService {
 
                 Date currentDate = new Date();
                 LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-                localDateTime = localDateTime.plusDays(1);
+                localDateTime = localDateTime.plusDays(amountDiscountDays);
                 Date currentDatePlusOneDay = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
                 bookingList.setPromoCodePeriodStart(currentDate);
                 bookingList.setPromoCodePeriodEnd(currentDatePlusOneDay);
