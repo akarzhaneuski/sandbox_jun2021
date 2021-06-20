@@ -20,6 +20,9 @@ public class Location extends AuditableEntity {
     @Column(name = "city")
     private String city;
 
+    @Column(name = "country")
+    private String country;
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(

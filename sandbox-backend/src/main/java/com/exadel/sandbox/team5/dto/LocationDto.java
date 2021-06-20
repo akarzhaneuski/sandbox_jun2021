@@ -13,4 +13,5 @@ import lombok.Setter;
 public class LocationDto extends BaseEntity {
 
     private String city;
+    private String country;
 }

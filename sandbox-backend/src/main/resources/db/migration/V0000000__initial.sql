@@ -12,7 +12,8 @@ CREATE TABLE location
     id         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     city       VARCHAR(100),
     modified   DATETIME,
-    modifiedBy VARCHAR(50)
+    modifiedBy VARCHAR(50),
+    country    VARCHAR(100)
 );
 
 CREATE TABLE employee
