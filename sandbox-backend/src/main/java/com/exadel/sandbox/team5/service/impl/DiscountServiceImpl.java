@@ -2,20 +2,24 @@ package com.exadel.sandbox.team5.service.impl;
 
 import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.ReviewDAO;
+import com.exadel.sandbox.team5.dao.TagDAO;
 import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.entity.Discount;
+import com.exadel.sandbox.team5.entity.Tag;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -25,6 +29,7 @@ public class DiscountServiceImpl implements DiscountService {
 
     private final DiscountDAO discountDAO;
     private final MapperConverter mapper;
+    private final TagDAO tagDAO;
     private final ReviewDAO reviewDAO;
 
     @Override
@@ -37,7 +42,7 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     private DiscountDto setAvarageRate(DiscountDto discountId) {
-        if(discountId == null){
+        if (discountId == null) {
             return null;
         }
         discountId.setRate(reviewDAO.findRate(discountId.getId()));
@@ -48,7 +53,7 @@ public class DiscountServiceImpl implements DiscountService {
     public List<DiscountDto> getAll() {
         List<DiscountDto> resultWithoutRage = mapper.mapAll(discountDAO.findAll(), DiscountDto.class);
         return
-        resultWithoutRage.stream().map(this::setAvarageRate).collect(Collectors.toList());
+                resultWithoutRage.stream().map(this::setAvarageRate).collect(Collectors.toList());
     }
 
     @Override
@@ -68,15 +73,28 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public Page<Discount> getByCriteria(DiscountSearchCriteria searchCriteria) {
+    public Page<DiscountDto> getByCriteria(DiscountSearchCriteria searchCriteria) {
+        List<Discount> result = new ArrayList<>();
+        long rate;
         PageRequest pageRequest = searchCriteria.getPageRequest();
-        List<String> tags = searchCriteria.getTags();
+        Set<Tag> tags = tagDAO.getTagsByNameIn(searchCriteria.getTags());
         String searchText = searchCriteria.getSearchText();
-        String select = searchCriteria.getSelectInput();
-        tags.add(searchText);
-        tags.add(select);
-        Sort sort = pageRequest.getSort().and(Sort.by((String[]) tags.toArray()));
-        pageRequest = PageRequest.of(pageRequest.getPageNumber(), pageRequest.getPageSize(), sort);
-        return discountDAO.findAll(pageRequest);
+        String sortBy = searchCriteria.getSortBy();
+        List<Discount> discounts = discountDAO.getByNameContaining(searchText);
+        discounts = discounts.stream().filter(x -> x.getTags().containsAll(tags)).collect(Collectors.toList());
+        if (sortBy.equals("Top rated")) {
+            rate = 5;
+            List<Long> discountsId = reviewDAO.getDiscountsIdByRate(rate);
+            for (Discount d : discounts) {
+                for (long id : discountsId) {
+                    if (d.getId() == id) {
+                        result.add(d);
+                        break;
+                    }
+                }
+            }
+        }
+        List<DiscountDto> discountDtos = mapper.mapAll(result, DiscountDto.class);
+        return new PageImpl<>(discountDtos, pageRequest, discountDtos.size());
     }
 }

@@ -1,20 +1,23 @@
 package com.exadel.sandbox.team5.util;
 
 import lombok.Getter;
-import org.springframework.data.domain.PageRequest;
-
-import java.util.List;
+import java.util.Set;
 
 @Getter
 public class DiscountSearchCriteria extends SearchCriteria {
-    private final List<String> tags;
-    private final String selectInput;
-    private final String searchText;
+    private Set<String> tags;
+    private String sortBy;
+    private String searchText;
 
-    public DiscountSearchCriteria(PageRequest pageRequest, List<String> tags, String selectInput, String searchText) {
-        super(pageRequest);
+    private DiscountSearchCriteria() {
+        super();
+    }
+
+    public DiscountSearchCriteria(int pageNum, int numPerPage, String direction, String properties, Set<String> tags,
+                                  String sortBy, String searchText) {
+        super(pageNum, numPerPage, direction, properties);
         this.tags = tags;
-        this.selectInput = selectInput;
+        this.sortBy = sortBy;
         this.searchText = searchText;
     }
 }

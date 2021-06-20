@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface DiscountDAO extends JpaRepository<Discount, Long> {
-
-    List<Discount> getByNameContainingAndTagsIn(String name, List<String> tags);
+    List<Discount> getByNameContaining(String name);
 }

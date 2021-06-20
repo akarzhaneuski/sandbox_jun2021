@@ -2,10 +2,7 @@ package com.exadel.sandbox.team5.dto;
 
 import com.exadel.sandbox.team5.entity.BaseEntity;
 import com.exadel.sandbox.team5.entity.Tag;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 import java.util.Set;
