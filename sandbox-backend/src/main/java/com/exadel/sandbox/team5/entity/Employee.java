@@ -24,6 +24,7 @@ public class Employee extends AuditableEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(name = "locationId")
-    private Long locationId;
+    @ManyToOne
+    @JoinColumn(name = "locationId")
+    private Location locationId;
 }
