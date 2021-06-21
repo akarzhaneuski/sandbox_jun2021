@@ -25,26 +25,23 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public DiscountDto getById(Long id) {
-        DiscountDto discountId = discountDAO.findById(id)
+        var discountDto = discountDAO.findById(id)
                 .map(discount -> mapper.map(discount, DiscountDto.class))
                 .orElseThrow(NoSuchElementException::new);
-        discountId = setAvarageRate(discountId);
-        return discountId;
+        setAverageRate(discountDto);
+        return discountDto;
     }
 
-    private DiscountDto setAvarageRate(DiscountDto discountId) {
-        if(discountId == null){
-            return null;
-        }
-        discountId.setRate(reviewDAO.findRate(discountId.getId()));
-        return discountId;
+    private void setAverageRate(DiscountDto discountDto) {
+        discountDto.setRate(reviewDAO.findRate(discountDto.getId()));
     }
 
     @Override
     public List<DiscountDto> getAll() {
         List<DiscountDto> resultWithoutRage = mapper.mapAll(discountDAO.findAll(), DiscountDto.class);
-        return
-        resultWithoutRage.stream().map(this::setAvarageRate).collect(Collectors.toList());
+        return resultWithoutRage.stream()
+                .peek(this::setAverageRate)
+                .collect(Collectors.toList());
     }
 
     @Override
