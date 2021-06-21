@@ -1,6 +1,6 @@
 package com.exadel.sandbox.team5;
 
-import com.exadel.sandbox.team5.entity.Review;
+import com.exadel.sandbox.team5.dto.ReviewDto;
 import com.exadel.sandbox.team5.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,22 +14,22 @@ public class ReviewRestController {
     private final ReviewService service;
 
     @GetMapping("/{id}")
-    public Review getById(@PathVariable Long id) {
+    public ReviewDto getById(@PathVariable Long id) {
         return service.getById(id);
     }
 
     @GetMapping("/all")
-    public List getAll() {
+    public List<ReviewDto> getAll() {
         return service.getAll();
     }
 
     @PostMapping
-    public Review save(@RequestBody Review entity) {
+    public ReviewDto save(@RequestBody ReviewDto entity) {
         return service.save(entity);
     }
 
     @PutMapping("/{id}")
-    public Review update(@PathVariable Long id, Review entity) {
+    public ReviewDto update(@PathVariable Long id, ReviewDto entity) {
         entity.setId(id);
         return service.update(entity);
     }

@@ -1,6 +1,5 @@
 package com.exadel.sandbox.team5.dto;
 
-import com.exadel.sandbox.team5.entity.BaseEntity;
 import com.exadel.sandbox.team5.entity.Tag;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,7 +13,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class DiscountDto extends BaseEntity {
+public class DiscountDto extends IdentifierDto {
 
     private String name;
     private String description;
