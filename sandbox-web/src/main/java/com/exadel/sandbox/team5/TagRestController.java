@@ -16,12 +16,12 @@ public class TagRestController {
     private final TagService tagService;
 
     @GetMapping("/{id}")
-    public Tag getTag(@PathVariable Long id){
+    public Tag getTag(@PathVariable Long id) {
         return tagService.getById(id);
     }
 
     @GetMapping()
-    public List<Tag> getAll(){
+    public List<Tag> getAll() {
         return tagService.getAll();
     }
 
