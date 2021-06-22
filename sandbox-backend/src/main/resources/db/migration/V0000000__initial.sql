@@ -7,12 +7,20 @@ CREATE TABLE IF NOT EXISTS `DEMO_TABLE`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = UTF8;
 
+CREATE TABLE country
+(
+    id   INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100)
+);
+
 CREATE TABLE location
 (
     id         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    countryId  INT,
     city       VARCHAR(100),
     modified   DATETIME,
-    modifiedBy VARCHAR(50)
+    modifiedBy VARCHAR(50),
+    foreign key (countryId) references country (id)
 );
 
 CREATE TABLE employee
@@ -91,10 +99,10 @@ CREATE TABLE employee_discount
 
 CREATE TABLE review
 (
-    id          INT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    rate        INT      NOT NULL,
-    comment     VARCHAR(500),
-    date        DATETIME NOT NULL,
+    id         INT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    rate       INT      NOT NULL,
+    comment    VARCHAR(500),
+    date       DATETIME NOT NULL,
     discountId INT      NOT NULL,
     employeeId INT      NOT NULL,
     FOREIGN KEY (discountId) REFERENCES discount (id),
