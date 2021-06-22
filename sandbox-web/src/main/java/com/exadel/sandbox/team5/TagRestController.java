@@ -19,7 +19,7 @@ public class TagRestController {
         return tagService.getById(id);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/")
     public List<Tag> getAll(){
         return tagService.getAll();
     }
