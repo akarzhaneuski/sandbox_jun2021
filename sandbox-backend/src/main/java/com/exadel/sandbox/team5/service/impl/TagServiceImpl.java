@@ -10,13 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TagServiceImpl implements TagService {
 
     private final TagDAO tagDAO;
 
     @Override
     public Tag getById(Long id) {
-        return tagDAO.getById(id);
+        return tagDAO.findById(id).orElse(null);
     }
 
     @Override
