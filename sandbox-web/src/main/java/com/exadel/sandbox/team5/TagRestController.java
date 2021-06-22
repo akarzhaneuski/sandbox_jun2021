@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team5;
 
+import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.entity.Tag;
 import com.exadel.sandbox.team5.service.TagService;
 import lombok.RequiredArgsConstructor;
@@ -22,5 +23,15 @@ public class TagRestController {
     @GetMapping()
     public List<Tag> getAll(){
         return tagService.getAll();
+    }
+
+    @PostMapping
+    public Tag save(@RequestBody Tag entity) {
+        return tagService.save(entity);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        tagService.delete(id);
     }
 }
