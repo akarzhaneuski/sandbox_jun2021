@@ -1,8 +1,8 @@
 package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.DiscountDto;
-import com.exadel.sandbox.team5.entity.Order;
 import com.exadel.sandbox.team5.dto.ReviewDto;
+import com.exadel.sandbox.team5.entity.Order;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.ReviewService;
 import com.exadel.sandbox.team5.service.impl.OrderServiceImpl;
@@ -52,14 +52,16 @@ public class DiscountRestController {
         return reviewService.getReviewsByDiscount(discountId);
     }
 
-    @PostMapping("/{discountId}/order")
+    @PostMapping("/{discountId}/orders")
     public Order saveOrder(@PathVariable Long discountId) {
-        return orderService.createOrder(discountId);
+        int maxOrderSize = 1;
+        long amountDiscountDays = 7;
+        return orderService.createOrder(discountId, maxOrderSize, amountDiscountDays);
     }
 
-    @GetMapping("/{discountId}/{promoCode}/validate")
+    @GetMapping("/{discountId}/codes/{promoCode}/validate")
     public Order invalidatePromoCode(@PathVariable Long discountId, @PathVariable String promoCode) {
-        return orderService.invalidatePromoCode(discountId, promoCode);
+                return orderService.invalidatePromoCode(discountId, promoCode);
     }
 
 

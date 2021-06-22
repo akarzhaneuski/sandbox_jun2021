@@ -29,8 +29,6 @@ public class OrderServiceImpl implements OrderService {
     private final EmployeeService employeeService;
     private final DiscountService discountService;
     private final MapperConverter mapper;
-    private final int maxOrderSize = 1;
-    private final int amountDiscountDays = 7;
 
     @Override
     public Order getById(Long id) {
@@ -60,7 +58,7 @@ public class OrderServiceImpl implements OrderService {
 
     public Order invalidatePromoCode(Long discountId, String promoCode) {
 
-        Order selectedOrder = orderDAO.getBookingListByDiscountIdAndEmployeePromocode(discountId, promoCode);
+        Order selectedOrder = orderDAO.getOrderByDiscountIdAndEmployeePromocode(discountId, promoCode);
 
         if (selectedOrder != null && selectedOrder.getPromoCodePeriodEnd().getTime() > new Date().getTime()) {
             orderDAO.setPromoCodeStatus(false, promoCode);
@@ -70,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    public Order createOrder(Long discountId) {
+    public Order createOrder(Long discountId, int maxOrderSize, long amountDiscountDays) {
         Employee employee = employeeService.getById(1L);//TODO should be fix after security merge
 
         if (discountService.getById(discountId) != null) {

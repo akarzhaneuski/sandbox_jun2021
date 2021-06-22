@@ -12,7 +12,7 @@ public interface OrderDAO extends JpaRepository<Order, Long> {
 
     List<Order> findAllByEmployeeId(Long id);
 
-    Order getBookingListByDiscountIdAndEmployeePromocode(Long id, String promoCode);
+    Order getOrderByDiscountIdAndEmployeePromocode(Long id, String promoCode);
 
     @Modifying
     @Query(value = "update `order` o set o.promoCodeStatus = :status where o.employeePromocode = :promoCode", nativeQuery = true)
