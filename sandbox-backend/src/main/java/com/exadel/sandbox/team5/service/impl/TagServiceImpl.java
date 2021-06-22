@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -17,7 +19,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag getById(Long id) {
-        return tagDAO.findById(id).orElse(null);
+        return tagDAO.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
