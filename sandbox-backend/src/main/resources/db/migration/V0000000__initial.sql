@@ -7,20 +7,14 @@ CREATE TABLE IF NOT EXISTS `DEMO_TABLE`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = UTF8;
 
-CREATE TABLE country
-(
-    id   INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100)
-);
+
 
 CREATE TABLE location
 (
     id         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    countryId  INT,
     city       VARCHAR(100),
     modified   DATETIME,
-    modifiedBy VARCHAR(50),
-    foreign key (countryId) references country (id)
+    modifiedBy VARCHAR(50)
 );
 
 CREATE TABLE employee
