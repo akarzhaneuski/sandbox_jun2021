@@ -8,5 +8,4 @@ import java.util.Set;
 
 @Repository
 public interface TagDAO extends JpaRepository<Tag, Long> {
-    Set<Tag> getTagsByNameIn(Set<String> tags);
 }

@@ -1,32 +1,32 @@
 package com.exadel.sandbox.team5.util;
 
+import com.exadel.sandbox.team5.dto.CriteriaDto;
 import lombok.Getter;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public class SearchCriteria {
     private int pageNum;
     private int itemsPerPage;
-    private String direction;
-    private String properties;
+    private List<CriteriaDto> orders;
 
     protected SearchCriteria() {
     }
 
-    public SearchCriteria(int pageNum, int itemsPerPage, String direction, String properties) {
+    public SearchCriteria(int pageNum, int itemsPerPage, List<CriteriaDto> orders) {
         this.pageNum = pageNum;
         this.itemsPerPage = itemsPerPage;
-        this.direction = direction;
-        this.properties = properties;
+        this.orders = orders;
     }
 
     public PageRequest getPageRequest() {
-        Sort.Direction d;
-        if (direction.equals("ASC")) d = Sort.Direction.ASC;
-        else if (direction.equals("DESC")) d = Sort.Direction.DESC;
-        else d = Sort.Direction.fromString(direction);
-        return PageRequest.of(pageNum, itemsPerPage, d, properties);
+        List<Sort.Order> result = new ArrayList<>();
+        orders.forEach(x -> result.add(new Sort.Order(x.getDirection(), x.getSortBy())));
+        return PageRequest.of(pageNum, itemsPerPage, Sort.by(result));
     }
 }
 
