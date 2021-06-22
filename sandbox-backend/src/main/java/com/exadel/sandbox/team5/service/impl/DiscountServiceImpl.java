@@ -33,11 +33,11 @@ public class DiscountServiceImpl implements DiscountService {
         DiscountDto discountId = discountDAO.findById(id)
                 .map(discount -> mapper.map(discount, DiscountDto.class))
                 .orElseThrow(NoSuchElementException::new);
-        discountId = setAvarageRate(discountId);
+        discountId = setAverageRate(discountId);
         return discountId;
     }
 
-    private DiscountDto setAvarageRate(DiscountDto discountId) {
+    private DiscountDto setAverageRate(DiscountDto discountId) {
         if (discountId == null) {
             return null;
         }
@@ -49,7 +49,7 @@ public class DiscountServiceImpl implements DiscountService {
     public List<DiscountDto> getAll() {
         List<DiscountDto> resultWithoutRage = mapper.mapAll(discountDAO.findAll(), DiscountDto.class);
         return
-                resultWithoutRage.stream().map(this::setAvarageRate).collect(Collectors.toList());
+                resultWithoutRage.stream().map(this::setAverageRate).collect(Collectors.toList());
     }
 
     @Override
@@ -70,16 +70,20 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public Page<DiscountDto> getByCriteria(DiscountSearchCriteria searchCriteria) {
-        String searchText = "%" + searchCriteria.getSearchText() + "%";
+        String searchText = getWildcard(searchCriteria.getSearchText());
         List<Discount> result;
-        if (searchCriteria.getTags() == null) {
+        if (searchCriteria.getTags() == null || searchCriteria.getTags().isEmpty()) {
             result = discountDAO.getByCriteria(searchText, searchCriteria.getRate());
         } else {
             result = discountDAO.getByCriteriaWithTags(searchText,
                     searchCriteria.getTags(), searchCriteria.getRate());
         }
-        List<DiscountDto> discountDtos = mapper.mapAll(result, DiscountDto.class);
-        return new PageImpl<>(discountDtos, searchCriteria.getPageRequest(), discountDtos.size());
+        List<DiscountDto> discountDTOs = mapper.mapAll(result, DiscountDto.class);
+        return new PageImpl<>(discountDTOs, searchCriteria.getPageRequest(), discountDTOs.size());
+    }
+
+    private String getWildcard(String text) {
+        return "%"+text+"%";
     }
 }
 
