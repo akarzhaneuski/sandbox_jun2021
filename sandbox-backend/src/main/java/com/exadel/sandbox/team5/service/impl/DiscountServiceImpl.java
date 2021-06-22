@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team5.service.impl;
 
+import com.exadel.sandbox.team5.barcodes.QRCodeGenerator;
 import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.ReviewDAO;
 import com.exadel.sandbox.team5.dto.DiscountDto;
@@ -7,9 +8,12 @@ import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -17,6 +21,7 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class DiscountServiceImpl implements DiscountService {
 
     private final DiscountDAO discountDAO;
@@ -58,5 +63,16 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public void delete(Long id) {
         discountDAO.deleteById(id);
+    }
+
+    public byte[] generateQRCode() {
+        try (var baos = new ByteArrayOutputStream()) {
+            var image = QRCodeGenerator.generateQRCodeImage("Exadel employee. Special discount");
+            ImageIO.write(image, "png", baos);
+            return baos.toByteArray();
+        } catch (Exception e) {
+            log.error("There was an error during barcode generation", e);
+            throw new RuntimeException(e); //not sure if it's correct
+        }
     }
 }
