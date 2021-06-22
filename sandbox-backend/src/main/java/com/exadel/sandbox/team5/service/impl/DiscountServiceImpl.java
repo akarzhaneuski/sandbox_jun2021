@@ -5,21 +5,17 @@ import com.exadel.sandbox.team5.dao.ReviewDAO;
 import com.exadel.sandbox.team5.dao.TagDAO;
 import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.entity.Discount;
-import com.exadel.sandbox.team5.entity.Tag;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -74,27 +70,16 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public Page<DiscountDto> getByCriteria(DiscountSearchCriteria searchCriteria) {
-        List<Discount> result = new ArrayList<>();
-        long rate;
-        PageRequest pageRequest = searchCriteria.getPageRequest();
-        Set<Tag> tags = tagDAO.getTagsByNameIn(searchCriteria.getTags());
-        String searchText = searchCriteria.getSearchText();
-        String sortBy = searchCriteria.getSortBy();
-        List<Discount> discounts = discountDAO.getByNameContaining(searchText);
-        discounts = discounts.stream().filter(x -> x.getTags().containsAll(tags)).collect(Collectors.toList());
-        if (sortBy.equals("Top rated")) {
-            rate = 5;
-            List<Long> discountsId = reviewDAO.getDiscountsIdByRate(rate);
-            for (Discount d : discounts) {
-                for (long id : discountsId) {
-                    if (d.getId() == id) {
-                        result.add(d);
-                        break;
-                    }
-                }
-            }
+        String searchText = "%" + searchCriteria.getSearchText() + "%";
+        List<Discount> result;
+        if (searchCriteria.getTags() == null) {
+            result = discountDAO.getByCriteria(searchText, searchCriteria.getRate());
+        } else {
+            result = discountDAO.getByCriteriaWithTags(searchText,
+                    searchCriteria.getTags(), searchCriteria.getRate());
         }
         List<DiscountDto> discountDtos = mapper.mapAll(result, DiscountDto.class);
-        return new PageImpl<>(discountDtos, pageRequest, discountDtos.size());
+        return new PageImpl<>(discountDtos, searchCriteria.getPageRequest(), discountDtos.size());
     }
 }
+
