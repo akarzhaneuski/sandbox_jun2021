@@ -17,6 +17,7 @@ public class DiscountDto extends IdentifierDto {
 
     private String name;
     private String description;
+    private Date periodStart;
     private Date periodEnd;
     private int quantity;
     private String promoCode;
