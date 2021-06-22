@@ -83,7 +83,7 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     private String getWildcard(String text) {
-        return "%"+text+"%";
+        return "%" + text + "%";
     }
 }
 
