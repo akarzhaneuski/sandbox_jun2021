@@ -2,11 +2,11 @@ package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.ReviewDto;
-import com.exadel.sandbox.team5.entity.Order;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.ReviewService;
-import com.exadel.sandbox.team5.service.impl.OrderServiceImpl;
+import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +19,6 @@ public class DiscountRestController {
 
     private final DiscountService service;
     private final ReviewService reviewService;
-    private final OrderServiceImpl orderService;
 
     @GetMapping("/{id}")
     public DiscountDto getDiscount(@PathVariable Long id) {
@@ -52,18 +51,9 @@ public class DiscountRestController {
         return reviewService.getReviewsByDiscount(discountId);
     }
 
-    @PostMapping("/{discountId}/orders")
-    public Order saveOrder(@PathVariable Long discountId) {
-        int maxOrderSize = 1;
-        long amountDiscountDays = 7;
-        return orderService.createOrder(discountId, maxOrderSize, amountDiscountDays);
+    @PostMapping("/search")
+    public Page<DiscountDto> getByCriteria(@RequestBody DiscountSearchCriteria searchCriteria) {
+        return service.getByCriteria(searchCriteria);
     }
-
-    @GetMapping("/{discountId}/codes/{promoCode}/validate")
-    public Order invalidatePromoCode(@PathVariable Long discountId, @PathVariable String promoCode) {
-                return orderService.invalidatePromoCode(discountId, promoCode);
-    }
-
-
 }
 
