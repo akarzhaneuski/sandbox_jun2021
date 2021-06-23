@@ -4,6 +4,7 @@ package com.exadel.sandbox.team5.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +17,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "discount")
-public class Discount extends AuditableEntity {
+public class Discount extends AuditableEntity implements Serializable {
 
 
     @ManyToMany

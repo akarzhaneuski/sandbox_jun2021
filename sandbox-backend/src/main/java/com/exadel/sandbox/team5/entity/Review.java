@@ -1,7 +1,6 @@
 package com.exadel.sandbox.team5.entity;
 
 import lombok.*;
-import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -27,10 +26,10 @@ public class Review extends BaseEntity {
     private Date date;
 
     @ManyToOne
-    @JoinColumn(name = "discountId")
+    @JoinColumn(name = "discountId", referencedColumnName = "id")
     private Discount discount;
 
     @ManyToOne
-    @JoinColumn(name = "employeeId")
+    @JoinColumn(name = "employeeId", referencedColumnName = "id")
     private Employee employee;
 }
