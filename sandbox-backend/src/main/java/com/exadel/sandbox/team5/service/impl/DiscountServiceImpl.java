@@ -84,8 +84,15 @@ public class DiscountServiceImpl implements DiscountService {
         Map<Long, Double> rateList = reviewDAO.getRateByDiscountId(discountIds).stream()
                 .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
         List<DiscountDto> discountDTOs = mapper.mapAll(result, DiscountDto.class);
-        discountDTOs = QueryUtils.setRate(rateList, discountDTOs);
+        discountDTOs = setRate(rateList, discountDTOs);
         return new PageImpl<>(discountDTOs, searchCriteria.getPageRequest(), discountDTOs.size());
+    }
+
+    public static List<DiscountDto> setRate(Map<Long, Double> rtMap, List<DiscountDto> dtoList) {
+        for (DiscountDto d : dtoList) {
+            d.setRate(rtMap.get(d.getId()));
+        }
+        return dtoList;
     }
 }
 
