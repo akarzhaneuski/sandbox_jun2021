@@ -16,7 +16,6 @@ import javax.transaction.Transactional;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -44,9 +43,8 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public List<DiscountDto> getAll() {
         List<DiscountDto> resultWithoutRage = mapper.mapAll(discountDAO.findAll(), DiscountDto.class);
-        return resultWithoutRage.stream()
-                .peek(this::setAverageRate)
-                .collect(Collectors.toList());
+        resultWithoutRage.forEach(this::setAverageRate);
+        return resultWithoutRage;
     }
 
     @Override
@@ -65,6 +63,7 @@ public class DiscountServiceImpl implements DiscountService {
         discountDAO.deleteById(id);
     }
 
+    @Override
     public byte[] generateQRCode() {
         try (var baos = new ByteArrayOutputStream()) {
             var image = QRCodeGenerator.generateQRCodeImage("Exadel employee. Special discount");
@@ -72,7 +71,7 @@ public class DiscountServiceImpl implements DiscountService {
             return baos.toByteArray();
         } catch (Exception e) {
             log.error("There was an error during barcode generation", e);
-            throw new RuntimeException(e); //not sure if it's correct
+            throw new NoSuchElementException(e);
         }
     }
 }
