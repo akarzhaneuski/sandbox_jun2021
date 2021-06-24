@@ -21,7 +21,7 @@ public class Location extends AuditableEntity {
     private String city;
 
     @ManyToOne
-    @JoinColumn(name = "countryId")
+    @JoinColumn(name = "countryId", referencedColumnName = "id")
     private Country country;
 
     @JsonIgnore
