@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team5.service.impl;
 
 import com.exadel.sandbox.team5.dao.OrderDAO;
+import com.exadel.sandbox.team5.dto.OrderDto;
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.entity.Employee;
 import com.exadel.sandbox.team5.entity.Order;
@@ -31,23 +32,23 @@ public class OrderServiceImpl implements OrderService {
     private final MapperConverter mapper;
 
     @Override
-    public Order getById(Long id) {
-        return orderDAO.findById(id).orElseThrow(NoSuchElementException::new);
+    public OrderDto getById(Long id) {
+        return mapper.map(orderDAO.findById(id).orElseThrow(NoSuchElementException::new), OrderDto.class);
     }
 
     @Override
-    public List<Order> getAll() {
-        return orderDAO.findAll();
+    public List<OrderDto> getAll() {
+        return mapper.mapAll(orderDAO.findAll(),OrderDto.class);
     }
 
     @Override
-    public Order save(Order order) {
-        return orderDAO.save(order);
+    public OrderDto save(OrderDto order) {
+        return mapper.map(orderDAO.saveAndFlush(mapper.map((order),Order.class)),OrderDto.class);
     }
 
     @Override
-    public Order update(Order order) {
-        return orderDAO.save(order);
+    public OrderDto update(OrderDto order) {
+        return this.save(order);
     }
 
     @Override
