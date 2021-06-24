@@ -92,7 +92,8 @@ public class DiscountServiceImpl implements DiscountService {
 
     public static List<DiscountDto> setRate(Map<Long, Double> rtMap, List<DiscountDto> dtoList) {
         for (DiscountDto d : dtoList) {
-            d.setRate(rtMap.get(d.getId()));
+            if (rtMap.get(d.getId()) == null) d.setRate(0.0);
+            else d.setRate(rtMap.get(d.getId()));
         }
         return dtoList;
     }
