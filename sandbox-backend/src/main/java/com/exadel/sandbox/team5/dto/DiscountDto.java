@@ -1,7 +1,11 @@
 package com.exadel.sandbox.team5.dto;
 
+import com.exadel.sandbox.team5.entity.Location;
 import com.exadel.sandbox.team5.entity.Tag;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.Set;
@@ -19,6 +23,6 @@ public class DiscountDto extends IdentifierDto {
     private int quantity;
     private String promoCode;
     private Set<Tag> tags;
-    private Set<CompanyDto> companies;
+    private CompanyDto company;
     private Double rate;
 }

@@ -49,9 +49,11 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public List<DiscountDto> getAll() {
-        List<DiscountDto> resultWithoutRage = mapper.mapAll(discountDAO.findAll(), DiscountDto.class);
-        return
-                resultWithoutRage.stream().map(this::setAverageRate).collect(Collectors.toList());
+        List<Discount> discounts = discountDAO.findAll();
+        Set<Long> discountIds = discounts.stream().map(Discount::getId).collect(Collectors.toSet());
+        Map<Long, Double> rateList = reviewDAO.getRateByDiscountId(discountIds).stream()
+                .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+        return setRate(rateList, mapper.mapAll(discounts, DiscountDto.class));
     }
 
     @Override
