@@ -10,5 +10,9 @@ public interface OrderService extends CRUDService<OrderDto> {
 
     OrderDto createOrder(OrderCriteria criteria);
 
-    List<List<OrderDto>> getOrdersByIds(List<Long> discountIds);
+    List<List<OrderDto>> getOrdersByDiscountIds(List<Long> discountIds);
+
+    List<List<OrderDto>> getOrdersByCompanyIds(List<Long> companyIds);
+
+    List<OrderDto> getOrdersByTags(List<String> tags);
 }

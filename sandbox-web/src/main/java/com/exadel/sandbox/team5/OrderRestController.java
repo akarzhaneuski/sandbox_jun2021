@@ -53,8 +53,18 @@ public class OrderRestController {
         return orderService.createOrder(criteria);
     }
 
-    @PutMapping("/all/byIds")
-    public List<List<OrderDto>> getAllByIds(@RequestBody List<Long> discountIds) {
-        return orderService.getOrdersByIds(discountIds);
+    @PutMapping("/all/byDiscountIds")
+    public List<List<OrderDto>> getAllByDiscountIds(@RequestBody List<Long> discountIds) {
+        return orderService.getOrdersByDiscountIds(discountIds);
+    }
+
+    @PutMapping("/all/byCompanyId")
+    public List<List<OrderDto>> getAllByCompanyIds(@RequestBody List<Long> companyIds) {
+        return orderService.getOrdersByCompanyIds(companyIds);
+    }
+
+    @PutMapping("/all/byTags")
+    public List<OrderDto> getAllByTags(@RequestBody List<String> tags) {
+        return orderService.getOrdersByTags(tags);
     }
 }
