@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public interface ImageService {
 
-    ImageDto getImage(Long id) throws IOException;
+    byte[] getImage(Long id);
 
-    ImageDto save(ImageDto image, String fileName) throws IOException;
+    Long save(ImageDto image);
 }
