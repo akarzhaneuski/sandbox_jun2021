@@ -15,7 +15,7 @@ public class OrderDto extends IdentifierDto {
 
     private EmployeeDto employee;
     private DiscountDto discount;
-    private String emloyeePromocode;
+    private String employeePromocode;
     private boolean promoCodeStatus;
     private Date promoCodePeriodStart;
     private Date promoCodePeriodEnd;

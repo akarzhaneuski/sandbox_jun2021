@@ -10,6 +10,7 @@ import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.EmployeeService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.ValidatePromoCodeGenerator;
+import com.exadel.sandbox.team5.util.OrderCriteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,39 +57,39 @@ public class OrderServiceImpl implements OrderService {
         orderDAO.deleteById(id);
     }
 
-
-    public Order invalidatePromoCode(Long discountId, String promoCode) {
+    @Override
+    public OrderDto invalidatePromoCode(Long discountId, String promoCode) {
 
         Order selectedOrder = orderDAO.getOrderByDiscountIdAndEmployeePromocode(discountId, promoCode);
 
         if (selectedOrder != null && selectedOrder.getPromoCodePeriodEnd().getTime() > new Date().getTime()) {
             orderDAO.setPromoCodeStatus(false, promoCode);
-            return selectedOrder;
+            return mapper.map(selectedOrder, OrderDto.class);
         }
         throw new NoSuchElementException();
     }
 
+    @Override
+    public OrderDto createOrder(OrderCriteria criteria) {
 
-    public Order createOrder(Long discountId, int maxOrderSize, long amountDiscountDays) {
         Employee employee = employeeService.getById(1L);//TODO should be fix after security merge
 
-        if (discountService.getById(discountId) != null) {
+        if (discountService.getById(criteria.getDiscountId()) != null) {
 
-            if (activeOrdersByTime(activeOrdersByStatus(employee)).size() < maxOrderSize) {
+            if (activeOrdersByTime(activeOrdersByStatus(employee)).size() < criteria.getMaxOrderSize()) {
                 Order order = new Order();
-                order.setDiscount(mapper.map(discountService.getById(discountId), Discount.class));
+                order.setDiscount(mapper.map(discountService.getById(criteria.getDiscountId()), Discount.class));
                 order.setEmployee(employeeService.getById(employee.getId()));
                 order.setEmployeePromocode(new ValidatePromoCodeGenerator().generateUUID());
                 order.setPromoCodeStatus(true);
-
                 Date currentDate = new Date();
                 LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-                localDateTime = localDateTime.plusDays(amountDiscountDays);
+                localDateTime = localDateTime.plusDays(criteria.getAmountDiscountDays());
                 Date currentDatePlusOneDay = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
                 order.setPromoCodePeriodStart(currentDate);
                 order.setPromoCodePeriodEnd(currentDatePlusOneDay);
 
-                return orderDAO.save(order);
+                return mapper.map(orderDAO.save(order), OrderDto.class);
             }
 
         }
@@ -101,5 +102,11 @@ public class OrderServiceImpl implements OrderService {
 
     private List<Order> activeOrdersByTime(List<Order> activeOrders) {
         return activeOrders.stream().filter(e -> System.currentTimeMillis() < e.getPromoCodePeriodEnd().getTime()).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<List<OrderDto>> getOrdersByIds(List<Long> discountIds) {
+        List<List<Order>> orders = discountIds.stream().sorted().map(orderDAO::findAllByDiscountId).collect(Collectors.toList());
+        return orders.stream().map(x->mapper.mapAll(x,OrderDto.class)).collect(Collectors.toList());
     }
 }

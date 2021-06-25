@@ -12,6 +12,8 @@ public interface OrderDAO extends JpaRepository<Order, Long> {
 
     List<Order> findAllByEmployeeId(Long id);
 
+    List<Order> findAllByDiscountId(Long id);
+
     Order getOrderByDiscountIdAndEmployeePromocode(Long id, String promoCode);
 
     @Modifying
