@@ -21,4 +21,5 @@ public class DiscountDto extends IdentifierDto {
     private Set<Tag> tags;
     private Set<CompanyDto> companies;
     private Double rate;
+    private Long imageId;
 }
