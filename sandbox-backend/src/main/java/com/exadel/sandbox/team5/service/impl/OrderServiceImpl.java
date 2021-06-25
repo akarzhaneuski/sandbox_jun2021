@@ -105,8 +105,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<List<OrderDto>> getOrdersByIds(List<Long> discountIds) {
+    public List<List<OrderDto>> getOrdersByDiscountIds(List<Long> discountIds) {
         List<List<Order>> orders = discountIds.stream().sorted().map(orderDAO::findAllByDiscountId).collect(Collectors.toList());
         return orders.stream().map(x->mapper.mapAll(x,OrderDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<List<OrderDto>> getOrdersByCompanyIds(List<Long> companyIds) {
+        List<List<Order>> orders = companyIds.stream().sorted().map(orderDAO::getOrdersByCompanyIds).collect(Collectors.toList());
+        return orders.stream().map(x->mapper.mapAll(x,OrderDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrderDto> getOrdersByTags(List<String> tags) {
+        return mapper.mapAll(orderDAO.getOrdersByTags(tags),OrderDto.class);
     }
 }
