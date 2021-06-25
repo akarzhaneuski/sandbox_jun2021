@@ -1,23 +1,43 @@
 package com.exadel.sandbox.team5.service;
 
-import com.exadel.sandbox.team5.BackendApplication;
-import lombok.RequiredArgsConstructor;
+import com.exadel.sandbox.team5.dao.DiscountDAO;
+import com.exadel.sandbox.team5.dao.ReviewDAO;
+import com.exadel.sandbox.team5.mapper.MapperConverter;
+import com.exadel.sandbox.team5.service.impl.DiscountServiceImpl;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import javax.imageio.ImageIO;
+
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = BackendApplication.class)
-class DiscountServiceTest{
+class DiscountServiceTest {
 
-    @Autowired
-    private DiscountService discountService;
+    @Mock
+    private DiscountDAO discountDAO;
+
+    @Mock
+    private MapperConverter mapperConverter;
+
+    @Mock
+    private ReviewDAO reviewDAO;
+
+    @InjectMocks
+    private DiscountServiceImpl discountService;
+
+    @BeforeEach
+    void init() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     void testGenerateQRCode_if_result_not_null() throws IOException {
