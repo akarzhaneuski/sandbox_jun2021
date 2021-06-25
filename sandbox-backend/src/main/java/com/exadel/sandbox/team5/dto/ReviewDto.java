@@ -5,14 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
+import java.util.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class CompanyDto extends IdentifierDto {
+public class ReviewDto extends IdentifierDto {
 
-    private String name;
-    private Set<LocationDto> locations;
+    private Integer rate;
+    private String comment;
+    private Date date;
+    private DiscountDto discount;
+    private EmployeeDto employee;
 }

@@ -7,15 +7,23 @@ import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
+import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
+import com.exadel.sandbox.team5.util.Pair;
+import com.exadel.sandbox.team5.util.QueryUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -74,4 +82,31 @@ public class DiscountServiceImpl implements DiscountService {
             throw new NoSuchElementException(e);
         }
     }
+
+    @Override
+    public Page<DiscountDto> getByCriteria(DiscountSearchCriteria searchCriteria) {
+        String searchText = QueryUtils.getWildcard(searchCriteria.getSearchText());
+        List<Discount> result;
+        if (searchCriteria.getTags() == null || searchCriteria.getTags().isEmpty()) {
+            result = discountDAO.getByCriteria(searchText, searchCriteria.getRate());
+        } else {
+            result = discountDAO.getByCriteriaWithTags(searchText,
+                    searchCriteria.getTags(), searchCriteria.getRate());
+        }
+        Set<Long> discountIds = result.stream().map(Discount::getId).collect(Collectors.toSet());
+        Map<Long, Double> rateList = reviewDAO.getRateByDiscountId(discountIds).stream()
+                .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+        List<DiscountDto> discountDTOs = mapper.mapAll(result, DiscountDto.class);
+        discountDTOs = setRate(rateList, discountDTOs);
+        return new PageImpl<>(discountDTOs, searchCriteria.getPageRequest(), discountDTOs.size());
+    }
+
+    public static List<DiscountDto> setRate(Map<Long, Double> rtMap, List<DiscountDto> dtoList) {
+        for (DiscountDto d : dtoList) {
+            if (rtMap.get(d.getId()) == null) d.setRate(0.0);
+            else d.setRate(rtMap.get(d.getId()));
+        }
+        return dtoList;
+    }
 }
+

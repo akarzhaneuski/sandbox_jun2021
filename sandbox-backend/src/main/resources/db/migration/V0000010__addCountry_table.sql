@@ -1,0 +1,8 @@
+CREATE TABLE country
+(
+    id   INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100)
+);
+
+ALTER TABLE location ADD COLUMN countryId  INT;
+ALTER TABLE location ADD FOREIGN KEY (countryId) REFERENCES country (id);
