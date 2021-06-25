@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 @Transactional
 @Service
@@ -19,13 +20,15 @@ public class ImageServiceImpl implements ImageService {
 
     private final ImageDAO imageDAO;
     private final String pathFileOnServer = "s3://exadel-image.s3.eu-west-3.amazonaws.com/imageDiscount/";
-    private final DiscountServiceImpl service;
     private final MapperConverter mapper;
 
-    public byte[] getImage(Long id) throws IOException {
+    public ImageDto getImage(Long id) throws IOException {
         FileSystemManager fsManager = VFS.getManager();
-
-        return null;
+        Image img = imageDAO.findById(id).orElseThrow(NoSuchElementException::new);
+        FileObject src = fsManager.resolveFile(img.getImageURL());
+        ImageDto image = mapper.map(img, ImageDto.class);
+        image.setContent(src.getContent().getByteArray());
+        return image;
     }
 
     public ImageDto save(ImageDto image, String fileName) throws IOException {
@@ -36,6 +39,7 @@ public class ImageServiceImpl implements ImageService {
         src.getContent().getOutputStream().write(image.getContent());
         dest.copyFrom(src, Selectors.SELECT_SELF);
         Image img = mapper.map(image, Image.class);
+        img.setImageURL(pathFile);
         return mapper.map(imageDAO.saveAndFlush(img), ImageDto.class);
     }
 }

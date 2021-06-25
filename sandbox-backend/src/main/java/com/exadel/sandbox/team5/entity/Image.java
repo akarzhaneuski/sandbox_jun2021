@@ -16,5 +16,7 @@ import javax.persistence.Table;
 public class Image extends BaseEntity {
 
     @Column("name")
-    private String name;
+    private String imageURL;
+    @Column("contentType")
+    private String contentType;
 }
