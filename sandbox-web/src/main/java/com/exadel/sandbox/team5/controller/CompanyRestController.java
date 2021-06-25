@@ -1,4 +1,4 @@
-package com.exadel.sandbox.team5;
+package com.exadel.sandbox.team5.controller;
 
 import com.exadel.sandbox.team5.entity.Company;
 import com.exadel.sandbox.team5.service.CompanyService;

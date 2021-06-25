@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team5.service.impl;
 
+import com.exadel.sandbox.team5.barcodes.QRCodeGenerator;
 import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.ReviewDAO;
 import com.exadel.sandbox.team5.dto.DiscountDto;
@@ -10,11 +11,14 @@ import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.util.Pair;
 import com.exadel.sandbox.team5.util.QueryUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -24,6 +28,7 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class DiscountServiceImpl implements DiscountService {
 
     private final DiscountDAO discountDAO;
@@ -32,28 +37,22 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public DiscountDto getById(Long id) {
-        DiscountDto discountId = discountDAO.findById(id)
+        var discountDto = discountDAO.findById(id)
                 .map(discount -> mapper.map(discount, DiscountDto.class))
                 .orElseThrow(NoSuchElementException::new);
-        discountId = setAverageRate(discountId);
-        return discountId;
+        setAverageRate(discountDto);
+        return discountDto;
     }
 
-    private DiscountDto setAverageRate(DiscountDto discountId) {
-        if (discountId == null) {
-            return null;
-        }
-        discountId.setRate(reviewDAO.findRate(discountId.getId()));
-        return discountId;
+    private void setAverageRate(DiscountDto discountDto) {
+        discountDto.setRate(reviewDAO.findRate(discountDto.getId()));
     }
 
     @Override
     public List<DiscountDto> getAll() {
-        List<Discount> discounts = discountDAO.findAll();
-        Set<Long> discountIds = discounts.stream().map(Discount::getId).collect(Collectors.toSet());
-        Map<Long, Double> rateList = reviewDAO.getRateByDiscountId(discountIds).stream()
-                .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
-        return setRate(rateList, mapper.mapAll(discounts, DiscountDto.class));
+        List<DiscountDto> resultWithoutRage = mapper.mapAll(discountDAO.findAll(), DiscountDto.class);
+        resultWithoutRage.forEach(this::setAverageRate);
+        return resultWithoutRage;
     }
 
     @Override
@@ -70,6 +69,18 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public void delete(Long id) {
         discountDAO.deleteById(id);
+    }
+
+    @Override
+    public byte[] generateQRCode() {
+        try (var baos = new ByteArrayOutputStream()) {
+            var image = QRCodeGenerator.generateQRCodeImage("Exadel employee. Special discount");
+            ImageIO.write(image, "png", baos);
+            return baos.toByteArray();
+        } catch (Exception e) {
+            log.error("There was an error during barcode generation", e);
+            throw new NoSuchElementException(e);
+        }
     }
 
     @Override
