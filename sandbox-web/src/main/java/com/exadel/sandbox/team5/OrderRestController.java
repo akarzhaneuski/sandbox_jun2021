@@ -3,6 +3,7 @@ package com.exadel.sandbox.team5;
 import com.exadel.sandbox.team5.dto.OrderDto;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.OrderService;
+import com.exadel.sandbox.team5.util.OrderCriteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class OrderRestController {
         return orderService.getById(id);
     }
 
-    @GetMapping("/{all}")
+    @GetMapping("/all")
     public List<OrderDto> getAll(){
         return orderService.getAll();
     }
@@ -42,4 +43,18 @@ public class OrderRestController {
         orderService.delete(id);
     }
 
+    @PutMapping("/invalidate")
+    public OrderDto invalidate(@RequestBody OrderDto order) {
+        return orderService.invalidatePromoCode(order.getDiscount().getId(),order.getEmployeePromocode());
+    }
+
+    @PutMapping("/create")
+    public OrderDto create(@RequestBody OrderCriteria criteria){
+        return orderService.createOrder(criteria);
+    }
+
+    @PutMapping("/all/byIds")
+    public List<List<OrderDto>> getAllByIds(@RequestBody List<Long> discountIds) {
+        return orderService.getOrdersByIds(discountIds);
+    }
 }
