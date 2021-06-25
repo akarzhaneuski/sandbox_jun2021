@@ -1,4 +1,4 @@
-package com.exadel.sandbox.team5.controller;
+package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.entity.Location;
 import com.exadel.sandbox.team5.service.LocationService;
