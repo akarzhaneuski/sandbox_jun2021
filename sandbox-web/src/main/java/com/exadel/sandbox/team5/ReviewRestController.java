@@ -1,4 +1,4 @@
-package com.exadel.sandbox.team5.controller;
+package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.ReviewDto;
 import com.exadel.sandbox.team5.service.ReviewService;
