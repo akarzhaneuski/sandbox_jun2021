@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/orders")
@@ -54,17 +55,17 @@ public class OrderRestController {
     }
 
     @PutMapping("/all/byDiscountIds")
-    public List<List<OrderDto>> getAllByDiscountIds(@RequestBody List<Long> discountIds) {
+    public Map<Long, Integer> getAllByDiscountIds(@RequestBody List<Long> discountIds) {
         return orderService.getOrdersByDiscountIds(discountIds);
     }
 
     @PutMapping("/all/byCompanyId")
-    public List<List<OrderDto>> getAllByCompanyIds(@RequestBody List<Long> companyIds) {
+    public Map<Long, Integer> getAllByCompanyIds(@RequestBody List<Long> companyIds) {
         return orderService.getOrdersByCompanyIds(companyIds);
     }
 
     @PutMapping("/all/byTags")
-    public List<OrderDto> getAllByTags(@RequestBody List<String> tags) {
+    public int getAllByTags(@RequestBody List<String> tags) {
         return orderService.getOrdersByTags(tags);
     }
 }

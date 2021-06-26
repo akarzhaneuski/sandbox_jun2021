@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
@@ -39,12 +40,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> getAll() {
-        return mapper.mapAll(orderDAO.findAll(),OrderDto.class);
+        return mapper.mapAll(orderDAO.findAll(), OrderDto.class);
     }
 
     @Override
     public OrderDto save(OrderDto order) {
-        return mapper.map(orderDAO.saveAndFlush(mapper.map((order),Order.class)),OrderDto.class);
+        return mapper.map(orderDAO.saveAndFlush(mapper.map((order), Order.class)), OrderDto.class);
     }
 
     @Override
@@ -105,19 +106,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<List<OrderDto>> getOrdersByDiscountIds(List<Long> discountIds) {
-        List<List<Order>> orders = discountIds.stream().sorted().map(orderDAO::findAllByDiscountId).collect(Collectors.toList());
-        return orders.stream().map(x->mapper.mapAll(x,OrderDto.class)).collect(Collectors.toList());
+    public Map<Long, Integer> getOrdersByDiscountIds(List<Long> discountIds) {
+        return discountIds.stream().collect(Collectors.toMap(x -> x, y -> orderDAO.findAllByDiscountId(y).size()));
     }
 
     @Override
-    public List<List<OrderDto>> getOrdersByCompanyIds(List<Long> companyIds) {
-        List<List<Order>> orders = companyIds.stream().sorted().map(orderDAO::getOrdersByCompanyIds).collect(Collectors.toList());
-        return orders.stream().map(x->mapper.mapAll(x,OrderDto.class)).collect(Collectors.toList());
+    public Map<Long, Integer> getOrdersByCompanyIds(List<Long> companyIds) {
+        return companyIds.stream().collect(Collectors.toMap(x -> x, y -> orderDAO.getOrdersByCompanyIds(y).size()));
     }
 
     @Override
-    public List<OrderDto> getOrdersByTags(List<String> tags) {
-        return mapper.mapAll(orderDAO.getOrdersByTags(tags),OrderDto.class);
+    public int getOrdersByTags(List<String> tags) {
+        return orderDAO.getOrdersByTags(tags).size();
     }
 }

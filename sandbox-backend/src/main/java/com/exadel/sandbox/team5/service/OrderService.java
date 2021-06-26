@@ -4,15 +4,16 @@ import com.exadel.sandbox.team5.dto.OrderDto;
 import com.exadel.sandbox.team5.util.OrderCriteria;
 
 import java.util.List;
+import java.util.Map;
 
 public interface OrderService extends CRUDService<OrderDto> {
     OrderDto invalidatePromoCode(Long discountId, String promoCode);
 
     OrderDto createOrder(OrderCriteria criteria);
 
-    List<List<OrderDto>> getOrdersByDiscountIds(List<Long> discountIds);
+    Map<Long, Integer> getOrdersByDiscountIds(List<Long> discountIds);
 
-    List<List<OrderDto>> getOrdersByCompanyIds(List<Long> companyIds);
+    Map<Long, Integer> getOrdersByCompanyIds(List<Long> companyIds);
 
-    List<OrderDto> getOrdersByTags(List<String> tags);
+    int getOrdersByTags(List<String> tags);
 }
