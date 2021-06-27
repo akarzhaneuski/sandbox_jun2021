@@ -17,12 +17,8 @@ import java.util.Set;
 @Table(name = "location")
 public class Location extends AuditableEntity {
 
-    @Column(name = "city")
-    private String city;
-
-    @ManyToOne
-    @JoinColumn(name = "countryId", referencedColumnName = "id")
-    private Country country;
+    @OneToMany(mappedBy = "location")
+    private Set<Country> country;
 
     @JsonIgnore
     @ManyToMany

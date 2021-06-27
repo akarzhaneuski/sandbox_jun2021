@@ -12,6 +12,5 @@ import lombok.Setter;
 @EqualsAndHashCode(callSuper = true)
 public class LocationDto extends IdentifierDto {
 
-    private String city;
     private Country country;
 }

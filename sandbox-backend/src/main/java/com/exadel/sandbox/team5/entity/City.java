@@ -13,17 +13,17 @@ import java.util.Set;
 @Builder
 
 @Entity
-@Table(name = "country")
-public class Country extends BaseEntity {
+@Table(name = "city")
+public class City extends BaseEntity{
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "country")
-    private Set<City> cities;
+    @OneToMany (mappedBy = "city")
+    private Set<Address> addresses;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "locationId", referencedColumnName = "id")
-    private Location location;
+    @JoinColumn(name = "countryId", referencedColumnName = "id")
+    private Country country;
 }

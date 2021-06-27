@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -13,17 +12,20 @@ import java.util.Set;
 @Builder
 
 @Entity
-@Table(name = "country")
-public class Country extends BaseEntity {
+@Table(name = "address")
+public class Address extends BaseEntity{
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "country")
-    private Set<City> cities;
+    @Column(name = "latitude")
+    private int latitude;
+
+    @Column(name = "longitude")
+    private int longitude;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "locationId", referencedColumnName = "id")
-    private Location location;
+    @JoinColumn(name = "cityId", referencedColumnName = "id")
+    private City city;
 }
