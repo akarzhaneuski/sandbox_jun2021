@@ -1,9 +1,9 @@
 package com.exadel.sandbox.team5.controller;
 
 import com.exadel.sandbox.team5.dto.DiscountDto;
-import com.exadel.sandbox.team5.entity.Review;
 import com.exadel.sandbox.team5.dto.ReviewDto;
 import com.exadel.sandbox.team5.service.DiscountService;
+import com.exadel.sandbox.team5.service.QRCodeService;
 import com.exadel.sandbox.team5.service.ReviewService;
 import io.swagger.annotations.ApiOperation;
 import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
@@ -23,7 +23,7 @@ public class DiscountRestController {
 
     private final DiscountService service;
     private final ReviewService reviewService;
-    private final DiscountService discountService;
+    private final QRCodeService qrCodeService;
 
     @GetMapping("/{id}")
     public DiscountDto getDiscount(@PathVariable Long id) {
@@ -65,7 +65,7 @@ public class DiscountRestController {
     @GetMapping(value = "/qrcode", produces = MediaType.IMAGE_PNG_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<byte[]> generateQRCode() {
-        return ResponseEntity.ok(discountService.generateQRCode());
+        return ResponseEntity.ok(qrCodeService.generateQRCode());
     }
 }
 
