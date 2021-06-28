@@ -1,17 +1,16 @@
-package com.exadel.sandbox.team5.controller;
+package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.ReviewDto;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.QRCodeService;
 import com.exadel.sandbox.team5.service.ReviewService;
-import io.swagger.annotations.ApiOperation;
 import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -61,11 +60,11 @@ public class DiscountRestController {
         return service.getByCriteria(searchCriteria);
     }
 
-    @ApiOperation("Generating QR code with text \"Exadel employee. Special discount\"")
+    @ApiOperation("Generating QR code with param \"promoCode\"")
     @GetMapping(value = "/qrcode", produces = MediaType.IMAGE_PNG_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<byte[]> generateQRCode() {
-        return ResponseEntity.ok(qrCodeService.generateQRCode());
+    public byte[] generateQRCode(@RequestParam("promoCode") String promoCode) {
+        return qrCodeService.generateQRCode(promoCode);
     }
 }
 

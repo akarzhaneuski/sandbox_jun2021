@@ -29,7 +29,7 @@ class QRCodeTest {
 
     @Test
     void testGenerateQRCode_if_type_correct() throws IOException {
-        final var bytes = service.generateQRCode();
+        final var bytes = service.generateQRCode("This is just a test");
 
         assertNotEquals(0, bytes.length);
         var bufferedImage = ImageIO.read(new ByteArrayInputStream(bytes));

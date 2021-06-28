@@ -20,9 +20,9 @@ import java.util.NoSuchElementException;
 public class QRCodeServiceImpl implements QRCodeService {
 
     @Override
-    public byte[] generateQRCode() {
+    public byte[] generateQRCode(String promocode) {
         try (var baos = new ByteArrayOutputStream()) {
-            var image = QRCode.generateQRCodeImage("Exadel employee. Special discount");
+            var image = QRCode.generateQRCodeImage(promocode);
             ImageIO.write(image, "png", baos);
             return baos.toByteArray();
         } catch (Exception e) {
