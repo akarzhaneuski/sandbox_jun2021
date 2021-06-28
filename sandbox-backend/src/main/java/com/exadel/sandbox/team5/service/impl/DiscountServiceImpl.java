@@ -7,7 +7,7 @@ import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
-import com.exadel.sandbox.team5.util.Pair;
+import com.exadel.sandbox.team5.util.PairLD;
 import com.exadel.sandbox.team5.util.QueryUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -52,7 +52,7 @@ public class DiscountServiceImpl implements DiscountService {
         List<Discount> discounts = discountDAO.findAll();
         Set<Long> discountIds = discounts.stream().map(Discount::getId).collect(Collectors.toSet());
         Map<Long, Double> rateList = reviewDAO.getRateByDiscountId(discountIds).stream()
-                .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+                .collect(Collectors.toMap(PairLD::getFirst, PairLD::getSecond));
         return setRate(rateList, mapper.mapAll(discounts, DiscountDto.class));
     }
 
@@ -84,7 +84,7 @@ public class DiscountServiceImpl implements DiscountService {
         }
         Set<Long> discountIds = result.stream().map(Discount::getId).collect(Collectors.toSet());
         Map<Long, Double> rateList = reviewDAO.getRateByDiscountId(discountIds).stream()
-                .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+                .collect(Collectors.toMap(PairLD::getFirst, PairLD::getSecond));
         List<DiscountDto> discountDTOs = mapper.mapAll(result, DiscountDto.class);
         discountDTOs = setRate(rateList, discountDTOs);
         return new PageImpl<>(discountDTOs, searchCriteria.getPageRequest(), discountDTOs.size());

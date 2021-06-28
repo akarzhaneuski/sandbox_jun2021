@@ -11,9 +11,9 @@ public interface OrderService extends CRUDService<OrderDto> {
 
     OrderDto createOrder(OrderCriteria criteria);
 
-    Map<Long, Integer> getOrdersByDiscountIds(List<Long> discountIds);
+    Map<String, Long> getOrdersByDiscounts();
 
-    Map<Long, Integer> getOrdersByCompanyIds(List<Long> companyIds);
+    Map<String, Long> getOrdersByCompanies();
 
-    int getOrdersByTags(List<String> tags);
+    Map<String, Long> getOrdersByTags();
 }

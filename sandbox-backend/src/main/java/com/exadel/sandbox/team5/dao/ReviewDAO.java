@@ -1,7 +1,7 @@
 package com.exadel.sandbox.team5.dao;
 
 import com.exadel.sandbox.team5.entity.Review;
-import com.exadel.sandbox.team5.util.Pair;
+import com.exadel.sandbox.team5.util.PairLD;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,9 +17,9 @@ public interface ReviewDAO extends JpaRepository<Review, Long> {
     List<Review> findAllByDiscountId(Long id);
 
     @Query(value = """
-            SELECT new com.exadel.sandbox.team5.util.Pair(r.discount.id, AVG(r.rate))
+            SELECT new com.exadel.sandbox.team5.util.PairLD(r.discount.id, AVG(r.rate))
             FROM Review r
             WHERE r.discount.id IN (:list)
             GROUP BY r.discount.id""")
-    List<Pair> getRateByDiscountId(@Param("list") Set<Long> discountId);
+    List<PairLD> getRateByDiscountId(@Param("list") Set<Long> discountId);
 }

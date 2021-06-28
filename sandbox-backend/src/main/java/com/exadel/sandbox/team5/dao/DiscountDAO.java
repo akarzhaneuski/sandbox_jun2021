@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team5.dao;
 
 import com.exadel.sandbox.team5.entity.Discount;
+import com.exadel.sandbox.team5.util.PairSL;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -36,4 +37,23 @@ public interface DiscountDAO extends JpaRepository<Discount, Long> {
                 HAVING rate>=(:rate);
             """, nativeQuery = true)
     List<Discount> getByCriteria(@Param("name") String searchText, @Param("rate") int rate);
+
+    @Query(value = """
+            SELECT new com.exadel.sandbox.team5.util.PairSL(d.name, COUNT(o.id))
+            FROM Discount d
+                LEFT JOIN Order o ON d.id=o.discount.id
+            WHERE d.id=o.discount.id
+                GROUP BY d.name
+            """)
+    List<PairSL> getAllOrders();
+
+    /*@Query(value = """
+            SELECT new com.exadel.sandbox.team5.util.PairSL(t.name, COUNT(o.id))
+            FROM Discount d
+                LEFT JOIN Order o ON d.id=o.discount.id
+                LEFT JOIN d.tags t 
+            WHERE d.id=o.discount.id AND t.id=o.discount.tags
+                GROUP BY t.name
+            """)
+    List<PairSL> getAllOrdersByTag();*/
 }
