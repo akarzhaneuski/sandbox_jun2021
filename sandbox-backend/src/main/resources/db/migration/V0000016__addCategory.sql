@@ -1,16 +1,18 @@
-CREATE TABLE subtag (
+CREATE TABLE category (
     id  INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name varchar(50),
-    tagId INT,
-    foreign key (tagId) references tag (id)
+    name varchar(50)
 );
 
-INSERT INTO subtag (id, name, tagId)
-    VALUES (1,'pizza',3),
-           (2,'sushi',3),
-           (3,'kebab',3),
-           (4,'burger',3),
-           (5,'yoga',1),
-           (6,'pool',1),
-           (7,'library',2),
-           (8,'trainee',2);
+INSERT INTO category (name)
+VALUES ('sport'),
+       ('education'),
+       ('entertainment'),
+       ('food');
+
+ALTER TABLE tag ADD COLUMN categoryId INT;
+ALTER TABLE tag ADD foreign key (categoryId) references category (id);
+
+UPDATE tag SET tagName='sushi', categoryId=4 WHERE tagName='food';
+UPDATE tag SET tagName='pool', categoryId=1 WHERE tagName='sport';
+UPDATE tag SET tagName='trainee', categoryId=2 WHERE tagName='education';
+UPDATE tag SET categoryId=3 WHERE tagName='cinema';
