@@ -54,18 +54,18 @@ public class OrderRestController {
         return orderService.createOrder(criteria);
     }
 
-    @PutMapping("/all/byDiscountIds")
-    public Map<Long, Integer> getAllByDiscountIds(@RequestBody List<Long> discountIds) {
-        return orderService.getOrdersByDiscountIds(discountIds);
+    @GetMapping("/statistic/byDiscounts")
+    public Map<String, Long> getAllByDiscounts() {
+        return orderService.getOrdersByDiscounts();
     }
 
-    @PutMapping("/all/byCompanyId")
-    public Map<Long, Integer> getAllByCompanyIds(@RequestBody List<Long> companyIds) {
-        return orderService.getOrdersByCompanyIds(companyIds);
+    @GetMapping("/statistic/byCompanies")
+    public Map<String, Long> getAllByCompanies() {
+        return orderService.getOrdersByCompanies();
     }
 
-    @PutMapping("/all/byTags")
-    public int getAllByTags(@RequestBody List<String> tags) {
-        return orderService.getOrdersByTags(tags);
+    @GetMapping("/statistic/byTags")
+    public Map<String,Long> getAllByTags() {
+        return orderService.getOrdersByTags();
     }
 }
