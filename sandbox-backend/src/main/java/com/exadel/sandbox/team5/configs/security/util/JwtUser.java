@@ -2,13 +2,11 @@ package com.exadel.sandbox.team5.configs.security.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-@Setter
 @Getter
 @AllArgsConstructor
 public class JwtUser implements UserDetails {
