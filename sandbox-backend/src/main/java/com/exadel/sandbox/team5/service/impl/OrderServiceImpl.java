@@ -1,6 +1,9 @@
 package com.exadel.sandbox.team5.service.impl;
 
+import com.exadel.sandbox.team5.dao.CompanyDAO;
+import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.OrderDAO;
+import com.exadel.sandbox.team5.dao.TagDAO;
 import com.exadel.sandbox.team5.dto.OrderDto;
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.entity.Employee;
@@ -11,6 +14,7 @@ import com.exadel.sandbox.team5.service.EmployeeService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.ValidatePromoCodeGenerator;
 import com.exadel.sandbox.team5.util.OrderCriteria;
+import com.exadel.sandbox.team5.util.PairSL;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +36,9 @@ public class OrderServiceImpl implements OrderService {
     private final EmployeeService employeeService;
     private final DiscountService discountService;
     private final MapperConverter mapper;
+    private final DiscountDAO discountDAO;
+    private final CompanyDAO companyDAO;
+    private final TagDAO tagDAO;
 
     @Override
     public OrderDto getById(Long id) {
@@ -106,17 +113,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Map<Long, Integer> getOrdersByDiscountIds(List<Long> discountIds) {
-        return discountIds.stream().collect(Collectors.toMap(x -> x, y -> orderDAO.findAllByDiscountId(y).size()));
+    public Map<String, Long> getOrdersByDiscounts() {
+        return discountDAO.getAllOrders().stream().collect(Collectors.toMap(PairSL::getFirst, PairSL::getSecond));
     }
 
     @Override
-    public Map<Long, Integer> getOrdersByCompanyIds(List<Long> companyIds) {
-        return companyIds.stream().collect(Collectors.toMap(x -> x, y -> orderDAO.getOrdersByCompanyIds(y).size()));
+    public Map<String, Long> getOrdersByCompanies() {
+        return companyDAO.getAllOrders().stream().collect(Collectors.toMap(PairSL::getFirst, PairSL::getSecond));
     }
 
     @Override
-    public int getOrdersByTags(List<String> tags) {
-        return orderDAO.getOrdersByTags(tags).size();
+    public Map<String, Long> getOrdersByTags() {
+        return tagDAO.getAllOrders().stream().collect(Collectors.toMap(PairSL::getFirst, PairSL::getSecond));
     }
 }

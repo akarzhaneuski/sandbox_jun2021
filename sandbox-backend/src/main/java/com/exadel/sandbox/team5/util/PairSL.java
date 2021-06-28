@@ -1,14 +1,13 @@
 package com.exadel.sandbox.team5.util;
 
-
 import lombok.*;
 
-@Getter
 @Setter
+@Getter
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
-public class Pair {
-    private long first;
-    private double second;
+public class PairSL {
+    private String first;
+    private long second;
 }
