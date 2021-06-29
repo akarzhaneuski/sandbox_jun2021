@@ -52,4 +52,7 @@ public class Discount extends AuditableEntity implements Serializable {
     @Column(name = "promocode")
     private String promoCode;
 
+    @ManyToOne
+    @JoinColumn(name="countryId")
+    private Country country;
 }

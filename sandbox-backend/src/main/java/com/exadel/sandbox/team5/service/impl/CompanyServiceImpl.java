@@ -44,6 +44,6 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<Company> getCompaniesByLocation(Long id) {
-        return dao.findAllByLocationsId(id);
+        return dao.findAllByCountryId(id);
     }
 }

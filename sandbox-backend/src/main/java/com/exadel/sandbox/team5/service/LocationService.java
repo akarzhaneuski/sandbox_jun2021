@@ -1,7 +1,6 @@
 package com.exadel.sandbox.team5.service;
 
-import com.exadel.sandbox.team5.entity.Location;
+import com.exadel.sandbox.team5.dto.LocationDto;
 
-public interface LocationService extends CRUDService<Location> {
-
+public interface LocationService extends CRUDService<LocationDto> {
 }
