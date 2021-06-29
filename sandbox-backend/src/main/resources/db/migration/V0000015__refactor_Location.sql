@@ -1,4 +1,6 @@
-ALTER TABLE employee DROP FOREIGN KEY FK_employee_location;
+SET FOREIGN_KEY_CHECKS = 0;
+ALTER TABLE employee DROP FOREIGN KEY employee_ibfk_1;
+SET FOREIGN_KEY_CHECKS = 1;
 ALTER TABLE employee DROP COLUMN locationId;
 DROP TABLE company_location;
 DROP TABLE location;
@@ -59,14 +61,12 @@ UPDATE discount SET countryId=1 WHERE id=3;
 UPDATE discount SET countryId=1 WHERE id=4;
 
 INSERT INTO company_country (companyId, countryId)
-    VALUES (1,1),
-           (2,1),
+    VALUES (2,1),
            (3,1),
            (4,2),
            (5,2),
            (6,2),
            (7,2),
-           (8,2),
            (9,3),
            (10,3),
            (11,3);
