@@ -1,6 +1,5 @@
 package com.exadel.sandbox.team5.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,9 +20,4 @@ public class Country extends BaseEntity {
 
     @OneToMany(mappedBy = "country")
     private Set<City> cities;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "locationId", referencedColumnName = "id")
-    private Location location;
 }

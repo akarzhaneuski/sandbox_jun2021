@@ -1,4 +1,7 @@
-ALTER TABLE location DROP COLUMN city;
+ALTER TABLE employee DROP FOREIGN KEY FK_employee_location;
+ALTER TABLE employee DROP COLUMN locationId;
+DROP TABLE company_location;
+DROP TABLE location;
 
 CREATE TABLE city(
     id         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -17,10 +20,6 @@ CREATE TABLE address
     FOREIGN KEY (cityId) REFERENCES city (id)
 );
 
-
-ALTER TABLE country ADD COLUMN locationId  INT;
-ALTER TABLE country ADD FOREIGN KEY (locationId) REFERENCES location (id);
-
 INSERT INTO city (id,name,countryId)
     VALUES (1,'Lviv',1),
            (2,'Kyiv',1),
@@ -38,11 +37,21 @@ INSERT INTO address (id, name,cityId)
            (6,'Champs-Élysées',5),
            (7,'Pushkina 2',6);
 
-UPDATE country SET country.locationId=1 WHERE id=1;
-UPDATE country SET country.locationId=2 WHERE id=2;
-UPDATE country SET country.locationId=3 WHERE id=3;
+ALTER TABLE discount ADD COLUMN countryId INT;
+ALTER TABLE discount ADD FOREIGN KEY (countryId) REFERENCES country (id);
 
-ALTER TABLE discount ADD COLUMN locationId INT;
-ALTER TABLE discount ADD FOREIGN KEY (locationId) REFERENCES location (id);
+ALTER TABLE company ADD COLUMN countryId INT;
+ALTER TABLE company ADD FOREIGN KEY (countryId) REFERENCES country (id);
 
-UPDATE discount SET locationId=1 WHERE id=1;
+ALTER TABLE employee ADD COLUMN countryId INT;
+ALTER TABLE employee ADD FOREIGN KEY (countryId) REFERENCES country (id);
+
+UPDATE discount SET countryId=1 WHERE id=1;
+UPDATE discount SET countryId=1 WHERE id=2;
+UPDATE discount SET countryId=1 WHERE id=3;
+UPDATE discount SET countryId=1 WHERE id=4;
+
+UPDATE company SET countryId=1 WHERE id=1;
+UPDATE company SET countryId=1 WHERE id=2;
+UPDATE company SET countryId=1 WHERE id=3;
+UPDATE company SET countryId=1 WHERE id=4;
