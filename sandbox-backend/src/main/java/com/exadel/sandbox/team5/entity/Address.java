@@ -13,16 +13,10 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "address")
-public class Address extends BaseEntity{
+public class Address extends BaseEntity {
 
     @Column(name = "name")
     private String name;
-
-    @Column(name = "latitude")
-    private int latitude;
-
-    @Column(name = "longitude")
-    private int longitude;
 
     @JsonIgnore
     @ManyToOne

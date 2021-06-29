@@ -26,8 +26,6 @@ CREATE TABLE address
 (
     id         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name       VARCHAR(100),
-    latitude   INT DEFAULT 0,
-    longitude  INT DEFAULT 0,
     cityId   INT,
     FOREIGN KEY (cityId) REFERENCES city (id)
 );
