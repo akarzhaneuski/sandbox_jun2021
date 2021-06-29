@@ -25,7 +25,7 @@ CREATE TABLE city(
 CREATE TABLE address
 (
     id         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name       VARCHAR(100),
+    address       VARCHAR(100),
     cityId   INT,
     FOREIGN KEY (cityId) REFERENCES city (id)
 );
@@ -38,7 +38,7 @@ INSERT INTO city (id,name,countryId)
            (5,'Moskow',3),
            (6,'Pinsk',2);
 
-INSERT INTO address (id, name,cityId)
+INSERT INTO address (id, address,cityId)
     VALUES (1,'Gagarina 32',1),
            (2,'I.Franka 2',1),
            (3,'B.Hmlenytskogo 7',2),

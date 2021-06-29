@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class Address extends BaseEntity {
 
     @Column(name = "name")
-    private String name;
+    private String address;
 
     @JsonIgnore
     @ManyToOne
