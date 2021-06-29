@@ -17,4 +17,8 @@ public class Tag extends BaseEntity {
 
     @Column(name = "tagName")
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "categoryId", referencedColumnName = "id")
+    private Category category;
 }
