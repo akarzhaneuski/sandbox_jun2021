@@ -12,26 +12,28 @@ import java.util.Set;
 @Repository
 public interface DiscountDAO extends JpaRepository<Discount, Long> {
 
-    @Query(value = "SELECT d.*, AVG(r.rate) rate " +
-            "FROM discount d " +
-            "         LEFT JOIN discount_tag dt ON d.id = dt.discountId " +
-            "         LEFT JOIN tag t ON t.id = dt.tagId " +
-            "         LEFT JOIN review r ON d.id = r.discountId " +
-            " WHERE " +
-            "    t.tagName IN (:tags) " +
-            "    AND " +
-            "    d.name LIKE :name OR d.description LIKE :name " +
-            "GROUP BY d.id " +
-            "HAVING rate>=(:rate);", nativeQuery = true)
+    @Query(value = """
+            SELECT d.*, AVG(r.rate) rate
+            FROM discount d
+                LEFT JOIN discount_tag dt ON d.id = dt.discountId
+                LEFT JOIN tag t ON t.id = dt.tagId
+                LEFT JOIN review r ON d.id = r.discountId
+            WHERE
+                t.tagName IN (:tags)
+                AND
+                d.name LIKE (:name) OR d.description LIKE (:name)
+            GROUP BY d.id
+            HAVING rate>=(:rate);""", nativeQuery = true)
     List<Discount> getByCriteriaWithTags(@Param("name") String searchText,
                                          @Param("tags") Set<String> tags, @Param("rate") int rate);
 
-    @Query(value = "SELECT d.*, AVG(r.rate) rate " +
-            "FROM discount " +
-            "         LEFT JOIN review r ON d.id = r.discountId " +
-            " WHERE " +
-            "    d.name LIKE :name OR d.description LIKE :name " +
-            "GROUP BY d.id " +
-            "HAVING rate>=(:rate);", nativeQuery = true)
+    @Query(value = """
+            SELECT d.*, AVG(r.rate) rate
+            FROM discount d
+                LEFT JOIN review r ON d.id = r.discountId
+            WHERE d.name LIKE (:name) OR d.description LIKE (:name)
+            GROUP BY d.id
+                HAVING rate>=(:rate);
+            """, nativeQuery = true)
     List<Discount> getByCriteria(@Param("name") String searchText, @Param("rate") int rate);
 }
