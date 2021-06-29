@@ -14,5 +14,5 @@ import java.util.Set;
 public class CompanyDto extends IdentifierDto {
 
     private String name;
-    private LocationDto location;
+    private Set<LocationDto> locations;
 }

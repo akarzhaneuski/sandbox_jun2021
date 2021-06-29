@@ -3,6 +3,18 @@ ALTER TABLE employee DROP COLUMN locationId;
 DROP TABLE company_location;
 DROP TABLE location;
 
+CREATE TABLE company_country(
+    id         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    companyId  INT NOT NULL,
+    countryId INT NOT NULL,
+    FOREIGN KEY (companyId)
+        REFERENCES company (id),
+    FOREIGN KEY (countryId)
+        REFERENCES country (id),
+    CONSTRAINT FK_company_location
+        UNIQUE (companyId, countryId)
+);
+
 CREATE TABLE city(
     id         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name       VARCHAR(100),
@@ -40,9 +52,6 @@ INSERT INTO address (id, name,cityId)
 ALTER TABLE discount ADD COLUMN countryId INT;
 ALTER TABLE discount ADD FOREIGN KEY (countryId) REFERENCES country (id);
 
-ALTER TABLE company ADD COLUMN countryId INT;
-ALTER TABLE company ADD FOREIGN KEY (countryId) REFERENCES country (id);
-
 ALTER TABLE employee ADD COLUMN countryId INT;
 ALTER TABLE employee ADD FOREIGN KEY (countryId) REFERENCES country (id);
 
@@ -51,7 +60,17 @@ UPDATE discount SET countryId=1 WHERE id=2;
 UPDATE discount SET countryId=1 WHERE id=3;
 UPDATE discount SET countryId=1 WHERE id=4;
 
-UPDATE company SET countryId=1 WHERE id=1;
-UPDATE company SET countryId=1 WHERE id=2;
-UPDATE company SET countryId=1 WHERE id=3;
-UPDATE company SET countryId=1 WHERE id=4;
+INSERT INTO company_country (companyId, countryId)
+    VALUES (1,1),
+           (2,1),
+           (3,1),
+           (4,2),
+           (5,2),
+           (6,2),
+           (7,2),
+           (8,2),
+           (9,3),
+           (10,3),
+           (11,3);
+
+
