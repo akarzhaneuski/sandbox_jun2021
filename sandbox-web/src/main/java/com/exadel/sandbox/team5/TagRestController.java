@@ -1,11 +1,13 @@
-package com.exadel.sandbox.team5.controller;
+package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.entity.Tag;
+import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/tags")
@@ -13,6 +15,7 @@ import java.util.List;
 public class TagRestController {
 
     private final TagService tagService;
+    private final OrderService orderService;
 
     @GetMapping("/{id}")
     public Tag getTag(@PathVariable Long id) {
@@ -27,5 +30,10 @@ public class TagRestController {
     @PostMapping
     public Tag save(@RequestBody Tag entity) {
         return tagService.save(entity);
+    }
+
+    @GetMapping("/statistic")
+    public Map<String, Long> getStatistic() {
+        return orderService.getOrdersByTags();
     }
 }

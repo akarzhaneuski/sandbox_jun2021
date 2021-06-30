@@ -3,6 +3,7 @@ package com.exadel.sandbox.team5;
 import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.ReviewDto;
 import com.exadel.sandbox.team5.service.DiscountService;
+import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.QRCodeService;
 import com.exadel.sandbox.team5.service.ReviewService;
 import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
@@ -14,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/discounts")
@@ -23,13 +25,14 @@ public class DiscountRestController {
     private final DiscountService service;
     private final ReviewService reviewService;
     private final QRCodeService qrCodeService;
+    private final OrderService orderService;
 
     @GetMapping("/{id}")
     public DiscountDto getDiscount(@PathVariable Long id) {
         return service.getById(id);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public List<DiscountDto> getAll() {
         return service.getAll();
     }
@@ -65,6 +68,11 @@ public class DiscountRestController {
     @ResponseStatus(HttpStatus.OK)
     public byte[] generateQRCode(@RequestParam("promoCode") String promoCode) {
         return qrCodeService.generateQRCode(promoCode);
+    }
+
+    @GetMapping("/statistic")
+    public Map<String, Long> getStatistic() {
+        return orderService.getOrdersByDiscounts();
     }
 }
 

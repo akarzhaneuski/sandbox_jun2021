@@ -8,7 +8,7 @@ import lombok.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class PairLD {
+public class PairLongDouble {
     private long first;
     private double second;
 }

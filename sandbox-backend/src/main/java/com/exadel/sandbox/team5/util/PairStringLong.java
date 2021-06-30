@@ -7,7 +7,7 @@ import lombok.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class PairSL {
+public class PairStringLong {
     private String first;
-    private long second;
+    private Long second;
 }
