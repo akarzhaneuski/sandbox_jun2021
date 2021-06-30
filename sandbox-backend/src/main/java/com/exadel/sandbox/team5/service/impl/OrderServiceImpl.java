@@ -3,7 +3,6 @@ package com.exadel.sandbox.team5.service.impl;
 import com.exadel.sandbox.team5.dao.CompanyDAO;
 import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.OrderDAO;
-import com.exadel.sandbox.team5.dao.TagDAO;
 import com.exadel.sandbox.team5.dto.OrderDto;
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.entity.Employee;
@@ -13,7 +12,7 @@ import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.EmployeeService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.ValidatePromoCodeGenerator;
-import com.exadel.sandbox.team5.util.OrderCriteria;
+import com.exadel.sandbox.team5.util.CreateOrder;
 import com.exadel.sandbox.team5.util.PairSL;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,7 +37,6 @@ public class OrderServiceImpl implements OrderService {
     private final MapperConverter mapper;
     private final DiscountDAO discountDAO;
     private final CompanyDAO companyDAO;
-    private final TagDAO tagDAO;
 
     @Override
     public OrderDto getById(Long id) {
@@ -78,7 +76,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto createOrder(OrderCriteria criteria) {
+    public OrderDto createOrder(CreateOrder criteria) {
 
         Employee employee = employeeService.getById(1L);//TODO should be fix after security merge
 
@@ -114,16 +112,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Map<String, Long> getOrdersByDiscounts() {
-        return discountDAO.getAllOrders().stream().collect(Collectors.toMap(PairSL::getFirst, PairSL::getSecond));
+        return discountDAO.getAllOrdersForDiscounts().stream().collect(Collectors.toMap(PairSL::getFirst, PairSL::getSecond));
     }
 
     @Override
     public Map<String, Long> getOrdersByCompanies() {
-        return companyDAO.getAllOrders().stream().collect(Collectors.toMap(PairSL::getFirst, PairSL::getSecond));
+        return companyDAO.getAllOrdersForCompanies().stream().collect(Collectors.toMap(PairSL::getFirst, PairSL::getSecond));
     }
 
     @Override
     public Map<String, Long> getOrdersByTags() {
-        return tagDAO.getAllOrders().stream().collect(Collectors.toMap(PairSL::getFirst, PairSL::getSecond));
+        return discountDAO.getAllOrdersForTags().stream().collect(Collectors.toMap(PairSL::getFirst, PairSL::getSecond));
     }
 }

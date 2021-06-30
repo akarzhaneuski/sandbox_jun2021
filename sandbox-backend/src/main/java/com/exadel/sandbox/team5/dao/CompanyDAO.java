@@ -27,7 +27,7 @@ public interface CompanyDAO extends JpaRepository<Company, Long> {
                 LEFT JOIN Discount d ON d.company.id = c.id
                 LEFT JOIN Order o ON d.id=o.discount.id
             WHERE c.id=d.company.id AND d.id=o.discount.id
-                GROUP BY c.name
+                GROUP BY c.id
             """)
-    List<PairSL> getAllOrders();
+    List<PairSL> getAllOrdersForCompanies();
 }

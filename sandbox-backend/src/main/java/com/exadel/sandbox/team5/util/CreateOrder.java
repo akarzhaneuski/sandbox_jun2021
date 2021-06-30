@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class OrderCriteria {
+public class CreateOrder {
     private long discountId;
     private int maxOrderSize;
     private long amountDiscountDays;
