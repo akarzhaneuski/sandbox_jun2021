@@ -1,15 +1,14 @@
 package com.exadel.sandbox.team5.service;
 
 import com.exadel.sandbox.team5.dto.OrderDto;
-import com.exadel.sandbox.team5.util.OrderCriteria;
+import com.exadel.sandbox.team5.util.CreateOrder;
 
-import java.util.List;
 import java.util.Map;
 
 public interface OrderService extends CRUDService<OrderDto> {
     OrderDto invalidatePromoCode(Long discountId, String promoCode);
 
-    OrderDto createOrder(OrderCriteria criteria);
+    OrderDto createOrder(CreateOrder criteria);
 
     Map<String, Long> getOrdersByDiscounts();
 

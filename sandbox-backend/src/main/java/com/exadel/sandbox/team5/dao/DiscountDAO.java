@@ -43,7 +43,16 @@ public interface DiscountDAO extends JpaRepository<Discount, Long> {
             FROM Discount d
                 LEFT JOIN Order o ON d.id=o.discount.id
             WHERE d.id=o.discount.id
-                GROUP BY d.name
+                GROUP BY d.id
             """)
-    List<PairSL> getAllOrders();
+    List<PairSL> getAllOrdersForDiscounts();
+
+    @Query(value = """
+            SELECT new com.exadel.sandbox.team5.util.PairSL(t.name, COUNT(o.id))
+            FROM Order o
+                JOIN o.discount d
+                JOIN d.tags t
+                GROUP BY t.id
+            """)
+    List<PairSL> getAllOrdersForTags();
 }
