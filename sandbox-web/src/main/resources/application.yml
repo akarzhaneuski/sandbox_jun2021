@@ -25,5 +25,5 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org.hibernate.SQL: DEBUG
 
-application:
+app:
   bucketNameS3: exadel-image

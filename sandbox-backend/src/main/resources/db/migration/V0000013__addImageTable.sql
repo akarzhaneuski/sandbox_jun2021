@@ -1,8 +1,8 @@
 CREATE TABLE image
 (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    imageURL VARCHAR(500) NOT NULL ,
-    name VARCHAR(500) NOT NULL ,
+    id          INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    imageURL    VARCHAR(500),
+    name        VARCHAR(500),
     contentType VARCHAR(100) NOT NULL
 );
 

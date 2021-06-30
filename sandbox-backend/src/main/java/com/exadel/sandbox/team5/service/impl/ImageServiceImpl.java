@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.NoSuchElementException;
 
 @Transactional
@@ -25,34 +24,40 @@ public class ImageServiceImpl implements ImageService {
 
     private final ImageDAO imageDAO;
     private final MapperConverter mapper;
+
     @Value("${app.bucketNameS3}")
-    private final String bucketName;
+    private String bucketName;
+
     private final AmazonS3 s3Client;
 
 
-    public byte[] getImage(Long id) {
+    public ImageDto getImage(Long id) {
         Image img = imageDAO.findById(id).orElseThrow(NoSuchElementException::new);
-        byte[] image;
-        try {
-            image = s3Client.getObject(bucketName, img.getName()).getObjectContent().readAllBytes();
-        } catch (IOException e) {
-            throw new AmazonServiceException("File not found");
-        }
+        ImageDto image = mapper.map(img, ImageDto.class);
+        image.setContent(s3Client.getObject(bucketName, img.getName()).getObjectContent());
         return image;
     }
 
     public Long save(ImageDto image) {
+        Image img = mapper.map(image, Image.class);
+        Long idImage = imageDAO.saveAndFlush(img).getId();
+        String imageName = parseImageName(image, idImage);
         try {
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(image.getContentType());
-            PutObjectRequest request = new PutObjectRequest(bucketName, image.getName(), image.getContent(), metadata);
-            request.setMetadata(metadata);
+            PutObjectRequest request = new PutObjectRequest(bucketName, imageName, image.getContent(), metadata);
             s3Client.putObject(request);
         } catch (SdkClientException e) {
             throw new AmazonServiceException("File doesn't save");
         }
-        Image img = mapper.map(image, Image.class);
         img.setImageURL(bucketName);
-        return imageDAO.saveAndFlush(img).getId();
+        img.setName(imageName);
+        imageDAO.save(img);
+        return idImage;
+    }
+
+    private String parseImageName(ImageDto image, Long idImage) {
+        String typeFile = image.getContentType().split("/")[1];
+        return String.format("%d.%s", idImage, typeFile);
     }
 }
