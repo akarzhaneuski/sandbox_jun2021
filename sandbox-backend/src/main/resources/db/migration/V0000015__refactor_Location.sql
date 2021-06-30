@@ -1,5 +1,5 @@
 SET FOREIGN_KEY_CHECKS = 0;
-ALTER TABLE employee DROP FOREIGN KEY employee_ibfk_1;
+ALTER TABLE employee DROP FOREIGN KEY FK_employee_location;
 SET FOREIGN_KEY_CHECKS = 1;
 ALTER TABLE employee DROP COLUMN locationId;
 DROP TABLE company_location;
