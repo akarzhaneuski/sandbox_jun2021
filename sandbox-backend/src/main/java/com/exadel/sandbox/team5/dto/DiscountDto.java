@@ -19,7 +19,11 @@ public class DiscountDto extends IdentifierDto {
     private int quantity;
     private String promoCode;
     private Set<Tag> tags;
-    private Set<CompanyDto> companies;
+    private CompanyDto company;
     private Double rate;
+
     private Long imageId;
+
+    private LocationDto location;
+
 }

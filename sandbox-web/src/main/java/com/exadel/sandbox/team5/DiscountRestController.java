@@ -3,10 +3,14 @@ package com.exadel.sandbox.team5;
 import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.ReviewDto;
 import com.exadel.sandbox.team5.service.DiscountService;
+import com.exadel.sandbox.team5.service.QRCodeService;
 import com.exadel.sandbox.team5.service.ReviewService;
 import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,11 +18,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/discounts")
 @RequiredArgsConstructor
-
 public class DiscountRestController {
 
     private final DiscountService service;
     private final ReviewService reviewService;
+    private final QRCodeService qrCodeService;
 
     @GetMapping("/{id}")
     public DiscountDto getDiscount(@PathVariable Long id) {
@@ -54,6 +58,13 @@ public class DiscountRestController {
     @PostMapping("/search")
     public Page<DiscountDto> getByCriteria(@RequestBody DiscountSearchCriteria searchCriteria) {
         return service.getByCriteria(searchCriteria);
+    }
+
+    @ApiOperation("Generating QR code with param \"promoCode\"")
+    @GetMapping(value = "/qrcode", produces = MediaType.IMAGE_PNG_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public byte[] generateQRCode(@RequestParam("promoCode") String promoCode) {
+        return qrCodeService.generateQRCode(promoCode);
     }
 }
 

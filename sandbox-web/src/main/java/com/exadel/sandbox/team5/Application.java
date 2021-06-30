@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team5;
 
+import com.exadel.sandbox.team5.barcodes.QRCode;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,8 +14,12 @@ public class Application {
 		return new ModelMapper();
 	}
 
+	@Bean
+	public QRCode qrCodeGenerator() {
+		return new QRCode();
+	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
-
 }

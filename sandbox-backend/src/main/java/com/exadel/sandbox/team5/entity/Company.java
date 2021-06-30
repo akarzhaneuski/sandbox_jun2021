@@ -3,7 +3,6 @@ package com.exadel.sandbox.team5.entity;
 import lombok.*;
 
 import javax.persistence.*;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,8 +21,8 @@ public class Company extends AuditableEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "company_location",
+            name = "company_country",
             joinColumns = @JoinColumn(name = "companyId", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "locationId", referencedColumnName = "id"))
-    private Set<Location> locations = new HashSet<>();
+            inverseJoinColumns = @JoinColumn(name = "countryId", referencedColumnName = "id"))
+    private Set<Country> countries = new HashSet<>();
 }

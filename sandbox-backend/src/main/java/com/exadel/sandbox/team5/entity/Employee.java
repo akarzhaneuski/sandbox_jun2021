@@ -25,6 +25,6 @@ public class Employee extends AuditableEntity {
     private Role role;
 
     @ManyToOne
-    @JoinColumn(name = "locationId")
-    private Location locationId;
+    @JoinColumn(name = "countryId")
+    private Country country;
 }

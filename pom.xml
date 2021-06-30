@@ -40,9 +40,26 @@
         <maven.compiler.target>16</maven.compiler.target>
         <springfox-swagger.version>3.0.0</springfox-swagger.version>
         <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
+        <zxing.version>3.4.1</zxing.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>mysql</artifactId>
+            <version>1.15.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>${zxing.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>${zxing.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>

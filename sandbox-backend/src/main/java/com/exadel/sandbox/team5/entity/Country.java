@@ -2,9 +2,8 @@ package com.exadel.sandbox.team5.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -18,4 +17,7 @@ public class Country extends BaseEntity {
 
     @Column(name = "name")
     private String name;
+
+    @OneToMany(mappedBy = "country")
+    private Set<City> cities;
 }

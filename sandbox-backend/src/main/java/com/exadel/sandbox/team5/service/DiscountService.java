@@ -5,5 +5,6 @@ import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
 import org.springframework.data.domain.Page;
 
 public interface DiscountService extends CRUDService<DiscountDto> {
+
     Page<DiscountDto> getByCriteria(DiscountSearchCriteria searchCriteria);
 }
