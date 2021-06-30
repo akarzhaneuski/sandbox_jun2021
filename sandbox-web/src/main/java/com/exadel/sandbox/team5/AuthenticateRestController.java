@@ -15,7 +15,7 @@ public class AuthenticateRestController {
 
     private final AuthenticationService authenticationService;
 
-    @PostMapping("/authentication")
+    @PostMapping("/login")
     public ResponseEntity<Token> createToken(@RequestBody AuthenticationRequest request) {
         authenticationService.authenticate(request.getUsername(), request.getPassword());
         return ResponseEntity.ok(authenticationService.createToken(request.getUsername()));

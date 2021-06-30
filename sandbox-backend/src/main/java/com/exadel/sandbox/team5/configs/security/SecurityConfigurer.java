@@ -36,10 +36,11 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    //add loguot - redirect to login
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/authentication").permitAll().
+                .authorizeRequests().antMatchers("/login").permitAll().
                 anyRequest().authenticated().and().
                 exceptionHandling().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
