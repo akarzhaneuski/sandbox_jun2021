@@ -19,6 +19,8 @@ public class Image extends BaseEntity {
     private String name;
     @Column(name = "imageURL")
     private String imageURL;
+    @Column(name = "name")
+    private String name;
     @Column(name = "contentType")
     private String contentType;
 }
