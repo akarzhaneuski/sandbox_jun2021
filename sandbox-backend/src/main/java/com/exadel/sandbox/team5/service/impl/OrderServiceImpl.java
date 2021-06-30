@@ -13,7 +13,7 @@ import com.exadel.sandbox.team5.service.EmployeeService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.ValidatePromoCodeGenerator;
 import com.exadel.sandbox.team5.util.CreateOrder;
-import com.exadel.sandbox.team5.util.PairSL;
+import com.exadel.sandbox.team5.util.PairStringLong;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -112,16 +112,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Map<String, Long> getOrdersByDiscounts() {
-        return discountDAO.getAllOrdersForDiscounts().stream().collect(Collectors.toMap(PairSL::getFirst, PairSL::getSecond));
+        return discountDAO.getAllOrdersForDiscounts().stream().collect(Collectors.toMap(PairStringLong::getFirst, PairStringLong::getSecond));
     }
 
     @Override
     public Map<String, Long> getOrdersByCompanies() {
-        return companyDAO.getAllOrdersForCompanies().stream().collect(Collectors.toMap(PairSL::getFirst, PairSL::getSecond));
+        return companyDAO.getAllOrdersForCompanies().stream().collect(Collectors.toMap(PairStringLong::getFirst, PairStringLong::getSecond));
     }
 
     @Override
     public Map<String, Long> getOrdersByTags() {
-        return discountDAO.getAllOrdersForTags().stream().collect(Collectors.toMap(PairSL::getFirst, PairSL::getSecond));
+        return orderDAO.getAllOrdersForTags().stream().collect(Collectors.toMap(PairStringLong::getFirst, PairStringLong::getSecond));
     }
 }

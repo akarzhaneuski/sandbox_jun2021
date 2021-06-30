@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team5.dao;
 
 import com.exadel.sandbox.team5.entity.Order;
+import com.exadel.sandbox.team5.util.PairStringLong;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,8 +13,6 @@ public interface OrderDAO extends JpaRepository<Order, Long> {
 
     List<Order> findAllByEmployeeId(Long id);
 
-    List<Order> findAllByDiscountId(Long discountId);
-
     Order getOrderByDiscountIdAndEmployeePromocode(Long id, String promoCode);
 
     @Modifying
@@ -21,21 +20,38 @@ public interface OrderDAO extends JpaRepository<Order, Long> {
     void setPromoCodeStatus(@Param("status") Boolean status, @Param("promoCode") String promoCode);
 
     @Query(value = """
-            SELECT o.* FROM `order` o
+            SELECT COUNT(o.id) FROM `order` o
                 LEFT JOIN discount d ON o.discountId = d.id
                 LEFT JOIN company c ON d.companyId = c.id
             WHERE c.id=(:companyId)
                 GROUP BY o.id;
                 """, nativeQuery = true)
-    List<Order> getOrdersByCompanyIds(@Param("companyId") Long companyId);
+    int getOrdersByCompanyId(@Param("companyId") Long companyId);
 
     @Query(value = """
-            SELECT o.* FROM `order` o
+            SELECT COUNT(o.id) FROM `order` o
+                LEFT JOIN discount d ON o.discountId = d.id
+            WHERE d.id=(:discountId)
+                GROUP BY o.id;
+                """, nativeQuery = true)
+    int getOrdersByDiscountId(@Param("discountId") Long discountId);
+
+    @Query(value = """
+            SELECT COUNT(o.id) FROM `order` o
                 LEFT JOIN discount d ON o.discountId = d.id
                 LEFT JOIN discount_tag dt on d.id = dt.discountId
                 LEFT JOIN tag t on t.id = dt.tagId
-            WHERE t.tagName IN (:tags)
+            WHERE t.tagName=(:tag)
                 GROUP BY o.id;
             """, nativeQuery = true)
-    List<Order> getOrdersByTags(@Param("tags") List<String> tags);
+    int getOrdersByTag(@Param("tag") String tag);
+
+    @Query(value = """
+            SELECT new com.exadel.sandbox.team5.util.PairStringLong(t.name, COUNT(o.id))
+            FROM Order o
+                JOIN o.discount d
+                JOIN d.tags t
+            GROUP BY t.id
+            """)
+    List<PairStringLong> getAllOrdersForTags();
 }

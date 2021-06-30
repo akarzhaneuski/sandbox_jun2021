@@ -18,7 +18,7 @@ public class ReviewRestController {
         return service.getById(id);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public List<ReviewDto> getAll() {
         return service.getAll();
     }
