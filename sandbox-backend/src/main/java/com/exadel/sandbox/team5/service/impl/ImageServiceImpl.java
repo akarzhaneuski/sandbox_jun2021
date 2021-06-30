@@ -1,12 +1,19 @@
 package com.exadel.sandbox.team5.service.impl;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.exadel.sandbox.team5.dao.ImageDAO;
 import com.exadel.sandbox.team5.dto.ImageDto;
 import com.exadel.sandbox.team5.entity.Image;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.ImageService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.vfs2.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
