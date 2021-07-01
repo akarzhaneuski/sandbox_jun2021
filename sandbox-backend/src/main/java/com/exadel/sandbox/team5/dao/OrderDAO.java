@@ -56,7 +56,7 @@ public interface OrderDAO extends JpaRepository<Order, Long> {
     List<Pair> getAllOrdersForTags();
 
     @Query(value = """
-            SELECT new com.exadel.sandbox.team5.util.Pair(t.name, COUNT(o.id))
+            SELECT new com.exadel.sandbox.team5.util.Pair(c.name, COUNT(o.id))
             FROM Order o
                 JOIN o.discount d
                 JOIN d.tags t
