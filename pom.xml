@@ -40,6 +40,8 @@
         <maven.compiler.target>16</maven.compiler.target>
         <springfox-swagger.version>3.0.0</springfox-swagger.version>
         <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
+        <jsonwebtoken.version>0.9.1</jsonwebtoken.version>
+        <jaxb.api.version>2.3.1</jaxb.api.version>
         <zxing.version>3.4.1</zxing.version>
     </properties>
 
