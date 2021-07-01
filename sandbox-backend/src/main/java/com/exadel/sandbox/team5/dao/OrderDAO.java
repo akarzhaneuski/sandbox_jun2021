@@ -1,7 +1,7 @@
 package com.exadel.sandbox.team5.dao;
 
 import com.exadel.sandbox.team5.entity.Order;
-import com.exadel.sandbox.team5.util.PairStringLong;
+import com.exadel.sandbox.team5.util.Pair;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -47,11 +47,11 @@ public interface OrderDAO extends JpaRepository<Order, Long> {
     int getOrdersByTag(@Param("tag") String tag);
 
     @Query(value = """
-            SELECT new com.exadel.sandbox.team5.util.PairStringLong(t.name, COUNT(o.id))
+            SELECT new com.exadel.sandbox.team5.util.Pair(t.name, COUNT(o.id))
             FROM Order o
                 JOIN o.discount d
                 JOIN d.tags t
             GROUP BY t.id
             """)
-    List<PairStringLong> getAllOrdersForTags();
+    List<Pair> getAllOrdersForTags();
 }

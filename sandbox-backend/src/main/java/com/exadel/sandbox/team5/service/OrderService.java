@@ -10,9 +10,9 @@ public interface OrderService extends CRUDService<OrderDto> {
 
     OrderDto createOrder(CreateOrder criteria);
 
-    Map<String, Long> getOrdersByDiscounts();
+    Map<String, String> getOrdersByDiscounts();
 
-    Map<String, Long> getOrdersByCompanies();
+    Map<String, String> getOrdersByCompanies();
 
-    Map<String, Long> getOrdersByTags();
+    Map<String, String> getOrdersByTags();
 }

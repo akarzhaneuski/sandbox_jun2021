@@ -33,7 +33,7 @@ public class TagRestController {
     }
 
     @GetMapping("/statistic")
-    public Map<String, Long> getStatistic() {
+    public Map<String, String> getStatistic() {
         return orderService.getOrdersByTags();
     }
 }

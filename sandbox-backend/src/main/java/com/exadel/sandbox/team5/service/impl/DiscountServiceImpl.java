@@ -7,7 +7,6 @@ import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
-import com.exadel.sandbox.team5.util.PairLongDouble;
 import com.exadel.sandbox.team5.util.QueryUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -50,10 +49,7 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public List<DiscountDto> getAll() {
         List<Discount> discounts = discountDAO.findAll();
-        Set<Long> discountIds = discounts.stream().map(Discount::getId).collect(Collectors.toSet());
-        Map<Long, Double> rateList = reviewDAO.getRateByDiscountId(discountIds).stream()
-                .collect(Collectors.toMap(PairLongDouble::getFirst, PairLongDouble::getSecond));
-        return setRate(rateList, mapper.mapAll(discounts, DiscountDto.class));
+        return setRate(getRate(discounts), mapper.mapAll(discounts, DiscountDto.class));
     }
 
     @Override
@@ -82,12 +78,15 @@ public class DiscountServiceImpl implements DiscountService {
             result = discountDAO.getByCriteriaWithTags(searchText,
                     searchCriteria.getTags(), searchCriteria.getRate());
         }
-        Set<Long> discountIds = result.stream().map(Discount::getId).collect(Collectors.toSet());
-        Map<Long, Double> rateList = reviewDAO.getRateByDiscountId(discountIds).stream()
-                .collect(Collectors.toMap(PairLongDouble::getFirst, PairLongDouble::getSecond));
         List<DiscountDto> discountDTOs = mapper.mapAll(result, DiscountDto.class);
-        discountDTOs = setRate(rateList, discountDTOs);
+        discountDTOs = setRate(getRate(result), discountDTOs);
         return new PageImpl<>(discountDTOs, searchCriteria.getPageRequest(), discountDTOs.size());
+    }
+
+    private Map<Long, Double> getRate(List<Discount> result) {
+        Set<Long> discountIds = result.stream().map(Discount::getId).collect(Collectors.toSet());
+        return reviewDAO.getRateByDiscountId(discountIds).stream()
+                .collect(Collectors.toMap(x -> Long.parseLong(x.getFirst()), y -> Double.parseDouble(y.getSecond())));
     }
 
     public static List<DiscountDto> setRate(Map<Long, Double> rtMap, List<DiscountDto> dtoList) {
