@@ -1,12 +1,13 @@
 package com.exadel.sandbox.team5.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -16,14 +17,14 @@ import java.util.*;
 
 @Entity
 @Table(name = "discount")
-public class Discount extends AuditableEntity {
+public class Discount extends AuditableEntity implements Serializable {
 
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany
     @JoinTable(
             name = "discount_tag",
-            joinColumns = { @JoinColumn(name = "discountId") },
-            inverseJoinColumns = { @JoinColumn(name = "tagId") }
+            joinColumns = {@JoinColumn(name = "discountId")},
+            inverseJoinColumns = {@JoinColumn(name = "tagId")}
     )
     private Set<Tag> tags = new HashSet<>();
 
@@ -50,5 +51,14 @@ public class Discount extends AuditableEntity {
 
     @Column(name = "promocode")
     private String promoCode;
+
+
+    @Column(name = "imageId")
+    private Long imageId;
+
+
+    @ManyToOne
+    @JoinColumn(name="countryId")
+    private Country country;
 
 }

@@ -1,0 +1,10 @@
+CREATE TABLE image
+(
+    id          INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    imageURL    VARCHAR(500),
+    name        VARCHAR(500),
+    contentType VARCHAR(100) NOT NULL
+);
+
+ALTER TABLE discount ADD COLUMN imageId INT;
+ALTER TABLE discount ADD CONSTRAINT FK_DISCOUNT_IMAGE FOREIGN KEY (imageId) REFERENCES image (id);

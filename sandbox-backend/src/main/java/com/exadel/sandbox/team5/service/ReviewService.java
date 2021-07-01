@@ -1,6 +1,10 @@
 package com.exadel.sandbox.team5.service;
 
-import com.exadel.sandbox.team5.entity.Review;
+import com.exadel.sandbox.team5.dto.ReviewDto;
 
-public interface ReviewService extends CRUDService<Review> {
+import java.util.List;
+
+public interface ReviewService extends CRUDService<ReviewDto> {
+
+    List<ReviewDto> getReviewsByDiscount(Long id);
 }

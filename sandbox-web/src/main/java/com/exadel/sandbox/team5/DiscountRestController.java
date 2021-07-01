@@ -1,37 +1,46 @@
 package com.exadel.sandbox.team5;
 
-import com.exadel.sandbox.team5.entity.Discount;
+import com.exadel.sandbox.team5.dto.DiscountDto;
+import com.exadel.sandbox.team5.dto.ReviewDto;
 import com.exadel.sandbox.team5.service.DiscountService;
+import com.exadel.sandbox.team5.service.QRCodeService;
+import com.exadel.sandbox.team5.service.ReviewService;
+import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/discount")
+@RequestMapping("/discounts")
 @RequiredArgsConstructor
-
 public class DiscountRestController {
 
     private final DiscountService service;
+    private final ReviewService reviewService;
+    private final QRCodeService qrCodeService;
 
     @GetMapping("/{id}")
-    public Discount getDiscount(@PathVariable Long id) {
+    public DiscountDto getDiscount(@PathVariable Long id) {
         return service.getById(id);
     }
 
     @GetMapping("/all")
-    public List<Discount> getAll() {
+    public List<DiscountDto> getAll() {
         return service.getAll();
     }
 
     @PostMapping
-    public Discount save(@RequestBody Discount entity) {
+    public DiscountDto save(@RequestBody DiscountDto entity) {
         return service.save(entity);
     }
 
     @PutMapping("/{id}")
-    public Discount update(@PathVariable Long id, @RequestBody Discount entity) {
+    public DiscountDto update(@PathVariable Long id, @RequestBody DiscountDto entity) {
         entity.setId(id);
         return service.update(entity);
     }
@@ -41,5 +50,21 @@ public class DiscountRestController {
         service.delete(id);
     }
 
+    @GetMapping("/{discountId}/reviews")
+    public List<ReviewDto> getReviewsByDiscount(@PathVariable Long discountId) {
+        return reviewService.getReviewsByDiscount(discountId);
+    }
+
+    @PostMapping("/search")
+    public Page<DiscountDto> getByCriteria(@RequestBody DiscountSearchCriteria searchCriteria) {
+        return service.getByCriteria(searchCriteria);
+    }
+
+    @ApiOperation("Generating QR code with param \"promoCode\"")
+    @GetMapping(value = "/qrcode", produces = MediaType.IMAGE_PNG_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public byte[] generateQRCode(@RequestParam("promoCode") String promoCode) {
+        return qrCodeService.generateQRCode(promoCode);
+    }
 }
 

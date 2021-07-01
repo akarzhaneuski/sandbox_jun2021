@@ -4,6 +4,8 @@ server:
     context-path: /api
 
 spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
   application:
     name: sandbox
   datasource:
@@ -22,6 +24,9 @@ logging:
   level:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org.hibernate.SQL: DEBUG
+
 app:
   jwtSecret: JoIfaQvdx7rbFYOTyjdAcOk/xyGTF8YuSt5N477flHiPbuA7tuFky
   jwtExpirationMs: 3600000
+  bucketNameS3: exadel-image
+
