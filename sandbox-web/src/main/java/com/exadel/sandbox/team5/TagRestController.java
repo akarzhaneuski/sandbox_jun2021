@@ -36,4 +36,9 @@ public class TagRestController {
     public Map<String, String> getStatistic() {
         return orderService.getOrdersByTags();
     }
+
+    @GetMapping("/categories/statistic")
+    public Map<String, String> getStatisticByCategories(){
+        return orderService.getOrdersByCategories();
+    }
 }

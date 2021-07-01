@@ -124,4 +124,9 @@ public class OrderServiceImpl implements OrderService {
     public Map<String, String> getOrdersByTags() {
         return orderDAO.getAllOrdersForTags().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
     }
+
+    @Override
+    public Map<String, String> getOrdersByCategories() {
+        return orderDAO.getAllOrdersForCategories().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+    }
 }
