@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-public class V00000017__modifyPasswordEmployee extends BaseJavaMigration {
+public class V00000018__modifyPasswordEmployee extends BaseJavaMigration {
     @Override
     public void migrate(Context context) {
         JdbcTemplate jdbcTemplate =
