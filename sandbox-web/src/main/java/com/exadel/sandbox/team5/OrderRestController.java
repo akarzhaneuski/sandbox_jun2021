@@ -47,7 +47,7 @@ public class OrderRestController {
     }
 
     @PutMapping("/create")
-    public OrderDto create(@RequestBody CreateOrder criteria) {
-        return orderService.createOrder(criteria);
+    public OrderDto create(@RequestBody CreateOrder createOrder) {
+        return orderService.createOrder(createOrder);
     }
 }

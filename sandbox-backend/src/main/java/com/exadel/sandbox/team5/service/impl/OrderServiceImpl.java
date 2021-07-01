@@ -76,21 +76,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto createOrder(CreateOrder parameters) {
+    public OrderDto createOrder(CreateOrder createOrder) {
 
         Employee employee = employeeService.getById(1L);//TODO should be fix after security merge
 
-        if (discountService.getById(parameters.getDiscountId()) != null) {
+        if (discountService.getById(createOrder.getDiscountId()) != null) {
 
-            if (activeOrdersByTime(activeOrdersByStatus(employee)).size() < parameters.getMaxOrderSize()) {
+            if (activeOrdersByTime(activeOrdersByStatus(employee)).size() < createOrder.getMaxOrderSize()) {
                 Order order = new Order();
-                order.setDiscount(mapper.map(discountService.getById(parameters.getDiscountId()), Discount.class));
+                order.setDiscount(mapper.map(discountService.getById(createOrder.getDiscountId()), Discount.class));
                 order.setEmployee(employeeService.getById(employee.getId()));
                 order.setEmployeePromocode(new ValidatePromoCodeGenerator().generateUUID());
                 order.setPromoCodeStatus(true);
                 Date currentDate = new Date();
                 LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-                localDateTime = localDateTime.plusDays(parameters.getAmountDiscountDays());
+                localDateTime = localDateTime.plusDays(createOrder.getAmountDiscountDays());
                 Date currentDatePlusOneDay = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
                 order.setPromoCodePeriodStart(currentDate);
                 order.setPromoCodePeriodEnd(currentDatePlusOneDay);

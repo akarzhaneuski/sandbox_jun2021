@@ -8,7 +8,7 @@ import java.util.Map;
 public interface OrderService extends CRUDService<OrderDto> {
     OrderDto invalidatePromoCode(Long discountId, String promoCode);
 
-    OrderDto createOrder(CreateOrder criteria);
+    OrderDto createOrder(CreateOrder createOrder);
 
     Map<String, String> getOrdersByDiscounts();
 
