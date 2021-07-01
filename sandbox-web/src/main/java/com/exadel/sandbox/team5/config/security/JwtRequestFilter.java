@@ -1,6 +1,6 @@
-package com.exadel.sandbox.team5.configs.security;
+package com.exadel.sandbox.team5.config.security;
 
-import com.exadel.sandbox.team5.configs.security.util.JwtUtil;
+import com.exadel.sandbox.team5.config.security.util.JwtUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

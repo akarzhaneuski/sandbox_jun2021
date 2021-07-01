@@ -1,4 +1,4 @@
-package com.exadel.sandbox.team5.configs.security.pojo;
+package com.exadel.sandbox.team5.config.security.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

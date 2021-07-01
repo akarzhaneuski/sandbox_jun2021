@@ -1,8 +1,9 @@
-package com.exadel.sandbox.team5.configs.security.util;
+package com.exadel.sandbox.team5.config.security.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -14,10 +15,10 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    //    @Value("${app.jwtSecret}")
-    private String jwtSecret = "salt";
-    //    @Value("${app.jwtExpirationMs}")
-    private long jwtExpirationMs = 100000;
+    @Value("${app.jwtSecret}")
+    private String jwtSecret;
+    @Value("${app.jwtExpirationMs}")
+    private long jwtExpirationMs;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);

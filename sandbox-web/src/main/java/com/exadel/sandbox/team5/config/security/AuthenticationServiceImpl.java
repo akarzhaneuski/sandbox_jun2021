@@ -1,9 +1,7 @@
-package com.exadel.sandbox.team5.service.impl;
+package com.exadel.sandbox.team5.config.security;
 
-import com.exadel.sandbox.team5.configs.security.JwtUserDetailsService;
-import com.exadel.sandbox.team5.configs.security.pojo.Token;
-import com.exadel.sandbox.team5.configs.security.util.JwtUtil;
-import com.exadel.sandbox.team5.service.AuthenticationService;
+import com.exadel.sandbox.team5.config.security.pojo.Token;
+import com.exadel.sandbox.team5.config.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

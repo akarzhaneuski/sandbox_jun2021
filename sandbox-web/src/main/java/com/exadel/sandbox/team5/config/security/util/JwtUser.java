@@ -1,4 +1,4 @@
-package com.exadel.sandbox.team5.configs.security.util;
+package com.exadel.sandbox.team5.config.security.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

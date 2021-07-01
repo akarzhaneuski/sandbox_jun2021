@@ -1,6 +1,6 @@
-package com.exadel.sandbox.team5.configs.security;
+package com.exadel.sandbox.team5.config.security;
 
-import com.exadel.sandbox.team5.configs.security.util.JwtUserFactory;
+import com.exadel.sandbox.team5.config.security.util.JwtUserFactory;
 import com.exadel.sandbox.team5.entity.Employee;
 import com.exadel.sandbox.team5.service.EmployeeService;
 import lombok.RequiredArgsConstructor;

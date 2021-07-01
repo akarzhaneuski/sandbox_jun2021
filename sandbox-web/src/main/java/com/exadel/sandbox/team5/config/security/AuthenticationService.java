@@ -1,6 +1,6 @@
-package com.exadel.sandbox.team5.service;
+package com.exadel.sandbox.team5.config.security;
 
-import com.exadel.sandbox.team5.configs.security.pojo.Token;
+import com.exadel.sandbox.team5.config.security.pojo.Token;
 
 public interface AuthenticationService {
 
