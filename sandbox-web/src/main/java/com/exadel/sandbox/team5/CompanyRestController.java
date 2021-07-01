@@ -3,11 +3,13 @@ package com.exadel.sandbox.team5;
 import com.exadel.sandbox.team5.entity.Company;
 import com.exadel.sandbox.team5.service.CompanyService;
 
+import com.exadel.sandbox.team5.service.OrderService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/company")
@@ -15,13 +17,14 @@ import java.util.List;
 public class CompanyRestController {
 
     private final CompanyService companyService;
+    private final OrderService orderService;
 
     @GetMapping("/{id}")
     public Company getCompany(@PathVariable Long id) {
         return companyService.getById(id);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public List<Company> getAll() {
         return companyService.getAll();
     }
@@ -45,5 +48,10 @@ public class CompanyRestController {
     @GetMapping("/{locationId}/companies")
     public List<Company> getCompaniesByLocation(@PathVariable Long locationId) {
         return companyService.getCompaniesByLocation(locationId);
+    }
+
+    @GetMapping("/statistic")
+    public Map<String, String> getStatistic() {
+        return orderService.getOrdersByCompanies();
     }
 }

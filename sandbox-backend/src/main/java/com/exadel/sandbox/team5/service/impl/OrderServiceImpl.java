@@ -1,6 +1,9 @@
 package com.exadel.sandbox.team5.service.impl;
 
+import com.exadel.sandbox.team5.dao.CompanyDAO;
+import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.OrderDAO;
+import com.exadel.sandbox.team5.dto.OrderDto;
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.entity.Employee;
 import com.exadel.sandbox.team5.entity.Order;
@@ -9,6 +12,8 @@ import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.EmployeeService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.ValidatePromoCodeGenerator;
+import com.exadel.sandbox.team5.util.CreateOrder;
+import com.exadel.sandbox.team5.util.Pair;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +22,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
@@ -29,25 +35,27 @@ public class OrderServiceImpl implements OrderService {
     private final EmployeeService employeeService;
     private final DiscountService discountService;
     private final MapperConverter mapper;
+    private final DiscountDAO discountDAO;
+    private final CompanyDAO companyDAO;
 
     @Override
-    public Order getById(Long id) {
-        return orderDAO.findById(id).orElseThrow(NoSuchElementException::new);
+    public OrderDto getById(Long id) {
+        return mapper.map(orderDAO.findById(id).orElseThrow(NoSuchElementException::new), OrderDto.class);
     }
 
     @Override
-    public List<Order> getAll() {
-        return orderDAO.findAll();
+    public List<OrderDto> getAll() {
+        return mapper.mapAll(orderDAO.findAll(), OrderDto.class);
     }
 
     @Override
-    public Order save(Order order) {
-        return orderDAO.save(order);
+    public OrderDto save(OrderDto order) {
+        return mapper.map(orderDAO.saveAndFlush(mapper.map((order), Order.class)), OrderDto.class);
     }
 
     @Override
-    public Order update(Order order) {
-        return orderDAO.save(order);
+    public OrderDto update(OrderDto order) {
+        return this.save(order);
     }
 
     @Override
@@ -55,39 +63,39 @@ public class OrderServiceImpl implements OrderService {
         orderDAO.deleteById(id);
     }
 
-
-    public Order invalidatePromoCode(Long discountId, String promoCode) {
+    @Override
+    public OrderDto invalidatePromoCode(Long discountId, String promoCode) {
 
         Order selectedOrder = orderDAO.getOrderByDiscountIdAndEmployeePromocode(discountId, promoCode);
 
         if (selectedOrder != null && selectedOrder.getPromoCodePeriodEnd().getTime() > new Date().getTime()) {
             orderDAO.setPromoCodeStatus(false, promoCode);
-            return selectedOrder;
+            return mapper.map(selectedOrder, OrderDto.class);
         }
         throw new NoSuchElementException();
     }
 
+    @Override
+    public OrderDto createOrder(CreateOrder createOrder) {
 
-    public Order createOrder(Long discountId, int maxOrderSize, long amountDiscountDays) {
         Employee employee = employeeService.getById(1L);//TODO should be fix after security merge
 
-        if (discountService.getById(discountId) != null) {
+        if (discountService.getById(createOrder.getDiscountId()) != null) {
 
-            if (activeOrdersByTime(activeOrdersByStatus(employee)).size() < maxOrderSize) {
+            if (activeOrdersByTime(activeOrdersByStatus(employee)).size() < createOrder.getMaxOrderSize()) {
                 Order order = new Order();
-                order.setDiscount(mapper.map(discountService.getById(discountId), Discount.class));
+                order.setDiscount(mapper.map(discountService.getById(createOrder.getDiscountId()), Discount.class));
                 order.setEmployee(employeeService.getById(employee.getId()));
                 order.setEmployeePromocode(new ValidatePromoCodeGenerator().generateUUID());
                 order.setPromoCodeStatus(true);
-
                 Date currentDate = new Date();
                 LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-                localDateTime = localDateTime.plusDays(amountDiscountDays);
+                localDateTime = localDateTime.plusDays(createOrder.getAmountDiscountDays());
                 Date currentDatePlusOneDay = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
                 order.setPromoCodePeriodStart(currentDate);
                 order.setPromoCodePeriodEnd(currentDatePlusOneDay);
 
-                return orderDAO.save(order);
+                return mapper.map(orderDAO.save(order), OrderDto.class);
             }
 
         }
@@ -100,5 +108,20 @@ public class OrderServiceImpl implements OrderService {
 
     private List<Order> activeOrdersByTime(List<Order> activeOrders) {
         return activeOrders.stream().filter(e -> System.currentTimeMillis() < e.getPromoCodePeriodEnd().getTime()).collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<String, String> getOrdersByDiscounts() {
+        return discountDAO.getAllOrdersForDiscounts().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+    }
+
+    @Override
+    public Map<String, String> getOrdersByCompanies() {
+        return companyDAO.getAllOrdersForCompanies().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+    }
+
+    @Override
+    public Map<String, String> getOrdersByTags() {
+        return orderDAO.getAllOrdersForTags().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
     }
 }

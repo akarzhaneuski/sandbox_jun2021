@@ -21,7 +21,7 @@ public class LocationRestController {
         return service.getById(id);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public List<LocationDto> getAll(){
         return service.getAll();
     }
