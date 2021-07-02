@@ -59,7 +59,8 @@ public interface OrderDAO extends JpaRepository<Order, Long> {
     List<Pair> getAllOrdersForTags();
 
     @Modifying
-    @Query("update Order o set o.promoCodeStatus = false where o.promoCodePeriodEnd < (:currentTime) ")
-    //@Query("update Order o set o.promoCodeStatus = false where o.id = 2 ")
+    @Query(value = """
+            update Order o set o.promoCodeStatus = false where o.promoCodePeriodEnd < (:currentTime) 
+            """)
     void setPromoCodeStatusAfterExpirationTime(@Param("currentTime") Date currentTime);
 }
