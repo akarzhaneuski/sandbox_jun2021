@@ -48,6 +48,7 @@ public class OrderRestController {
 
     @PutMapping("/create")
     public OrderDto create(@RequestBody CreateOrder createOrder) {
+        createOrder.setAmountDiscountDays(7);
         return orderService.createOrder(createOrder);
     }
 }
