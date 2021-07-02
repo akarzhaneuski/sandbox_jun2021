@@ -7,6 +7,7 @@ import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.QRCodeService;
 import com.exadel.sandbox.team5.service.ReviewService;
 import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
+import com.exadel.sandbox.team5.util.SearchCriteria;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,11 @@ public class DiscountRestController {
     @GetMapping
     public List<DiscountDto> getAll() {
         return service.getAll();
+    }
+
+    @PostMapping("/all")
+    public Page<DiscountDto> getAllSort(@RequestBody SearchCriteria criteria) {
+        return service.getAllSort(criteria);
     }
 
     @PostMapping

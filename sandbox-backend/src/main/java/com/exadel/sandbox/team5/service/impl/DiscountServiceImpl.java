@@ -8,9 +8,11 @@ import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.util.QueryUtils;
+import com.exadel.sandbox.team5.util.SearchCriteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -28,6 +30,13 @@ public class DiscountServiceImpl implements DiscountService {
     private final DiscountDAO discountDAO;
     private final MapperConverter mapper;
     private final ReviewDAO reviewDAO;
+
+    @Override
+    public Page<DiscountDto> getAllSort(SearchCriteria criteria) {
+        List<Discount> dis = discountDAO.findAll();
+        List<DiscountDto> discounts = mapper.mapAll(dis, DiscountDto.class);
+        return new PageImpl<>(discounts, criteria.getPageRequest(), discounts.size());
+    }
 
     @Override
     public DiscountDto getById(Long id) {
