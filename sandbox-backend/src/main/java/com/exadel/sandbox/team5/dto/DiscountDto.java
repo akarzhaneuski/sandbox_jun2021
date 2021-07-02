@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team5.dto;
 
+import com.exadel.sandbox.team5.entity.Category;
 import com.exadel.sandbox.team5.entity.Tag;
 import lombok.*;
 
@@ -21,7 +22,7 @@ public class DiscountDto extends IdentifierDto {
     private Set<Tag> tags;
     private CompanyDto company;
     private Double rate;
-
+    private Category category;
     private Long imageId;
 
     private LocationDto location;
