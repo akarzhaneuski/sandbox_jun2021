@@ -5,22 +5,24 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
+@Transactional
+@Service
 @RequiredArgsConstructor
 @Slf4j
-@Service
 public class DiscountStatusScheduler {
 
     private final OrderDAO orderDAO;
 
-    private static final int delayToInvalidateOrder = 1000;
+    private static final int delayToInvalidateOrder = 1000*3600;
 
     @Scheduled(fixedRate = delayToInvalidateOrder)
     public void reportCurrentTime() {
-        log.debug("start scha");
-        orderDAO.setPromoCodeStatusAfterExpirationTime(new Date());
-        log.info("*******************");
+        log.debug("start scheduler");
+        orderDAO.changePromoCodeStatusAfterExpirationTime(new Date());
+        log.debug("stop scheduler");
     }
 }

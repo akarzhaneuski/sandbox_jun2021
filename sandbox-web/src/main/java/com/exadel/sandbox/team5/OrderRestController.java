@@ -48,7 +48,7 @@ public class OrderRestController {
 
     @PutMapping("/create")
     public OrderDto create(@RequestBody CreateOrder createOrder) {
-        if ( createOrder.getAmountDiscountDays() == 0) {
+        if (createOrder != null && createOrder.getAmountDiscountDays() == 0) {
             createOrder.setAmountDiscountDays(7);
         }
         return orderService.createOrder(createOrder);

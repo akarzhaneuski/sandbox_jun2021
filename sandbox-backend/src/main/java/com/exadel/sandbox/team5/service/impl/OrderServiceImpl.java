@@ -15,7 +15,6 @@ import com.exadel.sandbox.team5.service.ValidatePromoCodeGenerator;
 import com.exadel.sandbox.team5.util.CreateOrder;
 import com.exadel.sandbox.team5.util.Pair;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,8 +29,6 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 @RequiredArgsConstructor
-@Slf4j
-//@EnableScheduling
 public class OrderServiceImpl implements OrderService {
 
     private final OrderDAO orderDAO;
@@ -40,8 +37,6 @@ public class OrderServiceImpl implements OrderService {
     private final MapperConverter mapper;
     private final DiscountDAO discountDAO;
     private final CompanyDAO companyDAO;
-    private final int delayToInvalidateOrder = 5000;
-
 
     @Override
     public OrderDto getById(Long id) {
@@ -95,8 +90,7 @@ public class OrderServiceImpl implements OrderService {
                 order.setPromoCodeStatus(true);
                 Date currentDate = new Date();
                 LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-                //localDateTime = localDateTime.plusDays(createOrder.getAmountDiscountDays());
-                localDateTime = localDateTime.plusMinutes(1);
+                localDateTime = localDateTime.plusDays(createOrder.getAmountDiscountDays());
                 Date currentDatePlusOneDay = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
                 order.setPromoCodePeriodStart(currentDate);
                 order.setPromoCodePeriodEnd(currentDatePlusOneDay);
@@ -130,10 +124,4 @@ public class OrderServiceImpl implements OrderService {
     public Map<String, String> getOrdersByTags() {
         return orderDAO.getAllOrdersForTags().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
     }
-
-//    @Scheduled(fixedRate = delayToInvalidateOrder)
-//    public void reportCurrentTime() {
-//        log.info("*******************");
-//        orderDAO.setPromoCodeStatusAfterExpirationTime(new Date());
-//    }
 }
