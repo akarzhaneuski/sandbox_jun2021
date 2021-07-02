@@ -74,5 +74,15 @@ public class DiscountRestController {
     public Map<String, String> getStatistic() {
         return orderService.getOrdersByDiscounts();
     }
+
+    @GetMapping("/views")
+    public Long getViewsByDiscountId(Long discountId){
+        return service.getViewsByDiscountId(discountId);
+    }
+
+    @GetMapping("/getAllViews")
+    public Map<String, String> getViewsStatistic() {
+        return service.getAllViewsByDiscount();
+    }
 }
 

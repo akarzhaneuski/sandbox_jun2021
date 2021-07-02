@@ -3,6 +3,7 @@ package com.exadel.sandbox.team5.dao;
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.util.Pair;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -46,4 +47,20 @@ public interface DiscountDAO extends JpaRepository<Discount, Long> {
                 GROUP BY d.id
             """)
     List<Pair> getAllOrdersForDiscounts();
+
+    @Modifying
+    @Query(value = """
+            UPDATE discount SET views = views + 1 WHERE discount.id = (:discountId);
+            """, nativeQuery = true)
+    void incrementViewsByDiscountId(@Param("discountId") Long discountId);
+
+    @Query(value = """
+            SELECT d.views FROM discount d WHERE d.id = (:discountId);
+            """, nativeQuery = true)
+    long getViewsByDiscountId(@Param("discountId") Long discountId);
+
+    @Query(value = """
+            SELECT new com.exadel.sandbox.team5.util.Pair(d.name, d.views) FROM Discount d order by d.name asc
+            """)
+    List<Pair> getAllViewsByDiscount();
 }

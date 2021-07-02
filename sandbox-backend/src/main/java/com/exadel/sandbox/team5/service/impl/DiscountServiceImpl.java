@@ -7,6 +7,7 @@ import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
+import com.exadel.sandbox.team5.util.Pair;
 import com.exadel.sandbox.team5.util.QueryUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,10 +15,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -31,6 +29,7 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public DiscountDto getById(Long id) {
+        discountDAO.incrementViewsByDiscountId(id);
         DiscountDto discountId = discountDAO.findById(id)
                 .map(discount -> mapper.map(discount, DiscountDto.class))
                 .orElseThrow(NoSuchElementException::new);
@@ -95,5 +94,15 @@ public class DiscountServiceImpl implements DiscountService {
             else d.setRate(rtMap.get(d.getId()));
         }
         return dtoList;
+    }
+
+    @Override
+    public Long getViewsByDiscountId(Long discountId) {
+        return discountDAO.getViewsByDiscountId(discountId);
+    }
+
+    @Override
+    public Map<String, String> getAllViewsByDiscount() {
+        return discountDAO.getAllViewsByDiscount().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
     }
 }

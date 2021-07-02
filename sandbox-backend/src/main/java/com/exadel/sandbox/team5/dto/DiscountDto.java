@@ -26,4 +26,6 @@ public class DiscountDto extends IdentifierDto {
 
     private LocationDto location;
 
+    private Long views;
+
 }

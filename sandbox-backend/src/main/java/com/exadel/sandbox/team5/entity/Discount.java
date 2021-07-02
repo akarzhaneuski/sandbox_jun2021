@@ -61,4 +61,6 @@ public class Discount extends AuditableEntity implements Serializable {
     @JoinColumn(name="countryId")
     private Country country;
 
+    @Column(name = "views")
+    private Long views;
 }
