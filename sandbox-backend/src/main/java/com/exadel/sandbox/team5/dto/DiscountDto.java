@@ -1,6 +1,5 @@
 package com.exadel.sandbox.team5.dto;
 
-import com.exadel.sandbox.team5.entity.Category;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,5 +25,5 @@ public class DiscountDto extends IdentifierDto {
     private Double rate;
     private CategoryDto category;
     private Long imageId;
-    private LocationDto location;
+    private CountryDto country;
 }
