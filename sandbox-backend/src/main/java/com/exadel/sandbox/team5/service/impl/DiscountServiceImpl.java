@@ -12,7 +12,6 @@ import com.exadel.sandbox.team5.util.SearchCriteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -33,9 +32,8 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public Page<DiscountDto> getAllSort(SearchCriteria criteria) {
-        List<Discount> dis = discountDAO.findAll();
-        List<DiscountDto> discounts = mapper.mapAll(dis, DiscountDto.class);
-        return new PageImpl<>(discounts, criteria.getPageRequest(), discounts.size());
+        Page<Discount> dis = discountDAO.findAll(criteria.getPageRequest());
+        return mapper.mapToPage(dis, DiscountDto.class);
     }
 
     @Override
@@ -80,16 +78,20 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public Page<DiscountDto> getByCriteria(DiscountSearchCriteria searchCriteria) {
         String searchText = QueryUtils.getWildcard(searchCriteria.getSearchText());
-        List<Discount> result;
+        Page<Discount> result;
+        if (searchCriteria.isEmpty()) {
+            return getAllSort(searchCriteria);
+        }
         if (searchCriteria.getTags() == null || searchCriteria.getTags().isEmpty()) {
-            result = discountDAO.getByCriteria(searchText, searchCriteria.getRate());
+            result = discountDAO.getByCriteria(searchText, searchCriteria.getRate(), searchCriteria.getPageRequest());
         } else {
             result = discountDAO.getByCriteriaWithTags(searchText,
-                    searchCriteria.getTags(), searchCriteria.getRate());
+                    searchCriteria.getTags(), searchCriteria.getRate(), searchCriteria.getPageRequest());
         }
-        List<DiscountDto> discountDTOs = mapper.mapAll(result, DiscountDto.class);
-        discountDTOs = setRate(getRate(result), discountDTOs);
-        return new PageImpl<>(discountDTOs, searchCriteria.getPageRequest(), discountDTOs.size());
+        return mapper.mapToPage(result, DiscountDto.class);
+//        List<DiscountDto> discountDTOs = mapper.mapAll(result, DiscountDto.class);
+//        discountDTOs = setRate(getRate(result), discountDTOs);
+//        return new PageImpl<>(discountDTOs, searchCriteria.getPageRequest(), discountDTOs.size());
     }
 
     private Map<Long, Double> getRate(List<Discount> result) {

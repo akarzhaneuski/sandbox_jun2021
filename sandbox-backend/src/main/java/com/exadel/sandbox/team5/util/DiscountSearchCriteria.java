@@ -10,8 +10,8 @@ import java.util.Set;
 @NoArgsConstructor
 public class DiscountSearchCriteria extends SearchCriteria {
     private  Set<String> tags;
-    private  int rate;
-    private  String searchText;
+    private int rate;
+    private String searchText;
 
     public DiscountSearchCriteria(int pageNum, int itemsPerPage, List<Sorting> orders, Set<String> tags,
                                   int rate, String searchText) {
@@ -19,5 +19,12 @@ public class DiscountSearchCriteria extends SearchCriteria {
         this.tags = tags;
         this.rate = rate;
         this.searchText = searchText;
+    }
+
+    public boolean isEmpty() {
+        if (searchText == null && tags == null) {
+            return true;
+        }
+        return false;
     }
 }
