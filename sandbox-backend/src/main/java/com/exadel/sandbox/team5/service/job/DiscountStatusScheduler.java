@@ -17,7 +17,7 @@ public class DiscountStatusScheduler {
 
     private final OrderDAO orderDAO;
 
-    private static final int delayToInvalidateOrder = 1000*3600;
+    private static final int delayToInvalidateOrder = 1000*60;
 
     @Scheduled(fixedRate = delayToInvalidateOrder)
     public void reportCurrentTime() {
