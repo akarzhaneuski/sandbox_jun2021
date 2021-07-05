@@ -19,7 +19,6 @@ import java.util.Set;
 @Table(name = "discount")
 public class Discount extends AuditableEntity implements Serializable {
 
-
     @ManyToMany
     @JoinTable(
             name = "discount_tag",
@@ -52,16 +51,15 @@ public class Discount extends AuditableEntity implements Serializable {
     @Column(name = "promocode")
     private String promoCode;
 
-
     @Column(name = "imageId")
     private Long imageId;
 
     @ManyToOne
-    @JoinColumn(name="categoryId")
+    @JoinColumn(name = "categoryId")
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name="countryId")
+    @JoinColumn(name = "countryId")
     private Country country;
 
     @ManyToMany
