@@ -75,7 +75,7 @@ public class DiscountRestController {
         return orderService.getOrdersByDiscounts();
     }
 
-    @GetMapping("/getViews")
+    @GetMapping("/statistic/views")
     public Map<String, String> getViewsStatistic() {
         return service.getViewsByDiscounts();
     }
