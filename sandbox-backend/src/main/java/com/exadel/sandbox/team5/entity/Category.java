@@ -1,6 +1,5 @@
 package com.exadel.sandbox.team5.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.Column;
