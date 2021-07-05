@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team5.service.impl;
 
+import com.exadel.sandbox.team5.dao.CommonRepository;
 import com.exadel.sandbox.team5.dao.CompanyDAO;
 import com.exadel.sandbox.team5.entity.Company;
 import com.exadel.sandbox.team5.service.CompanyService;
@@ -12,10 +13,14 @@ import java.util.NoSuchElementException;
 
 @Transactional
 @Service
-@RequiredArgsConstructor
-public class CompanyServiceImpl implements CompanyService {
+//@RequiredArgsConstructor
+public class CompanyServiceImpl extends CRUDServiceImpl implements CompanyService {
 
     private final CompanyDAO dao;
+
+    public CompanyServiceImpl(CommonRepository repository) {
+        super(repository);
+    }
 
     @Override
     public Company getById(Long id) {

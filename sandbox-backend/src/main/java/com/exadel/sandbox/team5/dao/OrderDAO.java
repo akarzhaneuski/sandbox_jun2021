@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface OrderDAO extends JpaRepository<Order, Long> {
+public interface OrderDAO extends CommonRepository<Order> {
 
     List<Order> findAllByEmployeeId(Long id);
 
