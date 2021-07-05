@@ -63,4 +63,11 @@ public class Discount extends AuditableEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name="countryId")
     private Country country;
+
+    @ManyToMany
+    @JoinTable(
+            name = "discount_address",
+            joinColumns = @JoinColumn(name = "discountId", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "addressId", referencedColumnName = "id"))
+    private Set<Address> addresses = new HashSet<>();
 }
