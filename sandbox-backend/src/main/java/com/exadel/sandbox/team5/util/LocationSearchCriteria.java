@@ -13,5 +13,4 @@ public class LocationSearchCriteria {
 
     private String country;
     private Set<String> cities;
-    private Set<String> addresses;
 }
