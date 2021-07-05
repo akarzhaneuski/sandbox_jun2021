@@ -75,14 +75,9 @@ public class DiscountRestController {
         return orderService.getOrdersByDiscounts();
     }
 
-    @GetMapping("/views")
-    public Long getViewsByDiscountId(Long discountId){
-        return service.getViewsByDiscountId(discountId);
-    }
-
-    @GetMapping("/getAllViews")
+    @GetMapping("/getViews")
     public Map<String, String> getViewsStatistic() {
-        return service.getAllViewsByDiscount();
+        return service.getViewsByDiscounts();
     }
 }
 

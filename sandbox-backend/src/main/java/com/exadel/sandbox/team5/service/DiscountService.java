@@ -10,7 +10,5 @@ public interface DiscountService extends CRUDService<DiscountDto> {
 
     Page<DiscountDto> getByCriteria(DiscountSearchCriteria searchCriteria);
 
-    Long getViewsByDiscountId(Long discountId);
-
-    Map<String, String> getAllViewsByDiscount();
+    Map<String, String> getViewsByDiscounts();
 }

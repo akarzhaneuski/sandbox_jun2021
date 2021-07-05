@@ -9,6 +9,7 @@ import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.util.Pair;
 import com.exadel.sandbox.team5.util.QueryUtils;
+import com.google.common.collect.ImmutableSortedMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -97,12 +98,11 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public Long getViewsByDiscountId(Long discountId) {
-        return discountDAO.getViewsByDiscountId(discountId);
-    }
+    public Map<String, String> getViewsByDiscounts() {
 
-    @Override
-    public Map<String, String> getAllViewsByDiscount() {
-        return discountDAO.getAllViewsByDiscount().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+        return ImmutableSortedMap.copyOf(discountDAO.getViewsByDiscounts().stream()
+//                    .sorted(Comparator.comparing(Pair::getFirst).reversed())
+                    .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond))
+        ).descendingMap();
     }
 }
