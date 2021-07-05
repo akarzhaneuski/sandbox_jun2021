@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team5.service.impl;
 
+import com.amazonaws.util.StringUtils;
 import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.ReviewDAO;
 import com.exadel.sandbox.team5.dto.DiscountDto;
@@ -31,19 +32,11 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public DiscountDto getById(Long id) {
-        DiscountDto discountId = discountDAO.findById(id)
+        DiscountDto discountDto = discountDAO.findById(id)
                 .map(discount -> mapper.map(discount, DiscountDto.class))
                 .orElseThrow(NoSuchElementException::new);
-        discountId = setAverageRate(discountId);
-        return discountId;
-    }
-
-    private DiscountDto setAverageRate(DiscountDto discountId) {
-        if (discountId == null) {
-            return null;
-        }
-        discountId.setRate(reviewDAO.findRate(discountId.getId()));
-        return discountId;
+        discountDto.setRate(reviewDAO.findRate(discountDto.getId()));
+        return discountDto;
     }
 
     @Override
@@ -70,16 +63,15 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public Page<DiscountDto> getByCriteria(DiscountSearchCriteria searchCriteria) {
-        String searchText = QueryUtils.getWildcard(searchCriteria.getSearchText());
-        List<Discount> result;
-        if (searchCriteria.getTags() == null || searchCriteria.getTags().isEmpty()) {
-            result = discountDAO.getByCriteria(searchText, searchCriteria.getRate());
-        } else {
-            result = discountDAO.getByCriteriaWithTags(searchText,
-                    searchCriteria.getTags(), searchCriteria.getRate());
-        }
+        String searchText = StringUtils.isNullOrEmpty(searchCriteria.getSearchText())
+                ? null
+                : QueryUtils.getWildcard(searchCriteria.getSearchText());
+
+        var result = discountDAO.findDiscountsByCriteria(searchText,
+                searchCriteria.getTags(), searchCriteria.getLocationCriteria().getCountry(),
+                searchCriteria.getLocationCriteria().getCities(), searchCriteria.getRate());
         List<DiscountDto> discountDTOs = mapper.mapAll(result, DiscountDto.class);
-        discountDTOs = setRate(getRate(result), discountDTOs);
+        setRate(getRate(result), discountDTOs);
         return new PageImpl<>(discountDTOs, searchCriteria.getPageRequest(), discountDTOs.size());
     }
 
