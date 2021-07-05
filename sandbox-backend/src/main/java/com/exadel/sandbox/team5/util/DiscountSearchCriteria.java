@@ -9,15 +9,17 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 public class DiscountSearchCriteria extends SearchCriteria {
-    private  Set<String> tags;
-    private  int rate;
-    private  String searchText;
+    private Set<String> tags;
+    private int rate;
+    private String searchText;
+    private LocationSearchCriteria locationCriteria;
 
     public DiscountSearchCriteria(int pageNum, int itemsPerPage, List<Sorting> orders, Set<String> tags,
-                                  int rate, String searchText) {
+                                  int rate, String searchText, LocationSearchCriteria locationCriteria) {
         super(pageNum, itemsPerPage, orders);
         this.tags = tags;
         this.rate = rate;
         this.searchText = searchText;
+        this.locationCriteria = locationCriteria;
     }
 }
