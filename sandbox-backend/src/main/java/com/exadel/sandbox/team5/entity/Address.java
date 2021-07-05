@@ -25,6 +25,7 @@ public class Address extends BaseEntity {
     @JoinColumn(name = "cityId", referencedColumnName = "id")
     private City city;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "discount_address",
