@@ -9,7 +9,6 @@ import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.util.Pair;
 import com.exadel.sandbox.team5.util.QueryUtils;
-import com.google.common.collect.ImmutableSortedMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,6 +17,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toMap;
 
 @Transactional
 @Service
@@ -86,7 +87,7 @@ public class DiscountServiceImpl implements DiscountService {
     private Map<Long, Double> getRate(List<Discount> result) {
         Set<Long> discountIds = result.stream().map(Discount::getId).collect(Collectors.toSet());
         return reviewDAO.getRateByDiscountId(discountIds).stream()
-                .collect(Collectors.toMap(x -> Long.parseLong(x.getFirst()), y -> Double.parseDouble(y.getSecond())));
+                .collect(toMap(x -> Long.parseLong(x.getFirst()), y -> Double.parseDouble(y.getSecond())));
     }
 
     public static List<DiscountDto> setRate(Map<Long, Double> rtMap, List<DiscountDto> dtoList) {
@@ -98,11 +99,7 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public Map<String, String> getViewsByDiscounts() {
-
-        return ImmutableSortedMap.copyOf(discountDAO.getViewsByDiscounts().stream()
-//                    .sorted(Comparator.comparing(Pair::getFirst).reversed())
-                    .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond))
-        ).descendingMap();
+    public TreeMap<String, String> getViewsByDiscounts() {
+        return discountDAO.getViewsByDiscounts().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond, (o1, o2) -> o1, TreeMap::new));
     }
 }

@@ -55,7 +55,7 @@ public interface DiscountDAO extends JpaRepository<Discount, Long> {
     void incrementViewsByDiscountId(@Param("discountId") Long discountId);
 
     @Query(value = """
-            SELECT new com.exadel.sandbox.team5.util.Pair(d.name, d.views) FROM Discount d order by d.name asc
+            SELECT new com.exadel.sandbox.team5.util.Pair(d.name, d.views) FROM Discount d order by d.name
             """)
     List<Pair> getViewsByDiscounts();
 }
