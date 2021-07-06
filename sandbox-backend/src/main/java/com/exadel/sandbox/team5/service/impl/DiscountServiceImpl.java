@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 
 @Transactional
 @Service
-//@RequiredArgsConstructor
 public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDto, DiscountDAO, Discount> implements DiscountService {
 
     private final ReviewDAO reviewDAO;
@@ -32,10 +31,6 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDto, Discoun
         this.reviewDAO = reviewDAO;
     }
 
-//    private final DiscountDAO discountDAO;
-//    private final MapperConverter mapper;
-//    private final ReviewDAO reviewDAO;
-
     @Override
     public DiscountDto getById(Long id) {
         DiscountDto discountDto = entityDao.findById(id)
@@ -44,28 +39,6 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDto, Discoun
         discountDto.setRate(reviewDAO.findRate(discountDto.getId()));
         return discountDto;
     }
-
-//    @Override
-//    public List<DiscountDto> getAll() {
-//        List<Discount> discounts = discountDAO.findAll();
-//        return setRate(getRate(discounts), mapper.mapAll(discounts, DiscountDto.class));
-//    }
-//
-//    @Override
-//    public DiscountDto save(DiscountDto discount) {
-//        Discount dis = mapper.map(discount, Discount.class);
-//        return mapper.map(discountDAO.saveAndFlush(dis), DiscountDto.class);
-//    }
-//
-//    @Override
-//    public DiscountDto update(DiscountDto discount) {
-//        return this.save(discount);
-//    }
-//
-//    @Override
-//    public void delete(Long id) {
-//        discountDAO.deleteById(id);
-//    }
 
     @Override
     public Page<DiscountDto> getByCriteria(DiscountSearchCriteria searchCriteria) {

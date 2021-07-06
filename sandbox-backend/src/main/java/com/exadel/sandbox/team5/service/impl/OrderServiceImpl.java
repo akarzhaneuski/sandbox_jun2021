@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 
 @Transactional
 @Service
-//@RequiredArgsConstructor
 public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDto, OrderDAO, Order> implements OrderService {
 
 
@@ -44,38 +43,6 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDto, OrderDAO, Ord
         this.discountDAO = discountDAO;
         this.companyDAO = companyDAO;
     }
-
-//    private final OrderDAO orderDAO;
-//    private final EmployeeService employeeService;
-//    private final DiscountService discountService;
-//    private final MapperConverter mapper;
-//    private final DiscountDAO discountDAO;
-//    private final CompanyDAO companyDAO;
-
-//    @Override
-//    public OrderDto getById(Long id) {
-//        return mapper.map(orderDAO.findById(id).orElseThrow(NoSuchElementException::new), OrderDto.class);
-//    }
-//
-//    @Override
-//    public List<OrderDto> getAll() {
-//        return mapper.mapAll(orderDAO.findAll(), OrderDto.class);
-//    }
-//
-//    @Override
-//    public OrderDto save(OrderDto order) {
-//        return mapper.map(orderDAO.saveAndFlush(mapper.map((order), Order.class)), OrderDto.class);
-//    }
-//
-//    @Override
-//    public OrderDto update(OrderDto order) {
-//        return this.save(order);
-//    }
-//
-//    @Override
-//    public void delete(Long id) {
-//        orderDAO.deleteById(id);
-//    }
 
     @Override
     public OrderDto invalidatePromoCode(Long discountId, String promoCode) {

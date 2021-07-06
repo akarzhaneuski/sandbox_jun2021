@@ -9,42 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-//@RequiredArgsConstructor
 @Transactional
 public class TagServiceImpl extends CRUDServiceDtoImpl<TagDto, TagDAO, Tag> implements TagService {
 
-    public TagServiceImpl(TagDto tagDto,TagDAO tagDAO, Tag tag, MapperConverter mapper ) {
+    public TagServiceImpl(TagDto tagDto, TagDAO tagDAO, Tag tag, MapperConverter mapper) {
         super(tagDAO, tag, tagDto, mapper);
     }
-
-//    private final TagDAO tagDAO;
-//    private final MapperConverter mapper;
-//
-//    @Override
-//    public TagDto getById(Long id) {
-//        return tagDAO.findById(id)
-//                .map(tag -> mapper.map(tag, TagDto.class))
-//                .orElseThrow(NoSuchElementException::new);
-//    }
-//
-//    @Override
-//    public List<TagDto> getAll() {
-//        return mapper.mapAll(tagDAO.findAll(), TagDto.class);
-//    }
-//
-//    @Override
-//    public TagDto save(TagDto tagDto) {
-//        Tag tag = mapper.map(tagDto, Tag.class);
-//        return mapper.map(tagDAO.save(tag), TagDto.class);
-//    }
-//
-//    @Override
-//    public TagDto update(TagDto tagDto) {
-//        return this.save(tagDto);
-//    }
-//
-//    @Override
-//    public void delete(Long id) {
-//        tagDAO.deleteById(id);
-//    }
 }
