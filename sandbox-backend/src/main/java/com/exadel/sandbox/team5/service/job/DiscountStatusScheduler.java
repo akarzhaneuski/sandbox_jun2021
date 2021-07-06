@@ -20,7 +20,7 @@ public class DiscountStatusScheduler {
     private static final int delayToInvalidateOrder = 1000*60;
 
     @Scheduled(fixedRate = delayToInvalidateOrder)
-    public void reportCurrentTime() {
+    public void processPromoCodeStatuses() {
         log.debug("start scheduler");
         orderDAO.changePromoCodeStatusAfterExpirationTime(new Date());
         log.debug("stop scheduler");
