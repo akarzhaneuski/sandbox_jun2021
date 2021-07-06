@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface CRUDService<T> {
 
-    T getById(Long id) throws Throwable;
+    T getById(Long id);
 
     List<T> getAll();
 
