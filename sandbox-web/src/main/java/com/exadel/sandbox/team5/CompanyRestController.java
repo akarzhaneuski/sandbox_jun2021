@@ -2,9 +2,11 @@ package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.CompanyDto;
 import com.exadel.sandbox.team5.service.CompanyService;
+import com.exadel.sandbox.team5.service.ImageService;
 import com.exadel.sandbox.team5.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,7 @@ public class CompanyRestController {
 
     private final CompanyService companyService;
     private final OrderService orderService;
+    private final ImageService imageService;
 
     @GetMapping("/{id}")
     public CompanyDto getCompany(@PathVariable Long id) {
@@ -28,7 +31,8 @@ public class CompanyRestController {
     }
 
     @PostMapping
-    public CompanyDto save(@RequestBody CompanyDto company) {
+    public CompanyDto save(@RequestBody CompanyDto company, MultipartFile file) {
+        company.setImageId(imageService.save(file));
         return companyService.save(company);
     }
 
