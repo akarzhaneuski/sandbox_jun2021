@@ -30,7 +30,6 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public DiscountDto getById(Long id) {
-        discountDAO.incrementViewsByDiscountId(id);
         DiscountDto discountDto = discountDAO.findById(id)
                 .map(discount -> mapper.map(discount, DiscountDto.class))
                 .orElseThrow(NoSuchElementException::new);
@@ -91,5 +90,11 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public TreeMap<String, String> getViewsByDiscounts() {
         return discountDAO.getViewsByDiscounts().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond, (o1, o2) -> o1, TreeMap::new));
+    }
+
+    @Override
+    public void incrementViews(Long discountId) {
+        discountDAO.findById(discountId).orElseThrow(NoSuchElementException::new);
+        discountDAO.incrementViewsByDiscountId(discountId);
     }
 }

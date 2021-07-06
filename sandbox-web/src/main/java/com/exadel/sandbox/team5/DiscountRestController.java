@@ -79,5 +79,10 @@ public class DiscountRestController {
     public Map<String, String> getViewsStatistic() {
         return service.getViewsByDiscounts();
     }
+
+    @PutMapping("/{id}/views")
+    public void increaseViews(@PathVariable Long id){
+        service.incrementViews(id);
+    }
 }
 
