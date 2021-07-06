@@ -13,7 +13,9 @@ import com.exadel.sandbox.team5.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -37,7 +39,21 @@ public class ImageServiceImpl implements ImageService {
         return image;
     }
 
-    public Long save(ImageDto image) {
+    public Long save(MultipartFile file) {
+        ImageDto image = new ImageDto();
+        try {
+            image.setContent(file.getInputStream());
+            String contentType = file.getContentType();
+            if (contentType.equals("image/png")
+                    || contentType.equals("image/jpg")
+                    || contentType.equals("image/jpeg")) {
+                image.setContentType(contentType);
+            } else {
+                throw new RuntimeException("Invalid image content type");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Incorrect file! Message: " + e.getMessage(), e);
+        }
         Image img = mapper.map(image, Image.class);
         String imageName = parseImageName(image, UUID.randomUUID().toString());
         try {
@@ -46,7 +62,7 @@ public class ImageServiceImpl implements ImageService {
             PutObjectRequest request = new PutObjectRequest(bucketName, imageName, image.getContent(), metadata);
             s3Client.putObject(request);
         } catch (SdkClientException e) {
-            throw new AmazonServiceException("File doesn't save! " + e.getMessage());
+            throw new AmazonServiceException("File doesn't save! Message:  " + e.getMessage(), e);
         }
         img.setImageURL(bucketName);
         img.setName(imageName);

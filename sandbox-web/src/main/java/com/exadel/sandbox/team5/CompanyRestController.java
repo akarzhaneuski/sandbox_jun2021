@@ -1,14 +1,13 @@
 package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.CompanyDto;
-import com.exadel.sandbox.team5.dto.ImageDto;
 import com.exadel.sandbox.team5.service.CompanyService;
 import com.exadel.sandbox.team5.service.ImageService;
 import com.exadel.sandbox.team5.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
+
 import java.util.List;
 import java.util.Map;
 
@@ -32,11 +31,8 @@ public class CompanyRestController {
     }
 
     @PostMapping
-    public CompanyDto save(@RequestBody CompanyDto company, MultipartFile file) throws IOException {
-        ImageDto image = new ImageDto();
-        image.setContent(file.getInputStream());
-        image.setContentType(file.getContentType());
-        company.setImageId(imageService.save(image));
+    public CompanyDto save(@RequestBody CompanyDto company, MultipartFile file) {
+        company.setImageId(imageService.save(file));
         return companyService.save(company);
     }
 

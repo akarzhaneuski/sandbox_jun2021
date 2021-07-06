@@ -28,10 +28,7 @@ public class ImageRestController {
     }
 
     @PostMapping
-    public Long saveImage(@RequestBody MultipartFile file) throws IOException {
-        ImageDto image = new ImageDto();
-        image.setContent(file.getInputStream());
-        image.setContentType(file.getContentType());
-        return service.save(image);
+    public Long saveImage(@RequestBody MultipartFile file) {
+        return service.save(file);
     }
 }
