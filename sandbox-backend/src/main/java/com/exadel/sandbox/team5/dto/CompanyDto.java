@@ -15,4 +15,5 @@ public class CompanyDto extends IdentifierDto {
 
     private String name;
     private Set<LocationDto> locations;
+    private Long imageID;
 }

@@ -13,11 +13,10 @@ import com.exadel.sandbox.team5.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
-@Transactional
 @Service
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
@@ -40,24 +39,22 @@ public class ImageServiceImpl implements ImageService {
 
     public Long save(ImageDto image) {
         Image img = mapper.map(image, Image.class);
-        Long idImage = imageDAO.saveAndFlush(img).getId();
-        String imageName = parseImageName(image, idImage);
+        String imageName = parseImageName(image, UUID.randomUUID().toString());
         try {
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(image.getContentType());
             PutObjectRequest request = new PutObjectRequest(bucketName, imageName, image.getContent(), metadata);
             s3Client.putObject(request);
         } catch (SdkClientException e) {
-            throw new AmazonServiceException("File doesn't save");
+            throw new AmazonServiceException("File doesn't save! " + e.getMessage());
         }
         img.setImageURL(bucketName);
         img.setName(imageName);
-        imageDAO.save(img);
-        return idImage;
+        return imageDAO.save(img).getId();
     }
 
-    private String parseImageName(ImageDto image, Long idImage) {
+    private String parseImageName(ImageDto image, String name) {
         String typeFile = image.getContentType().split("/")[1];
-        return String.format("%d.%s", idImage, typeFile);
+        return String.format("%s.%s", name, typeFile);
     }
 }
