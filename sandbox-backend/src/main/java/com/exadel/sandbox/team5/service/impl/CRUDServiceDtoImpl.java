@@ -6,11 +6,13 @@ import com.exadel.sandbox.team5.entity.BaseEntity;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.CRUDService;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
+@Setter
 public class CRUDServiceDtoImpl<D extends IdentifierDto, S extends CommonRepository<E>, E extends BaseEntity> implements CRUDService<D> {
 
     protected final S entityDao;
@@ -20,9 +22,7 @@ public class CRUDServiceDtoImpl<D extends IdentifierDto, S extends CommonReposit
 
     @Override
     public D getById(Long id) {
-        return (D) entityDao.findById(id)
-                .map(entity -> mapper.map(entity, entityDto.getClass()))
-                .orElseThrow(NoSuchElementException::new);
+        return (D) mapper.map(entityDao.findById(id).orElseThrow(NoSuchElementException::new), entityDto.getClass());
     }
 
     @Override
@@ -33,7 +33,7 @@ public class CRUDServiceDtoImpl<D extends IdentifierDto, S extends CommonReposit
     @Override
     public D save(D entityDto) {
         E saveEntity = (E) mapper.map(entityDto, entity.getClass());
-        return (D) mapper.map(entityDao.save(saveEntity), entityDto.getClass());
+        return (D) mapper.map(entityDao.saveAndFlush(saveEntity), entityDto.getClass());
     }
 
     @Override

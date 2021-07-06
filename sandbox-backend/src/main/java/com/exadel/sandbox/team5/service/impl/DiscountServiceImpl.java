@@ -9,7 +9,6 @@ import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.util.QueryUtils;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
@@ -23,43 +22,50 @@ import java.util.stream.Collectors;
 
 @Transactional
 @Service
-@RequiredArgsConstructor
-public class DiscountServiceImpl implements DiscountService {
+//@RequiredArgsConstructor
+public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDto, DiscountDAO, Discount> implements DiscountService {
 
-    private final DiscountDAO discountDAO;
-    private final MapperConverter mapper;
     private final ReviewDAO reviewDAO;
+
+    public DiscountServiceImpl(DiscountDAO entityDao, Discount discount, DiscountDto discountDto, MapperConverter mapper, ReviewDAO reviewDAO) {
+        super(entityDao, discount, discountDto, mapper);
+        this.reviewDAO = reviewDAO;
+    }
+
+//    private final DiscountDAO discountDAO;
+//    private final MapperConverter mapper;
+//    private final ReviewDAO reviewDAO;
 
     @Override
     public DiscountDto getById(Long id) {
-        DiscountDto discountDto = discountDAO.findById(id)
+        DiscountDto discountDto = entityDao.findById(id)
                 .map(discount -> mapper.map(discount, DiscountDto.class))
                 .orElseThrow(NoSuchElementException::new);
         discountDto.setRate(reviewDAO.findRate(discountDto.getId()));
         return discountDto;
     }
 
-    @Override
-    public List<DiscountDto> getAll() {
-        List<Discount> discounts = discountDAO.findAll();
-        return setRate(getRate(discounts), mapper.mapAll(discounts, DiscountDto.class));
-    }
-
-    @Override
-    public DiscountDto save(DiscountDto discount) {
-        Discount dis = mapper.map(discount, Discount.class);
-        return mapper.map(discountDAO.saveAndFlush(dis), DiscountDto.class);
-    }
-
-    @Override
-    public DiscountDto update(DiscountDto discount) {
-        return this.save(discount);
-    }
-
-    @Override
-    public void delete(Long id) {
-        discountDAO.deleteById(id);
-    }
+//    @Override
+//    public List<DiscountDto> getAll() {
+//        List<Discount> discounts = discountDAO.findAll();
+//        return setRate(getRate(discounts), mapper.mapAll(discounts, DiscountDto.class));
+//    }
+//
+//    @Override
+//    public DiscountDto save(DiscountDto discount) {
+//        Discount dis = mapper.map(discount, Discount.class);
+//        return mapper.map(discountDAO.saveAndFlush(dis), DiscountDto.class);
+//    }
+//
+//    @Override
+//    public DiscountDto update(DiscountDto discount) {
+//        return this.save(discount);
+//    }
+//
+//    @Override
+//    public void delete(Long id) {
+//        discountDAO.deleteById(id);
+//    }
 
     @Override
     public Page<DiscountDto> getByCriteria(DiscountSearchCriteria searchCriteria) {
@@ -67,7 +73,7 @@ public class DiscountServiceImpl implements DiscountService {
                 ? null
                 : QueryUtils.getWildcard(searchCriteria.getSearchText());
 
-        var result = discountDAO.findDiscountsByCriteria(searchText,
+        var result = entityDao.findDiscountsByCriteria(searchText,
                 searchCriteria.getTags(), searchCriteria.getLocationCriteria().getCountry(),
                 searchCriteria.getLocationCriteria().getCities(), searchCriteria.getRate());
         List<DiscountDto> discountDTOs = mapper.mapAll(result, DiscountDto.class);

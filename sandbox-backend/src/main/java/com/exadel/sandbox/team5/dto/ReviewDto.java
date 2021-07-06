@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
@@ -11,6 +12,8 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@Component
+
 public class ReviewDto extends IdentifierDto {
 
     private Integer rate;

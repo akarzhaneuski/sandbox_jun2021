@@ -2,6 +2,7 @@ package com.exadel.sandbox.team5.entity;
 
 
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
+@Component
 @Entity
 @Table(name = "tag")
 public class Tag extends BaseEntity {

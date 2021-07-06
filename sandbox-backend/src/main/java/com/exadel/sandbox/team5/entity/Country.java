@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team5.entity;
 
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -10,7 +11,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
+@Component
 @Entity
 @Table(name = "country")
 public class Country extends BaseEntity {
