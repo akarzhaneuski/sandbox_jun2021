@@ -1,6 +1,6 @@
 package com.exadel.sandbox.team5;
 
-import com.exadel.sandbox.team5.entity.Tag;
+import com.exadel.sandbox.team5.dto.TagDto;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.TagService;
 import lombok.RequiredArgsConstructor;
@@ -18,17 +18,17 @@ public class TagRestController {
     private final OrderService orderService;
 
     @GetMapping("/{id}")
-    public Tag getTag(@PathVariable Long id) {
+    public TagDto getTag(@PathVariable Long id) {
         return tagService.getById(id);
     }
 
     @GetMapping()
-    public List<Tag> getAll() {
+    public List<TagDto> getAll() {
         return tagService.getAll();
     }
 
     @PostMapping
-    public Tag save(@RequestBody Tag entity) {
+    public TagDto save(@RequestBody TagDto entity) {
         return tagService.save(entity);
     }
 
