@@ -1,7 +1,9 @@
 package com.exadel.sandbox.team5.service.impl;
 
 import com.exadel.sandbox.team5.dao.TagDAO;
+import com.exadel.sandbox.team5.dto.TagDto;
 import com.exadel.sandbox.team5.entity.Tag;
+import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,25 +18,29 @@ import java.util.NoSuchElementException;
 public class TagServiceImpl implements TagService {
 
     private final TagDAO tagDAO;
+    private final MapperConverter mapper;
 
     @Override
-    public Tag getById(Long id) {
-        return tagDAO.findById(id).orElseThrow(NoSuchElementException::new);
+    public TagDto getById(Long id) {
+        return tagDAO.findById(id)
+                .map(tag -> mapper.map(tag, TagDto.class))
+                .orElseThrow(NoSuchElementException::new);
     }
 
     @Override
-    public List<Tag> getAll() {
-        return tagDAO.findAll();
+    public List<TagDto> getAll() {
+        return mapper.mapAll(tagDAO.findAll(), TagDto.class);
     }
 
     @Override
-    public Tag save(Tag tag) {
-        return tagDAO.save(tag);
+    public TagDto save(TagDto tagDto) {
+        Tag tag = mapper.map(tagDto, Tag.class);
+        return mapper.map(tagDAO.save(tag), TagDto.class);
     }
 
     @Override
-    public Tag update(Tag tag) {
-        return tagDAO.save(tag);
+    public TagDto update(TagDto tagDto) {
+        return this.save(tagDto);
     }
 
     @Override
