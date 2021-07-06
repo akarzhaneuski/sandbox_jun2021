@@ -23,7 +23,7 @@ public class DiscountRestController {
     private final ReviewService reviewService;
     private final QRCodeService qrCodeService;
     private final OrderService orderService;
-    private final ImageService imageService;
+    private final ImageClientService imageService;
 
     @GetMapping("/{id}")
     public DiscountDto getDiscount(@PathVariable Long id) {
