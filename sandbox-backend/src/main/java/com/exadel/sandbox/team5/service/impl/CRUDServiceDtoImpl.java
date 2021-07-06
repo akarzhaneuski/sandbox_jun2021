@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
-public class CRUDServiceDtoImpl<D extends IdentifierDto, S extends CommonRepository, E extends BaseEntity> implements CRUDService<D> {
+public class CRUDServiceDtoImpl<D extends IdentifierDto, S extends CommonRepository<E>, E extends BaseEntity> implements CRUDService<D> {
 
     protected final S entityDao;
     protected final E entity;
@@ -27,7 +27,7 @@ public class CRUDServiceDtoImpl<D extends IdentifierDto, S extends CommonReposit
 
     @Override
     public List<D> getAll() {
-        return mapper.mapAll(entityDao.findAll(), entityDto.getClass());
+        return (List<D>) mapper.mapAll(entityDao.findAll(), entityDto.getClass());
     }
 
     @Override
