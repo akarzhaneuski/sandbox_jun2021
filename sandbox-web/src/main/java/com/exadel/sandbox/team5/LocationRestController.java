@@ -1,6 +1,6 @@
 package com.exadel.sandbox.team5;
 
-import com.exadel.sandbox.team5.dto.LocationDto;
+import com.exadel.sandbox.team5.dto.CountryDto;
 import com.exadel.sandbox.team5.service.LocationService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,22 +17,22 @@ public class LocationRestController {
     private final LocationService service;
 
     @GetMapping("/{id}")
-    public LocationDto getLocation(@PathVariable Long id){
+    public CountryDto getLocation(@PathVariable Long id){
         return service.getById(id);
     }
 
     @GetMapping
-    public List<LocationDto> getAll(){
+    public List<CountryDto> getAll(){
         return service.getAll();
     }
 
     @PostMapping
-    public LocationDto save(@RequestBody LocationDto entity){
+    public CountryDto save(@RequestBody CountryDto entity){
         return service.save(entity);
     }
 
     @PutMapping("/{id}")
-    public LocationDto update(@PathVariable Long id, @RequestBody LocationDto entity){
+    public CountryDto update(@PathVariable Long id, @RequestBody CountryDto entity){
         entity.setId(id);
         return service.update(entity);
     }

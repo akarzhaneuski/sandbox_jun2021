@@ -5,15 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class CompanyDto extends IdentifierDto {
+public class TagDto  extends IdentifierDto{
 
     private String name;
-    private Set<CountryDto> countries;
-    private Long imageId;
 }

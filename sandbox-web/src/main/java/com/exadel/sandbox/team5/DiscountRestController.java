@@ -2,10 +2,7 @@ package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.ReviewDto;
-import com.exadel.sandbox.team5.service.DiscountService;
-import com.exadel.sandbox.team5.service.OrderService;
-import com.exadel.sandbox.team5.service.QRCodeService;
-import com.exadel.sandbox.team5.service.ReviewService;
+import com.exadel.sandbox.team5.service.*;
 import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.util.SearchCriteria;
 import io.swagger.annotations.ApiOperation;
@@ -14,7 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +24,7 @@ public class DiscountRestController {
     private final ReviewService reviewService;
     private final QRCodeService qrCodeService;
     private final OrderService orderService;
+    private final ImageClientService imageService;
 
     @GetMapping("/{id}")
     public DiscountDto getDiscount(@PathVariable Long id) {
@@ -44,7 +42,8 @@ public class DiscountRestController {
     }
 
     @PostMapping
-    public DiscountDto save(@RequestBody DiscountDto entity) {
+    public DiscountDto save(@RequestBody DiscountDto entity, MultipartFile file) {
+        entity.setImageId(imageService.save(file));
         return service.save(entity);
     }
 
