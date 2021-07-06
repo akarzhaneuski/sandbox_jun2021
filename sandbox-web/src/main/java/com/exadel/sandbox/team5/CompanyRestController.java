@@ -2,6 +2,7 @@ package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.CompanyDto;
 import com.exadel.sandbox.team5.service.CompanyService;
+import com.exadel.sandbox.team5.service.ImageClientService;
 import com.exadel.sandbox.team5.service.ImageService;
 import com.exadel.sandbox.team5.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class CompanyRestController {
 
     private final CompanyService companyService;
     private final OrderService orderService;
-    private final ImageService imageService;
+    private final ImageClientService imageService;
 
     @GetMapping("/{id}")
     public CompanyDto getCompany(@PathVariable Long id) {
