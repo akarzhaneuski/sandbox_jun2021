@@ -1,10 +1,10 @@
 package com.exadel.sandbox.team5.service;
 
-import com.exadel.sandbox.team5.entity.Company;
+import com.exadel.sandbox.team5.dto.CompanyDto;
 
 import java.util.List;
 
-public interface CompanyService extends CRUDService<Company> {
+public interface CompanyService extends CRUDService<CompanyDto> {
 
-    List<Company> getCompaniesByLocation(Long id);
+    List<CompanyDto> getCompaniesByLocation(Long id);
 }

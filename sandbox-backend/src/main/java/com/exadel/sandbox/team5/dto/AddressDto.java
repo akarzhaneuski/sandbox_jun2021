@@ -1,6 +1,5 @@
 package com.exadel.sandbox.team5.dto;
 
-import com.exadel.sandbox.team5.entity.Country;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class LocationDto extends IdentifierDto {
+public class AddressDto extends IdentifierDto{
 
-    private Country country;
+    private String address;
 }
