@@ -88,7 +88,7 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public TreeMap<String, String> getViewsByDiscounts() {
+    public Map<String, String> getViewsByDiscounts() {
         return discountDAO.getViewsByDiscounts().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond, (o1, o2) -> o1, TreeMap::new));
     }
 
