@@ -11,9 +11,8 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class CompanyDto extends IdentifierDto {
+public class CategoryDto extends IdentifierDto{
 
     private String name;
-    private Set<CountryDto> countries;
-    private Long imageID;
+    private Set<TagDto> tags;
 }

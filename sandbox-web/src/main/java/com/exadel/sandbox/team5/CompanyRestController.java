@@ -1,13 +1,12 @@
 package com.exadel.sandbox.team5;
 
+import com.exadel.sandbox.team5.dto.CompanyDto;
 import com.exadel.sandbox.team5.dto.ImageDto;
-import com.exadel.sandbox.team5.entity.Company;
 import com.exadel.sandbox.team5.service.CompanyService;
 
 import com.exadel.sandbox.team5.service.ImageService;
 import com.exadel.sandbox.team5.service.OrderService;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,16 +24,17 @@ public class CompanyRestController {
     private final ImageService imageService;
 
     @GetMapping("/{id}")
-    public Company getCompany(@PathVariable Long id) {
+    public CompanyDto getCompany(@PathVariable Long id) {
         return companyService.getById(id);
     }
 
     @GetMapping
-    public List<Company> getAll() {
+    public List<CompanyDto> getAll() {
         return companyService.getAll();
     }
 
     @PostMapping
+    public CompanyDto save(@RequestBody CompanyDto company) {
     public Company save(@RequestBody Company company, MultipartFile file) throws IOException {
         ImageDto image = new ImageDto();
         image.setContent(file.getInputStream());
@@ -44,7 +44,7 @@ public class CompanyRestController {
     }
 
     @PutMapping("/{id}")
-    public Company update(@PathVariable Long id, @RequestBody Company company) {
+    public CompanyDto update(@PathVariable Long id, @RequestBody CompanyDto company) {
         company.setId(id);
         return companyService.update(company);
     }
@@ -55,7 +55,7 @@ public class CompanyRestController {
     }
 
     @GetMapping("/{locationId}/companies")
-    public List<Company> getCompaniesByLocation(@PathVariable Long locationId) {
+    public List<CompanyDto> getCompaniesByLocation(@PathVariable Long locationId) {
         return companyService.getCompaniesByLocation(locationId);
     }
 
