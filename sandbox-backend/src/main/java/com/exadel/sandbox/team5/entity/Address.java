@@ -20,12 +20,10 @@ public class Address extends BaseEntity {
     @Column(name = "address")
     private String address;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "cityId", referencedColumnName = "id")
     private City city;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "discount_address",
