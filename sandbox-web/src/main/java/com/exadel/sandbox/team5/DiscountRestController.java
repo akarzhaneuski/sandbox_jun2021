@@ -12,8 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/discounts")
@@ -38,7 +40,7 @@ public class DiscountRestController {
 
     @PostMapping("/all")
     public Page<DiscountDto> getAllSort(@RequestBody SearchCriteria criteria) {
-        return service.getAllSort(criteria);
+        return service.getAllSort(Objects.requireNonNullElseGet(criteria, () -> new SearchCriteria()));
     }
 
     @PostMapping

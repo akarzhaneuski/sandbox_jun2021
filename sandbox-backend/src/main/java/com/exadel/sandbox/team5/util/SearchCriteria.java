@@ -11,15 +11,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SearchCriteria {
     private int pageNum;
     private int itemsPerPage;
     private List<Sorting> orders;
 
+    public SearchCriteria() {
+        pageNum = 0;
+        itemsPerPage = 1;
+        orders = null;
+    }
+
     public SearchCriteria(int pageNum, int itemsPerPage, @Nullable List<Sorting> orders) {
         this.pageNum = pageNum;
-        this.itemsPerPage = itemsPerPage;
+        this.itemsPerPage = Math.max(itemsPerPage, 1);
         this.orders = orders;
     }
 
