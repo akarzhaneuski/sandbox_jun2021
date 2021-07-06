@@ -6,9 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
+@Repository
 public interface OrderDAO extends JpaRepository<Order, Long> {
 
     List<Order> findAllByEmployeeId(Long id);
@@ -54,4 +57,10 @@ public interface OrderDAO extends JpaRepository<Order, Long> {
             GROUP BY t.id
             """)
     List<Pair> getAllOrdersForTags();
+
+    @Modifying
+    @Query(value = """
+            update `order` o set o.promoCodeStatus = 0 where o.promoCodePeriodEnd < (:currentTime)
+            """, nativeQuery = true)
+    void changePromoCodeStatusAfterExpirationTime(@Param("currentTime") Date currentTime);
 }

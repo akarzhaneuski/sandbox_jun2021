@@ -13,7 +13,6 @@ import lombok.Setter;
 public class EmployeeDto extends IdentifierDto {
 
     private String login;
-    private LocationDto location;
+    private CountryDto country;
     private Role role;
-
 }
