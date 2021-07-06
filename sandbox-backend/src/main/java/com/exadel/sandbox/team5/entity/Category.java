@@ -1,6 +1,5 @@
 package com.exadel.sandbox.team5.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -22,7 +21,6 @@ public class Category extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "category")
     private Set<Tag> tags;
 }
