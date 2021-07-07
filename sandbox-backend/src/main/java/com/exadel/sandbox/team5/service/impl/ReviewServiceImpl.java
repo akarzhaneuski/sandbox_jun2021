@@ -12,10 +12,10 @@ import java.util.List;
 
 @Service
 @Transactional
-public class ReviewServiceImpl extends CRUDServiceDtoImpl<ReviewDto, ReviewDAO, Review> implements ReviewService {
+public class ReviewServiceImpl extends CRUDServiceDtoImpl<ReviewDAO, Review, ReviewDto> implements ReviewService {
 
-    public ReviewServiceImpl(ReviewDAO entityDao, Review entity, ReviewDto entityDto, MapperConverter mapper) {
-        super(entityDao, entity, entityDto, mapper);
+    public ReviewServiceImpl(ReviewDAO reviewDAO, MapperConverter mapper) {
+        super(reviewDAO, Review.class, ReviewDto.class, mapper);
     }
 
     @Override

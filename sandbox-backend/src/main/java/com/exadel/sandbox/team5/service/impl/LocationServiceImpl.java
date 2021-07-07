@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Service
-public class LocationServiceImpl extends CRUDServiceDtoImpl<CountryDto, LocationDAO, Country> implements LocationService {
+public class LocationServiceImpl extends CRUDServiceDtoImpl<LocationDAO, Country, CountryDto> implements LocationService {
 
-    public LocationServiceImpl(LocationDAO locationDAO, Country country, CountryDto countryDto, MapperConverter mapper) {
-        super(locationDAO, country, countryDto, mapper);
+    public LocationServiceImpl(LocationDAO locationDAO, MapperConverter mapper) {
+        super(locationDAO, Country.class, CountryDto.class, mapper);
     }
 }

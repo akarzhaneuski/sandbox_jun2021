@@ -2,7 +2,6 @@ package com.exadel.sandbox.team5.entity;
 
 
 import lombok.*;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,7 +14,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Component
 @Entity
 @Table(name = "discount")
 public class Discount extends AuditableEntity implements Serializable {

@@ -22,12 +22,12 @@ import java.util.stream.Collectors;
 
 @Transactional
 @Service
-public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDto, DiscountDAO, Discount> implements DiscountService {
+public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discount, DiscountDto> implements DiscountService {
 
     private final ReviewDAO reviewDAO;
 
-    public DiscountServiceImpl(DiscountDAO entityDao, Discount discount, DiscountDto discountDto, MapperConverter mapper, ReviewDAO reviewDAO) {
-        super(entityDao, discount, discountDto, mapper);
+    public DiscountServiceImpl(DiscountDAO entityDao, MapperConverter mapper, ReviewDAO reviewDAO) {
+        super(entityDao, Discount.class, DiscountDto.class, mapper);
         this.reviewDAO = reviewDAO;
     }
 

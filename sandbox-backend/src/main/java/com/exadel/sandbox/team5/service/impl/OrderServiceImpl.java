@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 
 @Transactional
 @Service
-public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDto, OrderDAO, Order> implements OrderService {
+public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderDto> implements OrderService {
 
 
     private final EmployeeService employeeService;
@@ -36,8 +36,8 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDto, OrderDAO, Ord
     private final CompanyDAO companyDAO;
 
 
-    public OrderServiceImpl(OrderDAO orderDAO, Order order, OrderDto orderDto, MapperConverter mapper, EmployeeService employeeService, DiscountService discountService, DiscountDAO discountDAO, CompanyDAO companyDAO) {
-        super(orderDAO, order, orderDto, mapper);
+    public OrderServiceImpl(OrderDAO orderDAO, MapperConverter mapper, EmployeeService employeeService, DiscountService discountService, DiscountDAO discountDAO, CompanyDAO companyDAO) {
+        super(orderDAO, Order.class, OrderDto.class, mapper);
         this.employeeService = employeeService;
         this.discountService = discountService;
         this.discountDAO = discountDAO;

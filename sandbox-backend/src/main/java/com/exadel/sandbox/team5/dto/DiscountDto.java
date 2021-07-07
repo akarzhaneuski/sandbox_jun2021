@@ -4,7 +4,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.Set;
@@ -13,7 +12,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Component
 public class DiscountDto extends IdentifierDto {
 
     private String name;

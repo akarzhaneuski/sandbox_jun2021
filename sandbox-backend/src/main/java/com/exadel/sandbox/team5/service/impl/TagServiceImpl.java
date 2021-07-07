@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class TagServiceImpl extends CRUDServiceDtoImpl<TagDto, TagDAO, Tag> implements TagService {
+public class TagServiceImpl extends CRUDServiceDtoImpl<TagDAO, Tag, TagDto> implements TagService {
 
-    public TagServiceImpl(TagDto tagDto, TagDAO tagDAO, Tag tag, MapperConverter mapper) {
-        super(tagDAO, tag, tagDto, mapper);
+    public TagServiceImpl(TagDAO tagDAO, MapperConverter mapper) {
+        super(tagDAO, Tag.class, TagDto.class, mapper);
     }
 }

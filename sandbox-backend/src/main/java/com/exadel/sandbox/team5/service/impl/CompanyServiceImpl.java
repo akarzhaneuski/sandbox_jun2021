@@ -12,9 +12,9 @@ import java.util.List;
 
 @Transactional
 @Service
-public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDto, CompanyDAO, Company> implements CompanyService {
-    public CompanyServiceImpl(CompanyDAO entityDao, Company company, CompanyDto companyDto, MapperConverter mapper) {
-        super(entityDao, company, companyDto, mapper);
+public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, CompanyDto> implements CompanyService {
+    public CompanyServiceImpl(CompanyDAO entityDao, MapperConverter mapper) {
+        super(entityDao, Company.class, CompanyDto.class, mapper);
     }
 
     @Override

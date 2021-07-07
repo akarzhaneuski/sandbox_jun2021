@@ -6,34 +6,32 @@ import com.exadel.sandbox.team5.entity.BaseEntity;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.CRUDService;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
-@Setter
-public class CRUDServiceDtoImpl<D extends IdentifierDto, S extends CommonRepository<E>, E extends BaseEntity> implements CRUDService<D> {
+public class CRUDServiceDtoImpl<S extends CommonRepository<E>, E extends BaseEntity, D extends IdentifierDto> implements CRUDService<D> {
 
     protected final S entityDao;
-    protected final E entity;
-    protected final D entityDto;
+    protected final Class<E> entityClass;
+    protected final Class<D> entityDtoClass;
     protected final MapperConverter mapper;
 
     @Override
     public D getById(Long id) {
-        return (D) mapper.map(entityDao.findById(id).orElseThrow(NoSuchElementException::new), entityDto.getClass());
+        return mapper.map(entityDao.findById(id).orElseThrow(NoSuchElementException::new), entityDtoClass);
     }
 
     @Override
     public List<D> getAll() {
-        return (List<D>) mapper.mapAll(entityDao.findAll(), entityDto.getClass());
+        return mapper.mapAll(entityDao.findAll(), entityDtoClass);
     }
 
     @Override
     public D save(D entityDto) {
-        E saveEntity = (E) mapper.map(entityDto, entity.getClass());
-        return (D) mapper.map(entityDao.saveAndFlush(saveEntity), entityDto.getClass());
+        var saveEntity = mapper.map(entityDto, entityClass);
+        return mapper.map(entityDao.saveAndFlush(saveEntity), entityDtoClass);
     }
 
     @Override
