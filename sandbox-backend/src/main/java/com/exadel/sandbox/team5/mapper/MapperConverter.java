@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team5.mapper;
 
+import com.exadel.sandbox.team5.util.ResultPage;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -28,10 +29,10 @@ public class MapperConverter {
                 .toList();
     }
 
-    public <E, K> Page<K> mapToPage(Page<E> entityList, Class<K> kClass) {
+    public <E, K> ResultPage<K> mapToPage(Page<E> entityList, Class<K> kClass) {
         List<K> result = entityList.stream()
                 .map(entity -> map(entity, kClass))
                 .toList();
-        return new PageImpl<>(result, PageRequest.of(entityList.getNumber(), entityList.getSize()), entityList.getSize());
+        return new ResultPage<>(result, entityList.getTotalElements());
     }
 }

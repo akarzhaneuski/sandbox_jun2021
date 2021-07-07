@@ -9,10 +9,10 @@ import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.util.QueryUtils;
+import com.exadel.sandbox.team5.util.ResultPage;
 import com.exadel.sandbox.team5.util.SearchCriteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -32,9 +32,11 @@ public class DiscountServiceImpl implements DiscountService {
     private final ReviewDAO reviewDAO;
 
     @Override
-    public Page<DiscountDto> getAllSort(SearchCriteria criteria) {
+    public ResultPage<DiscountDto> getAllSort(SearchCriteria criteria) {
         Page<Discount> dis = discountDAO.findAll(criteria.getPageRequest());
-        return mapper.mapToPage(dis, DiscountDto.class);
+        ResultPage<DiscountDto> discountDTOs = mapper.mapToPage(dis, DiscountDto.class);
+        setRate(getRate(discountDTOs.getContent()), discountDTOs.getContent());
+        return discountDTOs;
     }
 
     @Override
@@ -46,10 +48,11 @@ public class DiscountServiceImpl implements DiscountService {
         return discountDto;
     }
 
+    //fixme What should this method do?
     @Override
     public List<DiscountDto> getAll() {
         List<Discount> discounts = discountDAO.findAll();
-        return setRate(getRate(discounts), mapper.mapAll(discounts, DiscountDto.class));
+        return mapper.mapAll(discounts, DiscountDto.class);
     }
 
     @Override
@@ -69,7 +72,7 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public Page<DiscountDto> getByCriteria(DiscountSearchCriteria searchCriteria) {
+    public ResultPage<DiscountDto> getByCriteria(DiscountSearchCriteria searchCriteria) {
         if (searchCriteria.isEmpty()) {
             return getAllSort(searchCriteria);
         }
@@ -81,14 +84,13 @@ public class DiscountServiceImpl implements DiscountService {
                 searchCriteria.getTags(), searchCriteria.getLocationCriteria().getCountry(),
                 searchCriteria.getLocationCriteria().getCities(), searchCriteria.getRate(),
                 searchCriteria.getPageRequest());
-        Page<DiscountDto> discountDTOs = mapper.mapToPage(result, DiscountDto.class);
-        
-//        setRate(getRate(result), discountDTOs);
+        ResultPage<DiscountDto> discountDTOs = mapper.mapToPage(result, DiscountDto.class);
+        setRate(getRate(discountDTOs.getContent()), discountDTOs.getContent());
         return discountDTOs;
     }
 
-    private Map<Long, Double> getRate(List<Discount> result) {
-        Set<Long> discountIds = result.stream().map(Discount::getId).collect(Collectors.toSet());
+    private Map<Long, Double> getRate(List<DiscountDto> result) {
+        Set<Long> discountIds = result.stream().map(DiscountDto::getId).collect(Collectors.toSet());
         return reviewDAO.getRateByDiscountId(discountIds).stream()
                 .collect(Collectors.toMap(x -> Long.parseLong(x.getFirst()), y -> Double.parseDouble(y.getSecond())));
     }

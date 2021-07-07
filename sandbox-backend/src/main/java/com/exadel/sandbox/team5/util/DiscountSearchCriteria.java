@@ -23,6 +23,7 @@ public class DiscountSearchCriteria extends SearchCriteria {
         this.searchText = searchText;
         this.locationCriteria = locationCriteria;
     }
+
     public boolean isEmpty() {
         return searchText == null && tags == null && locationCriteria == null;
     }

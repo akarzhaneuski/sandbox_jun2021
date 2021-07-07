@@ -4,10 +4,10 @@ import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.ReviewDto;
 import com.exadel.sandbox.team5.service.*;
 import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
+import com.exadel.sandbox.team5.util.ResultPage;
 import com.exadel.sandbox.team5.util.SearchCriteria;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/discounts")
@@ -39,8 +38,7 @@ public class DiscountRestController {
     }
 
     @PostMapping("/all")
-    public Page<DiscountDto> getAllSort(@RequestBody SearchCriteria criteria) {
-//        return service.getAllSort(Objects.requireNonNullElseGet(criteria, () -> new SearchCriteria()));
+    public ResultPage<DiscountDto> getAllSort(@RequestBody SearchCriteria criteria) {
         return service.getAllSort(criteria);
     }
 
@@ -67,7 +65,7 @@ public class DiscountRestController {
     }
 
     @PostMapping("/search")
-    public Page<DiscountDto> getByCriteria(@RequestBody DiscountSearchCriteria searchCriteria) {
+    public ResultPage<DiscountDto> getByCriteria(@RequestBody DiscountSearchCriteria searchCriteria) {
         return service.getByCriteria(searchCriteria);
     }
 
