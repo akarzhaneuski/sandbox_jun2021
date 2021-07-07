@@ -2,14 +2,13 @@ package com.exadel.sandbox.team5.dao;
 
 import com.exadel.sandbox.team5.entity.Company;
 import com.exadel.sandbox.team5.util.Pair;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface CompanyDAO extends JpaRepository<Company, Long> {
+public interface CompanyDAO extends CommonRepository<Company> {
 
     @Query(value = """
             SELECT c.*

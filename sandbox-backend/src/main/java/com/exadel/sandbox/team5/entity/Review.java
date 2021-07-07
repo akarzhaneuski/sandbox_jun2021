@@ -10,8 +10,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
-
 @Entity
 @Table(name = "review")
 public class Review extends BaseEntity {
