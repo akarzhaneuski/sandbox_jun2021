@@ -6,7 +6,7 @@ import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.QRCodeService;
 import com.exadel.sandbox.team5.service.ReviewService;
-import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
+import com.exadel.sandbox.team5.dto.search.DiscountSearchCriteria;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

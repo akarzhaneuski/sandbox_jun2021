@@ -21,19 +21,22 @@ public interface DiscountDAO extends JpaRepository<Discount, Long> {
                             LEFT JOIN country c ON d.countryId = c.id 
                             LEFT JOIN discount_address da ON d.id = da.discountId
                             LEFT JOIN address a ON da.addressId = a.id
-                            LEFT JOIN city s ON a.cityId = s.id                    
+                            LEFT JOIN city s ON a.cityId = s.id  
+                            LEFT JOIN company co ON d.companyId = co.id                
                             LEFT JOIN review r ON d.id = r.discountId
             WHERE (:name is null or d.description like :name or d.name like :name)
-                            AND (:tags is null or t.tagName = :tags)
+                            AND (coalesce(:tags, null) is null or t.tagName in (:tags))
                             AND (:country is null or c.name = :country)
-                            AND (:cities is null or s.name = :cities)
+                            AND (coalesce(:cities, null) is null or s.name in (:cities))
+                            AND (coalesce(:companies, null) is null or co.name in (:companies))
             GROUP BY d.id
-                HAVING rate>=(:rate);
+                HAVING rate>=(:rate)
             """, nativeQuery = true)
     List<Discount> findDiscountsByCriteria(@Param("name") String searchText,
                                            @Param("tags") Set<String> tags,
                                            @Param("country") String country,
                                            @Param("cities") Set<String> cities,
+                                           @Param("companies") Set<String> companies,
                                            @Param("rate") int rate);
 
     @Query(value = """

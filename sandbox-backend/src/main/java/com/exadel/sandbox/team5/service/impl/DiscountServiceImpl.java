@@ -4,10 +4,10 @@ import com.amazonaws.util.StringUtils;
 import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.ReviewDAO;
 import com.exadel.sandbox.team5.dto.DiscountDto;
+import com.exadel.sandbox.team5.dto.search.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
-import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.util.QueryUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -67,9 +67,13 @@ public class DiscountServiceImpl implements DiscountService {
                 ? null
                 : QueryUtils.getWildcard(searchCriteria.getSearchText());
 
+        Set<String> tags = QueryUtils.safeCollectionParam(searchCriteria.getTags());
+        Set<String> cities = QueryUtils.safeCollectionParam(searchCriteria.getLocationCriteria().getCities());
+        Set<String> companies = QueryUtils.safeCollectionParam(searchCriteria.getCompanies());
+
         var result = discountDAO.findDiscountsByCriteria(searchText,
-                searchCriteria.getTags(), searchCriteria.getLocationCriteria().getCountry(),
-                searchCriteria.getLocationCriteria().getCities(), searchCriteria.getRate());
+                tags, searchCriteria.getLocationCriteria().getCountry(),
+                cities, companies, searchCriteria.getRate());
         List<DiscountDto> discountDTOs = mapper.mapAll(result, DiscountDto.class);
         setRate(getRate(result), discountDTOs);
         return new PageImpl<>(discountDTOs, searchCriteria.getPageRequest(), discountDTOs.size());
