@@ -82,6 +82,7 @@ public class DiscountServiceImpl implements DiscountService {
                 searchCriteria.getLocationCriteria().getCities(), searchCriteria.getRate(),
                 searchCriteria.getPageRequest());
         Page<DiscountDto> discountDTOs = mapper.mapToPage(result, DiscountDto.class);
+        
 //        setRate(getRate(result), discountDTOs);
         return discountDTOs;
     }
