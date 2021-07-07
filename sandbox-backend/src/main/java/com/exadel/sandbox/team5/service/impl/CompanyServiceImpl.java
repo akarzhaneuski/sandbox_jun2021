@@ -5,7 +5,11 @@ import com.exadel.sandbox.team5.dto.CompanyDto;
 import com.exadel.sandbox.team5.entity.Company;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.CompanyService;
+import com.exadel.sandbox.team5.util.CompanySearchCriteria;
+import com.exadel.sandbox.team5.util.ResultPage;
+import com.exadel.sandbox.team5.util.SearchCriteria;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,5 +55,19 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<CompanyDto> getCompaniesByLocation(Long id) {
         return mapper.mapAll(dao.findAllByCountryId(id), CompanyDto.class);
+    }
+
+    public ResultPage<CompanyDto> getAllSort(SearchCriteria criteria) {
+        Page<Company> companies = dao.findAll(criteria.getPageRequest());
+        return mapper.mapToPage(companies, CompanyDto.class);
+    }
+
+    @Override
+    public ResultPage<CompanyDto> getByCriteria(CompanySearchCriteria criteria) {
+        if (criteria.isEmpty()) {
+            return getAllSort(criteria);
+        }
+        Page<Company> result = dao.findByNameContaining(criteria.getSearchText(), criteria.getPageRequest());
+        return mapper.mapToPage(result, CompanyDto.class);
     }
 }
