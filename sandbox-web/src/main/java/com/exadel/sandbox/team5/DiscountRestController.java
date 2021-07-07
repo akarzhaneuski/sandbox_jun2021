@@ -55,7 +55,7 @@ public class DiscountRestController {
     }
 
     @GetMapping("/{discountId}/reviews")
-    public List<ReviewDto> getReviewsByDiscount(@PathVariable Long discountId) {
+    public Map<Integer, Integer> getReviewsByDiscount(@PathVariable Long discountId) {
         return reviewService.getReviewsByDiscount(discountId);
     }
 

@@ -2,9 +2,9 @@ package com.exadel.sandbox.team5.service;
 
 import com.exadel.sandbox.team5.dto.ReviewDto;
 
-import java.util.List;
+import java.util.Map;
 
 public interface ReviewService extends CRUDService<ReviewDto> {
 
-    List<ReviewDto> getReviewsByDiscount(Long id);
+    Map<Integer, Integer> getReviewsByDiscount(Long id);
 }

@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
@@ -48,7 +50,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<ReviewDto> getReviewsByDiscount(Long id) {
-        return mapper.mapAll(reviewDAO.findAllByDiscountId(id), ReviewDto.class);
+    public Map<Integer, Integer> getReviewsByDiscount(Long id) {
+        Map<Integer, Integer> countRate = reviewDAO.findAllRateByDiscountId(id).stream()
+                .collect(Collectors.toMap(x -> Integer.parseInt(x.getFirst()), y -> Integer.parseInt(y.getSecond())));
+        Map<Integer, Integer> result = new LinkedHashMap<>();
+        for (int i = 5; i >= 1; i--) {
+            result.put(i, countRate.getOrDefault(i, 0));
+        }
+        return result;
     }
 }
