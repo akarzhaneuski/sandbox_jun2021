@@ -18,13 +18,12 @@ public class SearchCriteria {
 
     public SearchCriteria() {
         pageNum = 0;
-        itemsPerPage = 1;
-        orders = null;
+        itemsPerPage = Integer.MAX_VALUE;
     }
 
     public SearchCriteria(int pageNum, int itemsPerPage, @Nullable List<Sorting> orders) {
         this.pageNum = pageNum;
-        this.itemsPerPage = Math.max(itemsPerPage, 1);
+        this.itemsPerPage = itemsPerPage;
         this.orders = orders;
     }
 

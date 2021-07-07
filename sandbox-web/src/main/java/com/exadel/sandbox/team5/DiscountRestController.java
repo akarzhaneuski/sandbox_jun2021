@@ -40,7 +40,8 @@ public class DiscountRestController {
 
     @PostMapping("/all")
     public Page<DiscountDto> getAllSort(@RequestBody SearchCriteria criteria) {
-        return service.getAllSort(Objects.requireNonNullElseGet(criteria, () -> new SearchCriteria()));
+//        return service.getAllSort(Objects.requireNonNullElseGet(criteria, () -> new SearchCriteria()));
+        return service.getAllSort(criteria);
     }
 
     @PostMapping

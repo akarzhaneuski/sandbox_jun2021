@@ -32,6 +32,6 @@ public class MapperConverter {
         List<K> result = entityList.stream()
                 .map(entity -> map(entity, kClass))
                 .toList();
-        return new PageImpl<>(result, PageRequest.of(entityList.getNumber(), entityList.getSize()), result.size());
+        return new PageImpl<>(result, PageRequest.of(entityList.getNumber(), entityList.getSize()), entityList.getSize());
     }
 }
