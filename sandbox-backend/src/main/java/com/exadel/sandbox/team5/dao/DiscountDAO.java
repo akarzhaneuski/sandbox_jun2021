@@ -16,7 +16,7 @@ import java.util.Set;
 public interface DiscountDAO extends JpaRepository<Discount, Long> {
 
     @Query(value = """
-            SELECT d.*, AVG(r.rate) rate
+            SELECT d.*, AVG(COALESCE(r.rate, 0)) rate
                         FROM discount d
                             LEFT JOIN discount_tag dt ON d.id = dt.discountId
                             LEFT JOIN tag t ON t.id = dt.tagId
