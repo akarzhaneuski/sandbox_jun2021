@@ -70,16 +70,20 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public Page<DiscountDto> getByCriteria(DiscountSearchCriteria searchCriteria) {
+        if (searchCriteria.isEmpty()) {
+            return getAllSort(searchCriteria);
+        }
         String searchText = StringUtils.isNullOrEmpty(searchCriteria.getSearchText())
                 ? null
                 : QueryUtils.getWildcard(searchCriteria.getSearchText());
 
         var result = discountDAO.findDiscountsByCriteria(searchText,
                 searchCriteria.getTags(), searchCriteria.getLocationCriteria().getCountry(),
-                searchCriteria.getLocationCriteria().getCities(), searchCriteria.getRate());
-        List<DiscountDto> discountDTOs = mapper.mapAll(result, DiscountDto.class);
-        setRate(getRate(result), discountDTOs);
-        return new PageImpl<>(discountDTOs, searchCriteria.getPageRequest(), discountDTOs.size());
+                searchCriteria.getLocationCriteria().getCities(), searchCriteria.getRate(),
+                searchCriteria.getPageRequest());
+        Page<DiscountDto> discountDTOs = mapper.mapToPage(result, DiscountDto.class);
+//        setRate(getRate(result), discountDTOs);
+        return discountDTOs;
     }
 
     private Map<Long, Double> getRate(List<Discount> result) {

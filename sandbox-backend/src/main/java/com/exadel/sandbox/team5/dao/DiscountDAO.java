@@ -2,6 +2,8 @@ package com.exadel.sandbox.team5.dao;
 
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.util.Pair;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,14 +29,17 @@ public interface DiscountDAO extends JpaRepository<Discount, Long> {
                             AND (:tags is null or t.tagName = :tags)
                             AND (:country is null or c.name = :country)
                             AND (:cities is null or s.name = :cities)
-            GROUP BY d.id
+            GROUP BY d.id #{#pageable}
                 HAVING rate>=(:rate);
-            """, nativeQuery = true)
-    List<Discount> findDiscountsByCriteria(@Param("name") String searchText,
+            """,
+            countQuery = "SELECT count(*) FROM discount"
+            , nativeQuery = true)
+    Page<Discount> findDiscountsByCriteria(@Param("name") String searchText,
                                            @Param("tags") Set<String> tags,
                                            @Param("country") String country,
                                            @Param("cities") Set<String> cities,
-                                           @Param("rate") int rate);
+                                           @Param("rate") int rate,
+                                           Pageable pageable);
 
     @Query(value = """
             SELECT new com.exadel.sandbox.team5.util.Pair(d.name, COUNT(o.id))
