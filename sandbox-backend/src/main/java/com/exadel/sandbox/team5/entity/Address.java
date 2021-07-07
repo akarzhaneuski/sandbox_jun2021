@@ -1,6 +1,5 @@
 package com.exadel.sandbox.team5.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,7 +11,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 @Entity
 @Table(name = "address")
 public class Address extends BaseEntity {

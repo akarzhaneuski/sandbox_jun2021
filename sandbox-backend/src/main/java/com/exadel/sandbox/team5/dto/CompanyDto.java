@@ -15,4 +15,5 @@ public class CompanyDto extends IdentifierDto {
 
     private String name;
     private Set<CountryDto> countries;
+    private Long imageId;
 }

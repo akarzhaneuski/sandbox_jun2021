@@ -2,7 +2,6 @@ package com.exadel.sandbox.team5.dao;
 
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.util.Pair;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-public interface DiscountDAO extends JpaRepository<Discount, Long> {
+public interface DiscountDAO extends CommonRepository<Discount> {
 
     @Query(value = """
             SELECT d.*, AVG(COALESCE(r.rate, 0)) rate

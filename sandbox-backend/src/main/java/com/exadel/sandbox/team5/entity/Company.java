@@ -11,7 +11,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 @Entity
 @Table(name = "company")
 public class Company extends AuditableEntity {
@@ -25,4 +24,7 @@ public class Company extends AuditableEntity {
             joinColumns = @JoinColumn(name = "companyId", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "countryId", referencedColumnName = "id"))
     private Set<Country> countries = new HashSet<>();
+
+    @Column(name = "imageId")
+    private Long imageId;
 }
