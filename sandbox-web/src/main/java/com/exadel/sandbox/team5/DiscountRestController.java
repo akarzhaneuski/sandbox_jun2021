@@ -5,7 +5,6 @@ import com.exadel.sandbox.team5.dto.ReviewDto;
 import com.exadel.sandbox.team5.service.*;
 import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.util.ResultPage;
-import com.exadel.sandbox.team5.util.SearchCriteria;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,14 +31,10 @@ public class DiscountRestController {
         return service.getById(id);
     }
 
+    //fixme delete this method?
     @GetMapping
     public List<DiscountDto> getAll() {
         return service.getAll();
-    }
-
-    @PostMapping("/all")
-    public ResultPage<DiscountDto> getAllSort(@RequestBody SearchCriteria criteria) {
-        return service.getAllSort(criteria);
     }
 
     @PostMapping
