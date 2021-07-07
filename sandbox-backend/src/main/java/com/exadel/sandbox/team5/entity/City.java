@@ -11,15 +11,14 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 @Entity
 @Table(name = "city")
-public class City extends BaseEntity{
+public class City extends BaseEntity {
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany (mappedBy = "city")
+    @OneToMany(mappedBy = "city")
     private Set<Address> addresses;
 
     @JsonIgnore

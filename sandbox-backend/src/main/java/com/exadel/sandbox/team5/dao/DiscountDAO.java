@@ -7,15 +7,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Set;
 
 @Repository
-public interface DiscountDAO extends JpaRepository<Discount, Long> {
+public interface DiscountDAO extends CommonRepository<Discount> {
 
     @Query(value = """
-            SELECT d.*, AVG(r.rate) rate
+            SELECT d.*, AVG(COALESCE(r.rate, 0)) rate
                         FROM discount d
                             LEFT JOIN discount_tag dt ON d.id = dt.discountId
                             LEFT JOIN tag t ON t.id = dt.tagId

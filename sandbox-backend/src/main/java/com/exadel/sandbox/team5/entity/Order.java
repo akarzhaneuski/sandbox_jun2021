@@ -10,8 +10,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
-
 @Entity
 @Table(name = "`order`")
 public class Order extends BaseEntity {
