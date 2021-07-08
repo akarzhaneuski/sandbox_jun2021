@@ -87,7 +87,7 @@ public class OrderServiceImpl implements OrderService {
                 order.setDiscount(mapper.map(discountService.getById(createOrder.getDiscountId()), Discount.class));
                 order.setEmployee(employeeService.getById(employee.getId()));
                 order.setEmployeePromocode(new ValidatePromoCodeGenerator().generateUUID());
-                order.setPromoCodeStatus(true);
+                order.setPromoCodeStatus(true); //maybe this is not necessary here, because we are setting it in QR
                 Date currentDate = new Date();
                 LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
                 localDateTime = localDateTime.plusDays(createOrder.getAmountDiscountDays());
@@ -97,7 +97,6 @@ public class OrderServiceImpl implements OrderService {
 
                 return mapper.map(orderDAO.save(order), OrderDto.class);
             }
-
         }
         throw new NoSuchElementException();
     }

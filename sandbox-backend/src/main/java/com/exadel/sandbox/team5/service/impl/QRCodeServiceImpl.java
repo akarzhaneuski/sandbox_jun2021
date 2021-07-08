@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team5.service.impl;
 
 import com.exadel.sandbox.team5.barcodes.QRCode;
+import com.exadel.sandbox.team5.dao.OrderDAO;
 import com.exadel.sandbox.team5.service.QRCodeService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -19,10 +20,14 @@ import java.util.NoSuchElementException;
 @Log4j2
 public class QRCodeServiceImpl implements QRCodeService {
 
+    private final OrderDAO orderDAO;
+
     @Override
-    public byte[] generateQRCode(String promocode) {
+    public byte[] generateQRCode(String uuid) {
         try (var baos = new ByteArrayOutputStream()) {
-            var image = QRCode.generateQRCodeImage(promocode);
+            String qrParams = QRCode.generateQRUrl(uuid);
+            var image = QRCode.generateQRCodeImage(qrParams);
+            orderDAO.setPromoCodeStatus(true, uuid);
             ImageIO.write(image, "png", baos);
             return baos.toByteArray();
         } catch (Exception e) {
@@ -35,5 +40,13 @@ public class QRCodeServiceImpl implements QRCodeService {
     @Override
     public String readQRCode(File file) {
         return QRCode.readQRCodeImage(file);
+    }
+
+    @Override
+    public boolean checkUUID(String uuid) {
+        if (orderDAO.getEmployeePromocodeByUUID(uuid) == null) {
+            return false;
+        }
+        return orderDAO.getEmployeePromocodeByUUID(uuid).equals(uuid);
     }
 }

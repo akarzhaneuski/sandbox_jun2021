@@ -14,4 +14,10 @@ public interface QRCodeService {
      * @return String text from image.
      */
     String readQRCode(File file);
+
+    /**
+     * @param uuid unique code from link
+     * @return true if this uuid exists in database
+     */
+    boolean checkUUID(String uuid);
 }
