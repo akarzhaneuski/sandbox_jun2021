@@ -6,6 +6,7 @@ import com.exadel.sandbox.team5.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -35,5 +36,10 @@ public class TagRestController {
     @GetMapping("/statistic")
     public Map<String, String> getStatistic() {
         return orderService.getOrdersByTags();
+    }
+
+    @GetMapping("/download")
+    public void getStatisticFile() throws IOException {
+        tagService.createFile("hssfg.xls");
     }
 }
