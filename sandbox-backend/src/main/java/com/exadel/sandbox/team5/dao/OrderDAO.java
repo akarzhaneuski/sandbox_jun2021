@@ -2,14 +2,16 @@ package com.exadel.sandbox.team5.dao;
 
 import com.exadel.sandbox.team5.entity.Order;
 import com.exadel.sandbox.team5.util.Pair;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
-public interface OrderDAO extends JpaRepository<Order, Long> {
+@Repository
+public interface OrderDAO extends CommonRepository<Order> {
 
     List<Order> findAllByEmployeeId(Long id);
 
@@ -55,10 +57,18 @@ public interface OrderDAO extends JpaRepository<Order, Long> {
             """)
     List<Pair> getAllOrdersForTags();
 
+
     @Query(value = """
             SELECT o.employeePromocode
             FROM `order` o
             WHERE o.employeePromocode=(:uuid);
             """, nativeQuery = true)
     String getEmployeePromocodeByUUID(@Param("uuid") String uuid);
+
+    @Modifying
+    @Query(value = """
+            update `order` o set o.promoCodeStatus = 0 where o.promoCodePeriodEnd < (:currentTime)
+            """, nativeQuery = true)
+    void changePromoCodeStatusAfterExpirationTime(@Param("currentTime") Date currentTime);
+
 }

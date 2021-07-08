@@ -3,47 +3,20 @@ package com.exadel.sandbox.team5.service.impl;
 import com.exadel.sandbox.team5.dao.EmployeeDAO;
 import com.exadel.sandbox.team5.entity.Employee;
 import com.exadel.sandbox.team5.service.EmployeeService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-
 @Transactional
 @Service
-@RequiredArgsConstructor
-public class EmployeeServiceImpl implements EmployeeService {
+public class EmployeeServiceImpl extends CRUDServiceImpl<Employee, EmployeeDAO> implements EmployeeService {
 
-    private final EmployeeDAO employeeDAO;
-
-    @Override
-    public Employee getById(Long id) {
-        return employeeDAO.findById(id).orElseThrow(NoSuchElementException::new);
+    public EmployeeServiceImpl(EmployeeDAO repository) {
+        super(repository);
     }
 
     @Override
     public Employee getByLogin(String login) {
-        return employeeDAO.getByLogin(login);
+        return repository.getByLogin(login);
     }
 
-    @Override
-    public List<Employee> getAll() {
-        return employeeDAO.findAll();
-    }
-
-    @Override
-    public Employee save(Employee employee) {
-        return employeeDAO.save(employee);
-    }
-
-    @Override
-    public Employee update(Employee employee) {
-        return employeeDAO.save(employee);
-    }
-
-    @Override
-    public void delete(Long id) {
-        employeeDAO.deleteById(id);
-    }
 }
