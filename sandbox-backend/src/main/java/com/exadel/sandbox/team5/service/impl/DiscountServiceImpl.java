@@ -50,8 +50,8 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
         Set<String> companies = QueryUtils.safeCollectionParam(searchCriteria.getCompanies());
 
         var result = entityDao.findDiscountsByCriteria(searchText,
-                searchCriteria.getTags(), searchCriteria.getLocationCriteria().getCountry(),
-                searchCriteria.getLocationCriteria().getCities(), searchCriteria.getRate());
+                tags, searchCriteria.getLocationCriteria().getCountry(),
+                cities, companies, searchCriteria.getRate());
         List<DiscountDto> discountDTOs = mapper.mapAll(result, DiscountDto.class);
         setRate(getRate(result), discountDTOs);
         return new PageImpl<>(discountDTOs, searchCriteria.getPageRequest(), discountDTOs.size());
