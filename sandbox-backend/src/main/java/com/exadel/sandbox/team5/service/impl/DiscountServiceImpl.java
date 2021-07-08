@@ -84,6 +84,9 @@ public class DiscountServiceImpl implements DiscountService {
                 searchCriteria.getTags(), searchCriteria.getLocationCriteria().getCountry(),
                 searchCriteria.getLocationCriteria().getCities(), searchCriteria.getRate(),
                 searchCriteria.getPageRequest());
+
+        if (searchCriteria.getOrders().isEmpty() || searchCriteria.getOrders().get(0).getSortBy().equals("rate")) {
+        }
         ResultPage<DiscountDto> discountDTOs = mapper.mapToPage(result, DiscountDto.class);
         setRate(getRate(discountDTOs.getContent()), discountDTOs.getContent());
         return discountDTOs;
@@ -95,7 +98,8 @@ public class DiscountServiceImpl implements DiscountService {
                 .collect(Collectors.toMap(x -> Long.parseLong(x.getFirst()), y -> Double.parseDouble(y.getSecond())));
     }
 
-    public static List<DiscountDto> setRate(Map<Long, Double> rtMap, List<DiscountDto> dtoList) {
+    //реализовать сортировку по рейтингу
+    private List<DiscountDto> setRate(Map<Long, Double> rtMap, List<DiscountDto> dtoList) {
         for (DiscountDto d : dtoList) {
             if (rtMap.get(d.getId()) == null) d.setRate(0.0);
             else d.setRate(rtMap.get(d.getId()));
