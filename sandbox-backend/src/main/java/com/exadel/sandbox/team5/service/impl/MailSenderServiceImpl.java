@@ -1,28 +1,73 @@
 package com.exadel.sandbox.team5.service.impl;
 
+import com.exadel.sandbox.team5.dao.EmployeeDAO;
+import com.exadel.sandbox.team5.entity.Category;
+import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.service.MailSenderService;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import freemarker.template.Configuration;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
+import javax.mail.MessagingException;
 import javax.transaction.Transactional;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Transactional
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class MailSenderServiceImpl implements MailSenderService {
 
-    @Autowired
-    private JavaMailSender javaMailSender;
+    private final JavaMailSender sender;
+    private final EmployeeDAO employeeDAO;
+    private final Configuration freemarker;
 
     @Override
     public void sendEmail() {
-        SimpleMailMessage msg = new SimpleMailMessage();
+        var msg = new SimpleMailMessage();
         msg.setTo("lukeskywolker07@gmail.com");
         msg.setSubject("Testing from Spring Boot");
         msg.setText("Hello World \n Spring Boot Email");
-        javaMailSender.send(msg);
+        sender.send(msg);
+    }
+
+    @Override
+    public void sendEmailToSubscribers(Discount discount) throws MessagingException {
+        var emails = employeeDAO.getMailsBySubscriptions(discount.getCategory().getId()).toArray(new String[0]);
+        var message = sender.createMimeMessage();
+        var helper = new MimeMessageHelper(message);
+        helper.setTo(emails);
+        helper.setSubject("New Discount!!!");
+        helper.setText("Check this new discount: " + discount.getName());
+        sender.send(message);
+    }
+
+    @Override
+    public void testSend(Long categoryId, String name) {
+        var emails = employeeDAO.getMailsBySubscriptions(categoryId).toArray(new String[0]);
+        var message = sender.createMimeMessage();
+        var helper = new MimeMessageHelper(message);
+        freemarker.setClassForTemplateLoading(this.getClass(), "/template");
+        Map<String,String> params = new HashMap<>();
+        params.put("discountName", name);
+        try {
+            var t = freemarker.getTemplate("mail.ftl");
+            var text = FreeMarkerTemplateUtils.processTemplateIntoString(t, params);
+            helper.setTo(emails);
+            helper.setSubject("New Discount!!!");
+            helper.setText(text, true);
+        } catch (MessagingException | IOException | TemplateException e){
+            log.error("Cannot send mail!", e);
+        }
+        sender.send(message);
     }
 }

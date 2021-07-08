@@ -7,6 +7,7 @@ import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
+import com.exadel.sandbox.team5.service.MailSenderService;
 import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.util.QueryUtils;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class DiscountServiceImpl implements DiscountService {
     private final DiscountDAO discountDAO;
     private final MapperConverter mapper;
     private final ReviewDAO reviewDAO;
+    private final MailSenderService mailService;
 
     @Override
     public DiscountDto getById(Long id) {
@@ -48,6 +50,7 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public DiscountDto save(DiscountDto discount) {
         Discount dis = mapper.map(discount, Discount.class);
+//        mailService.sendEmailToSubscribers(dis);
         return mapper.map(discountDAO.saveAndFlush(dis), DiscountDto.class);
     }
 
