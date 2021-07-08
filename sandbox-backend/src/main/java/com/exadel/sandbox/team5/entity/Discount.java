@@ -67,4 +67,7 @@ public class Discount extends AuditableEntity implements Serializable {
             joinColumns = @JoinColumn(name = "discountId", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "addressId", referencedColumnName = "id"))
     private Set<Address> addresses = new HashSet<>();
+
+    @Column(name = "views")
+    private Long views;
 }
