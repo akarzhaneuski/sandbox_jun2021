@@ -68,12 +68,12 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
 
     @Override
     public Map<String, String> getViewsByDiscounts() {
-        return discountDAO.getViewsByDiscounts().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond, (o1, o2) -> o1, TreeMap::new));
+        return entityDao.getViewsByDiscounts().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond, (o1, o2) -> o1, TreeMap::new));
     }
 
     @Override
     public void incrementViews(Long discountId) {
-        discountDAO.findById(discountId).orElseThrow(NoSuchElementException::new);
-        discountDAO.incrementViewsByDiscountId(discountId);
+        entityDao.findById(discountId).orElseThrow(NoSuchElementException::new);
+        entityDao.incrementViewsByDiscountId(discountId);
     }
 }
