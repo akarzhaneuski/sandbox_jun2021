@@ -11,7 +11,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 @Entity
 @Table(name = "employee", uniqueConstraints = @UniqueConstraint(columnNames = {"login"}))
 public class Employee extends AuditableEntity {

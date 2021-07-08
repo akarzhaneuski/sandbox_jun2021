@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class TagDto  extends IdentifierDto{
+public class TagDto extends IdentifierDto {
 
     private String name;
 }
