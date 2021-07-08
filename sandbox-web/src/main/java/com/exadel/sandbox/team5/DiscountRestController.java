@@ -2,8 +2,8 @@ package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.ReviewDto;
+import com.exadel.sandbox.team5.dto.search.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.service.*;
-import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

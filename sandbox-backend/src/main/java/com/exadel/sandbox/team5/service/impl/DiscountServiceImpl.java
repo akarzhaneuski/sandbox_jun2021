@@ -4,11 +4,13 @@ import com.amazonaws.util.StringUtils;
 import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.ReviewDAO;
 import com.exadel.sandbox.team5.dto.DiscountDto;
+import com.exadel.sandbox.team5.dto.search.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
-import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
+
 import com.exadel.sandbox.team5.util.Pair;
+
 import com.exadel.sandbox.team5.util.QueryUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -43,6 +45,9 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
         String searchText = StringUtils.isNullOrEmpty(searchCriteria.getSearchText())
                 ? null
                 : QueryUtils.getWildcard(searchCriteria.getSearchText());
+        Set<String> tags = QueryUtils.safeCollectionParam(searchCriteria.getTags());
+        Set<String> cities = QueryUtils.safeCollectionParam(searchCriteria.getLocationCriteria().getCities());
+        Set<String> companies = QueryUtils.safeCollectionParam(searchCriteria.getCompanies());
 
         var result = entityDao.findDiscountsByCriteria(searchText,
                 searchCriteria.getTags(), searchCriteria.getLocationCriteria().getCountry(),
