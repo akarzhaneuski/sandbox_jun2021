@@ -2,10 +2,15 @@ package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.OrderDto;
 import com.exadel.sandbox.team5.service.OrderService;
+import com.exadel.sandbox.team5.service.QRCodeService;
 import com.exadel.sandbox.team5.util.CreateOrder;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -14,6 +19,7 @@ import java.util.List;
 public class OrderRestController {
 
     private final OrderService orderService;
+    private final QRCodeService qrCodeService;
 
     @GetMapping("/{id}")
     public OrderDto getOrder(@PathVariable Long id) {
@@ -49,5 +55,21 @@ public class OrderRestController {
     @PutMapping("/create")
     public OrderDto create(@RequestBody CreateOrder createOrder) {
         return orderService.createOrder(createOrder);
+    }
+
+    @ApiOperation("Generating QR code")
+    @GetMapping(value = "/validate/{uuid}", produces = MediaType.IMAGE_PNG_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public byte[] generateQRCode(@PathVariable String uuid) {
+        return qrCodeService.generateQRCode(uuid);
+    }
+
+    @ApiOperation("Checks link if uuid exists in database and not expired promocode valid")
+    @GetMapping(value = "/validate/{uuid}/{expirationTime}")
+    public String validateQRCode(@PathVariable String uuid, @PathVariable String expirationTime) {
+        var date = new Date(Long.parseLong(expirationTime)).getTime();
+        return date > System.currentTimeMillis() && qrCodeService.checkUUID(uuid)
+                ? "Promocode is valid"
+                : "Promocode is not valid :(";
     }
 }
