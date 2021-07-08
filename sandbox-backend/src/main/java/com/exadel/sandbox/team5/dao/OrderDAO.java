@@ -54,4 +54,11 @@ public interface OrderDAO extends JpaRepository<Order, Long> {
             GROUP BY t.id
             """)
     List<Pair> getAllOrdersForTags();
+
+    @Query(value = """
+            SELECT o.employeePromocode
+            FROM `order` o
+            WHERE o.employeePromocode=(:uuid);
+            """, nativeQuery = true)
+    String getEmployeePromocodeByUUID(@Param("uuid") String uuid);
 }
