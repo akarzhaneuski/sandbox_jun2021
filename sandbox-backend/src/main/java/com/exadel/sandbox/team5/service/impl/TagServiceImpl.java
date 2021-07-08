@@ -6,17 +6,11 @@ import com.exadel.sandbox.team5.entity.Tag;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.TagService;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import com.exadel.sandbox.team5.service.convertor.CSVConvertor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Map;
+import java.io.ByteArrayInputStream;
 
 @Service
 @Transactional
@@ -28,30 +22,37 @@ public class TagServiceImpl extends CRUDServiceDtoImpl<TagDAO, Tag, TagDto> impl
         this.orderService = orderService;
     }
 
-    @Override
-    public void createFile(String excelFilePath) throws IOException {
-        Workbook workbook = new HSSFWorkbook();
-        Sheet sheet = workbook.createSheet();
-        Map<String, String> ordersByTags = orderService.getOrdersByTags();
+//    @Override
+//    public Workbook createFile(String excelFilePath) throws IOException {
+//        Workbook workbook = new HSSFWorkbook();
+//        Sheet sheet = workbook.createSheet();
+//        Map<String, String> ordersByTags = orderService.getOrdersByTags();
+//
+//        int rowCount = 0;
+//
+//        for (Map.Entry<String, String> entity: ordersByTags.entrySet()) {
+//            Row row = sheet.createRow(++rowCount);
+//            writeBook(entity, row);
+//        }
+//
+//        try (FileOutputStream outputStream = new FileOutputStream(excelFilePath)) {
+//            workbook.write(outputStream);
+//        }
+//        return workbook;
+//
+//    }
+//
+//    private void writeBook(Map.Entry<String, String> entity, Row row) {
+//        Cell cell = row.createCell(1);
+//        cell.setCellValue(entity.getKey());
+//
+//        cell = row.createCell(2);
+//        cell.setCellValue(entity.getValue());
+//    }
 
-        int rowCount = 0;
+    public ByteArrayInputStream getStatisticFile() {
 
-        for (Map.Entry<String, String> entity: ordersByTags.entrySet()) {
-            Row row = sheet.createRow(++rowCount);
-            writeBook(entity, row);
-        }
-
-        try (FileOutputStream outputStream = new FileOutputStream(excelFilePath)) {
-            workbook.write(outputStream);
-        }
-
-    }
-
-    private void writeBook(Map.Entry<String, String> entity, Row row) {
-        Cell cell = row.createCell(1);
-        cell.setCellValue(entity.getKey());
-
-        cell = row.createCell(2);
-        cell.setCellValue(entity.getValue());
+        ByteArrayInputStream in = new CSVConvertor().createFile(orderService.getOrdersByTags());
+        return in;
     }
 }
