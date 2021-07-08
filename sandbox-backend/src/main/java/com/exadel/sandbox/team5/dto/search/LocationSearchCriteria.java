@@ -1,4 +1,4 @@
-package com.exadel.sandbox.team5.util;
+package com.exadel.sandbox.team5.dto.search;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

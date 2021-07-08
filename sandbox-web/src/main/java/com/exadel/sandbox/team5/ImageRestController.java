@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.ImageDto;
+import com.exadel.sandbox.team5.service.ImageClientService;
 import com.exadel.sandbox.team5.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -16,6 +17,7 @@ import java.io.IOException;
 @RequestMapping("/images")
 @RequiredArgsConstructor
 public class ImageRestController {
+    private final ImageClientService clientService;
     private final ImageService service;
 
     @GetMapping("/{id}")
@@ -29,6 +31,6 @@ public class ImageRestController {
 
     @PostMapping
     public Long saveImage(@RequestBody MultipartFile file) {
-        return service.save(file);
+        return clientService.save(file);
     }
 }
