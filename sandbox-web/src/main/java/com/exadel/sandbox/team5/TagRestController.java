@@ -44,6 +44,11 @@ public class TagRestController {
         return orderService.getOrdersByTags();
     }
 
+    @GetMapping("/statistic/categories")
+    public Map<String, String> getStatisticByCategories(){
+        return orderService.getOrdersByCategories();
+    }
+
     @GetMapping("/statistic/downloadCSVOrdersByTag")
     public ResponseEntity getOrdersByTagCSVFile(HttpServletRequest request) {
 

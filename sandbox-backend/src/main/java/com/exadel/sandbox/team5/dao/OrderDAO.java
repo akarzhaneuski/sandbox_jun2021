@@ -57,6 +57,16 @@ public interface OrderDAO extends CommonRepository<Order> {
             """)
     List<Pair> getAllOrdersForTags();
 
+    @Query(value = """
+            SELECT new com.exadel.sandbox.team5.util.Pair(c.name, COUNT(o.id))
+            FROM Order o
+                JOIN o.discount d
+                LEFT JOIN d.tags t
+                JOIN t.category c
+            GROUP BY c.id
+            """)
+    List<Pair> getAllOrdersForCategories();
+
     @Modifying
     @Query(value = """
             update `order` o set o.promoCodeStatus = 0 where o.promoCodePeriodEnd < (:currentTime)
