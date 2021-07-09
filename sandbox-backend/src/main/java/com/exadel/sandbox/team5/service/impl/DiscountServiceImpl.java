@@ -83,8 +83,8 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
     }
 
     @Override
-    public ByteArrayInputStream getStatisticFileViewsByDiscounts() {
+    public ByteArrayInputStream getStatisticCSVFileViewsByDiscounts() {
 
-        return new CSVConvertor().createFile(getViewsByDiscounts());
+        return new CSVConvertor().createFile(getViewsByDiscounts(), "Discounts", "Views");
     }
 }

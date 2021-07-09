@@ -15,7 +15,7 @@ public interface DiscountService extends CRUDService<DiscountDto> {
 
     void incrementViews(Long discountId);
 
-    ByteArrayInputStream getStatisticFileViewsByDiscounts();
+    ByteArrayInputStream getStatisticCSVFileViewsByDiscounts();
 
 
 }

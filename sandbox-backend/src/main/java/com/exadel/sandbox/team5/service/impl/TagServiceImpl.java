@@ -51,8 +51,8 @@ public class TagServiceImpl extends CRUDServiceDtoImpl<TagDAO, Tag, TagDto> impl
 //    }
 
     @Override
-    public ByteArrayInputStream getStatisticFileOrdersByTag() {
+    public ByteArrayInputStream getStatisticCSVFileOrdersByTag() {
 
-        return new CSVConvertor().createFile(orderService.getOrdersByTags());
+        return new CSVConvertor().createFile(orderService.getOrdersByTags(), "Tags", "Orders");
     }
 }

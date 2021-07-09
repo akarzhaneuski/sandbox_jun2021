@@ -63,10 +63,10 @@ public class CompanyRestController {
         return orderService.getOrdersByCompanies();
     }
 
-    @GetMapping("/statistic/downloadOrdersByCompanies")
-    public ResponseEntity getOrderByStatisticFile(){
+    @GetMapping("/statistic/downloadCSVOrdersByCompanies")
+    public ResponseEntity getOrderByStatisticCSVFile(){
         String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByCompanies.csv";
-        InputStreamResource file = new InputStreamResource(companyService.getStatisticFileOrdersByCompanies());
+        InputStreamResource file = new InputStreamResource(companyService.getStatisticCSVFileOrdersByCompanies());
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
                 .contentType(MediaType.parseMediaType("application/csv"))

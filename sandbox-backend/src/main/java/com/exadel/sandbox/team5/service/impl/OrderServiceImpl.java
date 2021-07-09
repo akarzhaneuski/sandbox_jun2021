@@ -109,8 +109,8 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     }
 
     @Override
-    public ByteArrayInputStream getStatisticFileOrdersByDiscounts() {
+    public ByteArrayInputStream getStatisticCSVFileOrdersByDiscounts() {
 
-        return new CSVConvertor().createFile(getOrdersByDiscounts());
+        return new CSVConvertor().createFile(getOrdersByDiscounts(), "Discounts", "Orders");
     }
 }

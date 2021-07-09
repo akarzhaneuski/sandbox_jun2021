@@ -13,10 +13,10 @@ import java.util.Map;
 
 public class CSVConvertor {
 
-    public ByteArrayInputStream createFile(Map<String, String> mapEntry) {
+    public ByteArrayInputStream createFile(Map<String, String> mapEntry, String statisticEntity, String amount) {
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();
-             CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out), CSVFormat.DEFAULT);) {
+             CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out), CSVFormat.DEFAULT.withHeader(statisticEntity, amount));) {
 
             for (Map.Entry<String, String> entity : mapEntry.entrySet()) {
                 List<String> data = Arrays.asList(

@@ -91,22 +91,22 @@ public class DiscountRestController {
         service.incrementViews(id);
     }
 
-    @GetMapping("/statistic/downloadOrdersByDiscounts")
-    public ResponseEntity getOrdersByDiscountsFile(HttpServletRequest request) {
+    @GetMapping("/statistic/downloadCSVOrdersByDiscounts")
+    public ResponseEntity getOrdersByDiscountsCSVFile(HttpServletRequest request) {
 
         String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByDiscounts.csv";
-        InputStreamResource file = new InputStreamResource(orderService.getStatisticFileOrdersByDiscounts());
+        InputStreamResource file = new InputStreamResource(orderService.getStatisticCSVFileOrdersByDiscounts());
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
                 .contentType(MediaType.parseMediaType("application/csv"))
                 .body(file);
     }
 
-    @GetMapping("/statistic/downloadViewsByDiscounts")
-    public ResponseEntity getViewsByDiscountsFile(HttpServletRequest request) {
+    @GetMapping("/statistic/downloadCSVViewsByDiscounts")
+    public ResponseEntity getViewsByDiscountsCSVFile(HttpServletRequest request) {
 
         String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_ViewsByDiscounts.csv";
-        InputStreamResource file = new InputStreamResource(service.getStatisticFileViewsByDiscounts());
+        InputStreamResource file = new InputStreamResource(service.getStatisticCSVFileViewsByDiscounts());
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
                 .contentType(MediaType.parseMediaType("application/csv"))

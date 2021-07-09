@@ -29,8 +29,8 @@ public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, 
     }
 
     @Override
-    public ByteArrayInputStream getStatisticFileOrdersByCompanies() {
-        ByteArrayInputStream in = new CSVConvertor().createFile(orderService.getOrdersByCompanies());
+    public ByteArrayInputStream getStatisticCSVFileOrdersByCompanies() {
+        ByteArrayInputStream in = new CSVConvertor().createFile(orderService.getOrdersByCompanies(), "Companies", "Orders");
         return in;
     }
 }

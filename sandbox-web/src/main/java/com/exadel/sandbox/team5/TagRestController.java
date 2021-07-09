@@ -44,11 +44,11 @@ public class TagRestController {
         return orderService.getOrdersByTags();
     }
 
-    @GetMapping("/statistic/downloadOrdersByTag")
-    public ResponseEntity getOrdersByTagFile(HttpServletRequest request) {
+    @GetMapping("/statistic/downloadCSVOrdersByTag")
+    public ResponseEntity getOrdersByTagCSVFile(HttpServletRequest request) {
 
         String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByTags.csv";
-        InputStreamResource file = new InputStreamResource(tagService.getStatisticFileOrdersByTag());
+        InputStreamResource file = new InputStreamResource(tagService.getStatisticCSVFileOrdersByTag());
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
                 .contentType(MediaType.parseMediaType("application/csv"))
