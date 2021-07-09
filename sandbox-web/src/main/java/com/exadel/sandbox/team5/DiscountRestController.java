@@ -6,11 +6,18 @@ import com.exadel.sandbox.team5.dto.search.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.service.*;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -82,6 +89,28 @@ public class DiscountRestController {
     @PutMapping("/{id}/views")
     public void increaseViews(@PathVariable Long id){
         service.incrementViews(id);
+    }
+
+    @GetMapping("/statistic/downloadOrdersByDiscounts")
+    public ResponseEntity getOrdersByDiscountsFile(HttpServletRequest request) {
+
+        String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByDiscounts.csv";
+        InputStreamResource file = new InputStreamResource(orderService.getStatisticFileOrdersByDiscounts());
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .contentType(MediaType.parseMediaType("application/csv"))
+                .body(file);
+    }
+
+    @GetMapping("/statistic/downloadViewsByDiscounts")
+    public ResponseEntity getViewsByDiscountsFile(HttpServletRequest request) {
+
+        String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_ViewsByDiscounts.csv";
+        InputStreamResource file = new InputStreamResource(service.getStatisticFileViewsByDiscounts());
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .contentType(MediaType.parseMediaType("application/csv"))
+                .body(file);
     }
 }
 

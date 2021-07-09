@@ -6,5 +6,5 @@ import java.io.ByteArrayInputStream;
 
 public interface TagService extends CRUDService<TagDto> {
 
-    ByteArrayInputStream getStatisticFile();
+    ByteArrayInputStream getStatisticFileOrdersByTag();
 }

@@ -4,6 +4,7 @@ import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.search.DiscountSearchCriteria;
 import org.springframework.data.domain.Page;
 
+import java.io.ByteArrayInputStream;
 import java.util.Map;
 
 public interface DiscountService extends CRUDService<DiscountDto> {
@@ -13,4 +14,8 @@ public interface DiscountService extends CRUDService<DiscountDto> {
     Map<String, String> getViewsByDiscounts();
 
     void incrementViews(Long discountId);
+
+    ByteArrayInputStream getStatisticFileViewsByDiscounts();
+
+
 }

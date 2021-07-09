@@ -8,15 +8,15 @@ import com.exadel.sandbox.team5.dto.search.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
-
+import com.exadel.sandbox.team5.service.convertor.CSVConvertor;
 import com.exadel.sandbox.team5.util.Pair;
-
 import com.exadel.sandbox.team5.util.QueryUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.ByteArrayInputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -80,5 +80,11 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
     public void incrementViews(Long discountId) {
         entityDao.findById(discountId).orElseThrow(NoSuchElementException::new);
         entityDao.incrementViewsByDiscountId(discountId);
+    }
+
+    @Override
+    public ByteArrayInputStream getStatisticFileViewsByDiscounts() {
+
+        return new CSVConvertor().createFile(getViewsByDiscounts());
     }
 }
