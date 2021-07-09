@@ -15,4 +15,6 @@ public interface OrderService extends CRUDService<OrderDto> {
     Map<String, String> getOrdersByCompanies();
 
     Map<String, String> getOrdersByTags();
+
+    Map<String, String> getOrdersByCategories();
 }
