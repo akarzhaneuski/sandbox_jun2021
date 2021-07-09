@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.time.Instant;
 import java.util.Map;
 
@@ -17,10 +15,8 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Slf4j
-public class SubscriptionManager implements Serializable {
+public class SubscriptionManager {
 
-    @Serial
-    private static final long serialVersionUID = 1905122041950251207L;
     private Map<Long, String> newDiscounts;
     private Instant lastExecution;
 
