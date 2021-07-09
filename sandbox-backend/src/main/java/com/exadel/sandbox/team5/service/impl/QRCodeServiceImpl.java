@@ -49,4 +49,9 @@ public class QRCodeServiceImpl implements QRCodeService {
         }
         return orderDAO.getEmployeePromocodeByUUID(uuid).equals(uuid);
     }
+
+    @Override
+    public boolean checkPromocodeStatus(String uuid){
+        return orderDAO.checkPromoCodeStatus(uuid);
+    }
 }

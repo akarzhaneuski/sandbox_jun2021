@@ -71,4 +71,11 @@ public interface OrderDAO extends CommonRepository<Order> {
             """, nativeQuery = true)
     void changePromoCodeStatusAfterExpirationTime(@Param("currentTime") Date currentTime);
 
+
+    @Query(value = """
+            SELECT o.promoCodeStatus
+            FROM `order` o
+            WHERE o.employeePromocode=(:uuid);
+            """, nativeQuery = true)
+    boolean checkPromoCodeStatus(@Param("uuid") String uuid);
 }

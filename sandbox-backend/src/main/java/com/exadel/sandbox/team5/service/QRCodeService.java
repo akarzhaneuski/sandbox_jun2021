@@ -20,4 +20,10 @@ public interface QRCodeService {
      * @return true if this uuid exists in database
      */
     boolean checkUUID(String uuid);
+
+    /**
+     * @param uuid unique code from link
+     * @return true if promocodeStatus status is active;
+     */
+    boolean checkPromocodeStatus(String uuid);
 }

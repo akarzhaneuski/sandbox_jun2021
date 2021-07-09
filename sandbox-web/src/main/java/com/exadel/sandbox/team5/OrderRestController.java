@@ -71,8 +71,10 @@ public class OrderRestController {
     @GetMapping(value = "/validate/{uuid}/{expirationTime}")
     public String validateQRCode(@PathVariable String uuid, @PathVariable String expirationTime) {
         var date = new Date(Long.parseLong(expirationTime)).getTime();
-        return date > System.currentTimeMillis() && qrCodeService.checkUUID(uuid)
-                ? "Promocode is valid"
+        return date > System.currentTimeMillis()
+                && qrCodeService.checkUUID(uuid)
+                && qrCodeService.checkPromocodeStatus(uuid)
+                ? "Promocode is valid :)"
                 : "Promocode is not valid :(";
     }
 }
