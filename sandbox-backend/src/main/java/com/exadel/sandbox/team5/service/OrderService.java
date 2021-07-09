@@ -20,4 +20,7 @@ public interface OrderService extends CRUDService<OrderDto> {
     Map<String, String> getOrdersByCategories();
 
     ByteArrayInputStream getStatisticCSVFileOrdersByDiscounts();
+
+    ByteArrayInputStream getStatisticCSVFileOrdersByCategories();
+
 }

@@ -119,4 +119,10 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
 
         return new CSVConvertor().createFile(getOrdersByDiscounts(), "Discounts", "Orders");
     }
+
+    @Override
+    public ByteArrayInputStream getStatisticCSVFileOrdersByCategories() {
+
+        return new CSVConvertor().createFile(getOrdersByCategories(), "Categories", "Orders");
+    }
 }

@@ -4,8 +4,15 @@ import com.exadel.sandbox.team5.dto.OrderDto;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.util.CreateOrder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 @RestController
@@ -52,5 +59,15 @@ public class OrderRestController {
             createOrder.setAmountDiscountDays(7);
         }
         return orderService.createOrder(createOrder);
+    }
+
+    @GetMapping("/statistic/downloadCSVOrdersByCategories")
+    public ResponseEntity getOrdersByCategoriesCSVFile(HttpServletRequest request) {
+        String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByTags.csv";
+        InputStreamResource file = new InputStreamResource(orderService.getStatisticCSVFileOrdersByCategories());
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .contentType(MediaType.parseMediaType("application/csv"))
+                .body(file);
     }
 }
