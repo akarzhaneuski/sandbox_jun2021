@@ -4,6 +4,8 @@ import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.ReviewDto;
 import com.exadel.sandbox.team5.dto.search.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.service.*;
+import com.exadel.sandbox.team5.service.export.ExportDiscount;
+import com.exadel.sandbox.team5.service.export.ExportOrder;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
@@ -31,6 +33,8 @@ public class DiscountRestController {
     private final QRCodeService qrCodeService;
     private final OrderService orderService;
     private final ImageClientService imageService;
+    private final ExportOrder exportOrder;
+    private  final ExportDiscount exportDiscount;
 
     @GetMapping("/{id}")
     public DiscountDto getDiscount(@PathVariable Long id) {
@@ -95,7 +99,7 @@ public class DiscountRestController {
     public ResponseEntity getOrdersByDiscountsCSVFile(HttpServletRequest request) {
 
         String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByDiscounts.csv";
-        InputStreamResource file = new InputStreamResource(orderService.getStatisticCSVFileOrdersByDiscounts());
+        InputStreamResource file = new InputStreamResource(exportOrder.ordersByDiscountsCSV());
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
                 .contentType(MediaType.parseMediaType("application/csv"))
@@ -106,7 +110,7 @@ public class DiscountRestController {
     public ResponseEntity getViewsByDiscountsCSVFile(HttpServletRequest request) {
 
         String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_ViewsByDiscounts.csv";
-        InputStreamResource file = new InputStreamResource(service.getStatisticCSVFileViewsByDiscounts());
+        InputStreamResource file = new InputStreamResource(exportDiscount.viewsByDiscountsCSV());
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
                 .contentType(MediaType.parseMediaType("application/csv"))

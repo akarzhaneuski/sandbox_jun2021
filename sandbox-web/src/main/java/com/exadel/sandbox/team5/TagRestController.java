@@ -3,6 +3,7 @@ package com.exadel.sandbox.team5;
 import com.exadel.sandbox.team5.dto.TagDto;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.TagService;
+import com.exadel.sandbox.team5.service.export.ExportTag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +24,7 @@ public class TagRestController {
 
     private final TagService tagService;
     private final OrderService orderService;
+    private final ExportTag exportTag;
 
     @GetMapping("/{id}")
     public TagDto getTag(@PathVariable Long id) {
@@ -53,10 +55,21 @@ public class TagRestController {
     public ResponseEntity getOrdersByTagCSVFile(HttpServletRequest request) {
 
         String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByTags.csv";
-        InputStreamResource file = new InputStreamResource(tagService.getStatisticCSVFileOrdersByTag());
+        InputStreamResource file = new InputStreamResource(exportTag.ordersByTagCSV());
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
                 .contentType(MediaType.parseMediaType("application/csv"))
+                .body(file);
+    }
+
+    @GetMapping("/statistic/downloadXLSXOrdersByTag")
+    public ResponseEntity getOrdersByTagXLSXFile(HttpServletRequest request) {
+
+        String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByTags.xlsx";
+        InputStreamResource file = new InputStreamResource(exportTag.ordersByTagXLSX());
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .contentType(MediaType.parseMediaType("application/xlsx"))
                 .body(file);
     }
 }

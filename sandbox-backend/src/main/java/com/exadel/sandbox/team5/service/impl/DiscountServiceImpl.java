@@ -9,21 +9,21 @@ import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.convertor.CSVConvertor;
+import com.exadel.sandbox.team5.service.export.ExportDiscount;
 import com.exadel.sandbox.team5.util.Pair;
-
 import com.exadel.sandbox.team5.util.QueryUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Transactional
 @Service
-public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discount, DiscountDto> implements DiscountService {
+public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discount, DiscountDto> implements DiscountService, ExportDiscount {
 
     private final ReviewDAO reviewDAO;
 
@@ -84,8 +84,14 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
     }
 
     @Override
-    public ByteArrayInputStream getStatisticCSVFileViewsByDiscounts() {
+    public InputStream viewsByDiscountsCSV() {
 
-        return new CSVConvertor().createFile(getViewsByDiscounts(), "Discounts", "Views");
+        return CSVConvertor.createCSVFile(getViewsByDiscounts(), "Discounts", "Views");
+    }
+
+    @Override
+    public InputStream viewsByDiscountsXLSX() {
+
+        return CSVConvertor.createXLSXFile(getViewsByDiscounts(), "Discounts", "Views");
     }
 }

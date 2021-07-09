@@ -13,12 +13,13 @@ import com.exadel.sandbox.team5.service.EmployeeService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.ValidatePromoCodeGenerator;
 import com.exadel.sandbox.team5.service.convertor.CSVConvertor;
+import com.exadel.sandbox.team5.service.export.ExportOrder;
 import com.exadel.sandbox.team5.util.CreateOrder;
 import com.exadel.sandbox.team5.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
 
 @Transactional
 @Service
-public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderDto> implements OrderService {
+public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderDto> implements OrderService, ExportOrder {
 
 
     private final EmployeeService employeeService;
@@ -115,14 +116,26 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     }
 
     @Override
-    public ByteArrayInputStream getStatisticCSVFileOrdersByDiscounts() {
+    public InputStream ordersByDiscountsCSV() {
 
-        return new CSVConvertor().createFile(getOrdersByDiscounts(), "Discounts", "Orders");
+        return CSVConvertor.createCSVFile(getOrdersByDiscounts(), "Discounts", "Orders");
     }
 
     @Override
-    public ByteArrayInputStream getStatisticCSVFileOrdersByCategories() {
+    public InputStream ordersByCategoriesCSV() {
 
-        return new CSVConvertor().createFile(getOrdersByCategories(), "Categories", "Orders");
+        return CSVConvertor.createCSVFile(getOrdersByCategories(), "Categories", "Orders");
+    }
+
+    @Override
+    public InputStream ordersByDiscountsXLSX() {
+
+        return CSVConvertor.createXLSXFile(getOrdersByDiscounts(), "Discounts", "Orders");
+    }
+
+    @Override
+    public InputStream ordersByCategoriesXLSX() {
+
+        return CSVConvertor.createXLSXFile(getOrdersByCategories(), "Categories", "Orders");
     }
 }
