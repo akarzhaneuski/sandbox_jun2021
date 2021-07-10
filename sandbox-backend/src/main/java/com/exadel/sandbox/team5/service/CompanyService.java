@@ -8,4 +8,4 @@ public interface CompanyService extends CRUDService<CompanyDto> {
 
     List<CompanyDto> getCompaniesByLocation(Long id);
 
-}
+ }

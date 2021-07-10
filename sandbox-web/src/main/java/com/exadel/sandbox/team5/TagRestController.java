@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -52,7 +51,7 @@ public class TagRestController {
     }
 
     @GetMapping("/statistic/downloadCSVOrdersByTag")
-    public ResponseEntity getOrdersByTagCSVFile(HttpServletRequest request) {
+    public ResponseEntity getOrdersByTagCSVFile() {
 
         String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByTags.csv";
         InputStreamResource file = new InputStreamResource(exportTag.ordersByTagCSV());
@@ -63,7 +62,7 @@ public class TagRestController {
     }
 
     @GetMapping("/statistic/downloadXLSXOrdersByTag")
-    public ResponseEntity getOrdersByTagXLSXFile(HttpServletRequest request) {
+    public ResponseEntity getOrdersByTagXLSXFile() {
 
         String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByTags.xlsx";
         InputStreamResource file = new InputStreamResource(exportTag.ordersByTagXLSX());

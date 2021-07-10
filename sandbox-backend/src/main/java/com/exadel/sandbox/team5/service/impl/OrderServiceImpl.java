@@ -12,7 +12,7 @@ import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.EmployeeService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.ValidatePromoCodeGenerator;
-import com.exadel.sandbox.team5.service.convertor.CSVConvertor;
+import com.exadel.sandbox.team5.service.convertor.Convertor;
 import com.exadel.sandbox.team5.service.export.ExportOrder;
 import com.exadel.sandbox.team5.util.CreateOrder;
 import com.exadel.sandbox.team5.util.Pair;
@@ -118,24 +118,24 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     @Override
     public InputStream ordersByDiscountsCSV() {
 
-        return CSVConvertor.createCSVFile(getOrdersByDiscounts(), "Discounts", "Orders");
+        return Convertor.createCSVFile(getOrdersByDiscounts(), "Discounts", "Orders");
     }
 
     @Override
     public InputStream ordersByCategoriesCSV() {
 
-        return CSVConvertor.createCSVFile(getOrdersByCategories(), "Categories", "Orders");
+        return Convertor.createCSVFile(getOrdersByCategories(), "Categories", "Orders");
     }
 
     @Override
     public InputStream ordersByDiscountsXLSX() {
 
-        return CSVConvertor.createXLSXFile(getOrdersByDiscounts(), "Discounts", "Orders");
+        return Convertor.createXLSXFile(getOrdersByDiscounts(), "Discounts", "Orders");
     }
 
     @Override
     public InputStream ordersByCategoriesXLSX() {
 
-        return CSVConvertor.createXLSXFile(getOrdersByCategories(), "Categories", "Orders");
+        return Convertor.createXLSXFile(getOrdersByCategories(), "Categories", "Orders");
     }
 }

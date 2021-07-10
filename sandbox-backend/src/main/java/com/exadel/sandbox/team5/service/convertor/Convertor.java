@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @UtilityClass
-public class CSVConvertor {
+public class Convertor {
 
     public static InputStream createCSVFile(Map<String, String> mapEntry, String statisticEntity, String amount) {
 

@@ -5,7 +5,7 @@ import com.exadel.sandbox.team5.dto.CompanyDto;
 import com.exadel.sandbox.team5.entity.Company;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.CompanyService;
-import com.exadel.sandbox.team5.service.convertor.CSVConvertor;
+import com.exadel.sandbox.team5.service.convertor.Convertor;
 import com.exadel.sandbox.team5.service.export.ExportCompany;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,11 +31,11 @@ public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, 
 
     @Override
     public InputStream ordersByCompaniesCSV() {
-        return CSVConvertor.createCSVFile(orderService.getOrdersByCompanies(), "Companies", "Orders");
+        return Convertor.createCSVFile(orderService.getOrdersByCompanies(), "Companies", "Orders");
     }
 
     @Override
     public InputStream ordersByCompaniesXLSX() {
-        return CSVConvertor.createXLSXFile(orderService.getOrdersByCompanies(), "Companies", "Orders");
+        return Convertor.createXLSXFile(orderService.getOrdersByCompanies(), "Companies", "Orders");
     }
 }

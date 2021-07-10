@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -96,7 +95,7 @@ public class DiscountRestController {
     }
 
     @GetMapping("/statistic/downloadCSVOrdersByDiscounts")
-    public ResponseEntity getOrdersByDiscountsCSVFile(HttpServletRequest request) {
+    public ResponseEntity getOrdersByDiscountsCSVFile() {
 
         String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByDiscounts.csv";
         InputStreamResource file = new InputStreamResource(exportOrder.ordersByDiscountsCSV());
@@ -107,7 +106,7 @@ public class DiscountRestController {
     }
 
     @GetMapping("/statistic/downloadCSVViewsByDiscounts")
-    public ResponseEntity getViewsByDiscountsCSVFile(HttpServletRequest request) {
+    public ResponseEntity getViewsByDiscountsCSVFile() {
 
         String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_ViewsByDiscounts.csv";
         InputStreamResource file = new InputStreamResource(exportDiscount.viewsByDiscountsCSV());

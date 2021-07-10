@@ -8,7 +8,7 @@ import com.exadel.sandbox.team5.dto.search.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
-import com.exadel.sandbox.team5.service.convertor.CSVConvertor;
+import com.exadel.sandbox.team5.service.convertor.Convertor;
 import com.exadel.sandbox.team5.service.export.ExportDiscount;
 import com.exadel.sandbox.team5.util.Pair;
 import com.exadel.sandbox.team5.util.QueryUtils;
@@ -86,12 +86,12 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
     @Override
     public InputStream viewsByDiscountsCSV() {
 
-        return CSVConvertor.createCSVFile(getViewsByDiscounts(), "Discounts", "Views");
+        return Convertor.createCSVFile(getViewsByDiscounts(), "Discounts", "Views");
     }
 
     @Override
     public InputStream viewsByDiscountsXLSX() {
 
-        return CSVConvertor.createXLSXFile(getViewsByDiscounts(), "Discounts", "Views");
+        return Convertor.createXLSXFile(getViewsByDiscounts(), "Discounts", "Views");
     }
 }
