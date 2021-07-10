@@ -12,15 +12,11 @@ import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.EmployeeService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.ValidatePromoCodeGenerator;
-import com.exadel.sandbox.team5.service.convertor.Convertor;
-import com.exadel.sandbox.team5.service.export.AdditionalExportService;
-import com.exadel.sandbox.team5.service.export.ExportService;
 import com.exadel.sandbox.team5.util.CreateOrder;
 import com.exadel.sandbox.team5.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -31,7 +27,7 @@ import java.util.stream.Collectors;
 
 @Transactional
 @Service
-public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderDto> implements OrderService, ExportService, AdditionalExportService {
+public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderDto> implements OrderService {
 
 
     private final EmployeeService employeeService;
@@ -115,28 +111,28 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     public Map<String, String> getOrdersByCategories() {
         return entityDao.getAllOrdersForCategories().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
     }
-
-    @Override
-    public InputStream exportServiceCSV() {
-
-        return Convertor.createCSVFile(getOrdersByDiscounts(), "Discounts", "Orders");
-    }
-
-    @Override
-    public InputStream additionalExportServiceCSV() {
-
-        return Convertor.createCSVFile(getOrdersByCategories(), "Categories", "Orders");
-    }
-
-    @Override
-    public InputStream exportServiceXLSX() {
-
-        return Convertor.createXLSXFile(getOrdersByDiscounts(), "Discounts", "Orders");
-    }
-
-    @Override
-    public InputStream additionalExportServiceXLSX() {
-
-        return Convertor.createXLSXFile(getOrdersByCategories(), "Categories", "Orders");
-    }
+//
+//    @Override
+//    public InputStream exportServiceCSV() {
+//
+//        return CSVConvertor.createCSVFile(getOrdersByDiscounts(), "Discounts", "Orders");
+//    }
+//
+//    @Override
+//    public InputStream additionalExportServiceCSV() {
+//
+//        return CSVConvertor.createCSVFile(getOrdersByCategories(), "Categories", "Orders");
+//    }
+//
+//    @Override
+//    public InputStream exportServiceXLSX() {
+//
+//        return CSVConvertor.createXLSXFile(getOrdersByDiscounts(), "Discounts", "Orders");
+//    }
+//
+//    @Override
+//    public InputStream additionalExportServiceXLSX() {
+//
+//        return CSVConvertor.createXLSXFile(getOrdersByCategories(), "Categories", "Orders");
+//    }
 }

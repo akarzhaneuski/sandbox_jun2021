@@ -6,16 +6,12 @@ import com.exadel.sandbox.team5.entity.Tag;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.TagService;
-import com.exadel.sandbox.team5.service.convertor.Convertor;
-import com.exadel.sandbox.team5.service.export.ExportService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.InputStream;
-
 @Service
 @Transactional
-public class TagServiceImpl extends CRUDServiceDtoImpl<TagDAO, Tag, TagDto> implements TagService, ExportService {
+public class TagServiceImpl extends CRUDServiceDtoImpl<TagDAO, Tag, TagDto> implements TagService {
     private final OrderService orderService;
 
     public TagServiceImpl(TagDAO tagDAO, MapperConverter mapper, OrderService orderService) {
@@ -23,15 +19,15 @@ public class TagServiceImpl extends CRUDServiceDtoImpl<TagDAO, Tag, TagDto> impl
         this.orderService = orderService;
     }
 
-    @Override
-    public InputStream exportServiceCSV() {
-
-        return Convertor.createCSVFile(orderService.getOrdersByTags(), "Tags", "Orders");
-    }
-
-    @Override
-    public InputStream exportServiceXLSX() {
-
-        return Convertor.createXLSXFile(orderService.getOrdersByTags(), "Tags", "Orders");
-    }
+//    @Override
+//    public InputStream exportServiceCSV() {
+//
+//        return CSVConvertor.createCSVFile(orderService.getOrdersByTags(), "Tags", "Orders");
+//    }
+//
+//    @Override
+//    public InputStream exportServiceXLSX() {
+//
+//        return CSVConvertor.createXLSXFile(orderService.getOrdersByTags(), "Tags", "Orders");
+//    }
 }
