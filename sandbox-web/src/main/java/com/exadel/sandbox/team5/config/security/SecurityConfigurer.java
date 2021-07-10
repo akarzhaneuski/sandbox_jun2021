@@ -12,7 +12,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -39,16 +38,14 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    //all URL are open
-    //fixme change authority
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.
                 cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
                 .and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login").permitAll()
-//                .antMatchers("/**").permitAll()
+                .antMatchers("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs", "/login").permitAll()
+                .antMatchers("/**").authenticated()
                 .anyRequest().authenticated()
                 .and().exceptionHandling()
                 .and().sessionManagement()
@@ -58,16 +55,4 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login");
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v2/api-docs",
-                "/configuration/ui",
-                "/swagger-resources/**",
-                "/configuration/security",
-                "/swagger-ui.html/**",
-                "/swagger-ui/**",
-                "/webjars/**");
-    }
-
 }
