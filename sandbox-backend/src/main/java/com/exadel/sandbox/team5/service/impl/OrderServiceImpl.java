@@ -13,7 +13,8 @@ import com.exadel.sandbox.team5.service.EmployeeService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.ValidatePromoCodeGenerator;
 import com.exadel.sandbox.team5.service.convertor.Convertor;
-import com.exadel.sandbox.team5.service.export.ExportOrder;
+import com.exadel.sandbox.team5.service.export.AdditionalExportService;
+import com.exadel.sandbox.team5.service.export.ExportService;
 import com.exadel.sandbox.team5.util.CreateOrder;
 import com.exadel.sandbox.team5.util.Pair;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ import java.util.stream.Collectors;
 
 @Transactional
 @Service
-public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderDto> implements OrderService, ExportOrder {
+public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderDto> implements OrderService, ExportService, AdditionalExportService {
 
 
     private final EmployeeService employeeService;
@@ -116,25 +117,25 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     }
 
     @Override
-    public InputStream ordersByDiscountsCSV() {
+    public InputStream exportServiceCSV() {
 
         return Convertor.createCSVFile(getOrdersByDiscounts(), "Discounts", "Orders");
     }
 
     @Override
-    public InputStream ordersByCategoriesCSV() {
+    public InputStream additionalExportServiceCSV() {
 
         return Convertor.createCSVFile(getOrdersByCategories(), "Categories", "Orders");
     }
 
     @Override
-    public InputStream ordersByDiscountsXLSX() {
+    public InputStream exportServiceXLSX() {
 
         return Convertor.createXLSXFile(getOrdersByDiscounts(), "Discounts", "Orders");
     }
 
     @Override
-    public InputStream ordersByCategoriesXLSX() {
+    public InputStream additionalExportServiceXLSX() {
 
         return Convertor.createXLSXFile(getOrdersByCategories(), "Categories", "Orders");
     }

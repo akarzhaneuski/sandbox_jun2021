@@ -5,17 +5,14 @@ import com.exadel.sandbox.team5.dto.CompanyDto;
 import com.exadel.sandbox.team5.entity.Company;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.CompanyService;
-import com.exadel.sandbox.team5.service.convertor.Convertor;
-import com.exadel.sandbox.team5.service.export.ExportCompany;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.InputStream;
 import java.util.List;
 
 @Transactional
 @Service
-public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, CompanyDto> implements CompanyService, ExportCompany {
+public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, CompanyDto> implements CompanyService {
 
     private final OrderServiceImpl orderService;
 
@@ -29,13 +26,13 @@ public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, 
         return mapper.mapAll(entityDao.findAllByCountryId(id), CompanyDto.class);
     }
 
-    @Override
-    public InputStream ordersByCompaniesCSV() {
-        return Convertor.createCSVFile(orderService.getOrdersByCompanies(), "Companies", "Orders");
-    }
-
-    @Override
-    public InputStream ordersByCompaniesXLSX() {
-        return Convertor.createXLSXFile(orderService.getOrdersByCompanies(), "Companies", "Orders");
-    }
+//    @Override
+//    public InputStream exportServiceCSV() {
+//        return Convertor.createCSVFile(orderService.getOrdersByCompanies(), "Companies", "Orders");
+//    }
+//
+//    @Override
+//    public InputStream exportServiceXLSX() {
+//        return Convertor.createXLSXFile(orderService.getOrdersByCompanies(), "Companies", "Orders");
+//    }
 }

@@ -7,7 +7,7 @@ import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.TagService;
 import com.exadel.sandbox.team5.service.convertor.Convertor;
-import com.exadel.sandbox.team5.service.export.ExportTag;
+import com.exadel.sandbox.team5.service.export.ExportService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +15,7 @@ import java.io.InputStream;
 
 @Service
 @Transactional
-public class TagServiceImpl extends CRUDServiceDtoImpl<TagDAO, Tag, TagDto> implements TagService, ExportTag {
+public class TagServiceImpl extends CRUDServiceDtoImpl<TagDAO, Tag, TagDto> implements TagService, ExportService {
     private final OrderService orderService;
 
     public TagServiceImpl(TagDAO tagDAO, MapperConverter mapper, OrderService orderService) {
@@ -24,13 +24,13 @@ public class TagServiceImpl extends CRUDServiceDtoImpl<TagDAO, Tag, TagDto> impl
     }
 
     @Override
-    public InputStream ordersByTagCSV() {
+    public InputStream exportServiceCSV() {
 
         return Convertor.createCSVFile(orderService.getOrdersByTags(), "Tags", "Orders");
     }
 
     @Override
-    public InputStream ordersByTagXLSX() {
+    public InputStream exportServiceXLSX() {
 
         return Convertor.createXLSXFile(orderService.getOrdersByTags(), "Tags", "Orders");
     }

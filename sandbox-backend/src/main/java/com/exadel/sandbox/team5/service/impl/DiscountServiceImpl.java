@@ -9,7 +9,7 @@ import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.convertor.Convertor;
-import com.exadel.sandbox.team5.service.export.ExportDiscount;
+import com.exadel.sandbox.team5.service.export.ExportService;
 import com.exadel.sandbox.team5.util.Pair;
 import com.exadel.sandbox.team5.util.QueryUtils;
 import org.springframework.data.domain.Page;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Transactional
 @Service
-public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discount, DiscountDto> implements DiscountService, ExportDiscount {
+public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discount, DiscountDto> implements DiscountService, ExportService {
 
     private final ReviewDAO reviewDAO;
 
@@ -84,13 +84,13 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
     }
 
     @Override
-    public InputStream viewsByDiscountsCSV() {
+    public InputStream exportServiceCSV() {
 
         return Convertor.createCSVFile(getViewsByDiscounts(), "Discounts", "Views");
     }
 
     @Override
-    public InputStream viewsByDiscountsXLSX() {
+    public InputStream exportServiceXLSX() {
 
         return Convertor.createXLSXFile(getViewsByDiscounts(), "Discounts", "Views");
     }

@@ -1,10 +1,11 @@
 package com.exadel.sandbox.team5.service.export;
 
 import java.io.InputStream;
+import java.util.Map;
 
 public interface ExportService {
 
-    InputStream ExportServiceCSV();
+    InputStream exportServiceCSV(Map<String, String> map, String entity, String amount);
 
-    InputStream ExportServiceXLSX();
+    InputStream exportServiceXLSX(Map<String, String> map, String entity, String amount);
 }
