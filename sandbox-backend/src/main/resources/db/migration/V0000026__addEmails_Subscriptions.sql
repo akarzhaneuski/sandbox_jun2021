@@ -13,12 +13,14 @@ UPDATE employee SET email='exadelovichjhon@gmail.com' WHERE id=1;
 UPDATE employee SET email='E00002@pochtu.net' WHERE id=2;
 UPDATE employee SET email='E00003@pochtu.net' WHERE id=3;
 UPDATE employee SET email='E00004@pochtu.net' WHERE id=4;
+UPDATE employee SET email='M00001@pochtu.net' WHERE id=5;
 
 INSERT INTO employee_category (categoryId, employeeId)
     VALUES (1,1),
            (2,1),
            (1,2),
            (1,3),
+           (3,3),
            (4,4);
 
 CREATE TABLE params(
@@ -33,10 +35,3 @@ UPDATE discount SET periodStart='2021-07-08 11:00:00' WHERE id=1;
 UPDATE discount SET periodStart='2021-07-08 12:00:00' WHERE id=2;
 UPDATE discount SET periodStart='2021-07-08 13:00:00' WHERE id=3;
 UPDATE discount SET periodStart='2021-07-08 14:00:00' WHERE id=4;
-
-INSERT INTO discount (name, description, periodStart, periodEnd, promocode, categoryId)
-VALUES ('testmail1', 'testtesttest', '2021-07-08 12:00:00', '2021-08-20 21:00:00','test', 1),
-       ('testmail2', 'testtesttest', '2021-07-08 12:00:00', '2021-08-20 21:00:00','test', 1),
-       ('testmail3', 'testtesttest', '2021-07-08 12:00:00', '2021-08-20 21:00:00','test', 1),
-       ('testmail4', 'testtesttest', '2021-07-08 12:00:00', '2021-08-20 21:00:00','test', 1),
-       ('testmail5', 'testtesttest', '2021-07-08 12:00:00', '2021-08-20 21:00:00','test', 1);

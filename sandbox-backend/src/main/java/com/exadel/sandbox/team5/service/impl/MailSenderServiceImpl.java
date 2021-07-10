@@ -19,6 +19,7 @@ import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Transactional
@@ -32,38 +33,36 @@ public class MailSenderServiceImpl implements MailSenderService {
     private final Configuration freemarker;
 
     @Override
-    public void sendEmail() {
-        var msg = new SimpleMailMessage();
-        msg.setTo("lukeskywolker07@gmail.com");
-        msg.setSubject("Testing from Spring Boot");
-        msg.setText("Hello World \n Spring Boot Email");
-        sender.send(msg);
-    }
-
-    @Override
-    public void sendEmailToSubscribers(Discount discount) throws MessagingException {
-        var emails = employeeDAO.getMailsBySubscriptions(discount.getCategory().getId()).toArray(new String[0]);
+    public void sendEmailToUsers(String notification) {
         var message = sender.createMimeMessage();
         var helper = new MimeMessageHelper(message);
-        helper.setTo(emails);
-        helper.setSubject("New Discount!!!");
-        helper.setText("Check this new discount: " + discount.getName());
+        freemarker.setClassForTemplateLoading(this.getClass(), "/template");
+        Map<String, String> params = new HashMap<>();
+        params.put("text",notification);
+        try {
+            var t = freemarker.getTemplate("notification.ftl");
+            var text = FreeMarkerTemplateUtils.processTemplateIntoString(t, params);
+            helper.setTo(employeeDAO.getAllEmails().toArray(new String[0]));
+            helper.setSubject("Hello there");
+            helper.setText(text, true);
+        } catch (MessagingException | IOException | TemplateException e){
+            log.error("Cannot send mail!", e);
+        }
         sender.send(message);
     }
 
     @Override
-    public void testSend(Long categoryId, String name) {
-        var emails = employeeDAO.getMailsBySubscriptions(categoryId).toArray(new String[0]);
+    public void sendEmails(String email, List<String> discountNames) {
         var message = sender.createMimeMessage();
         var helper = new MimeMessageHelper(message);
         freemarker.setClassForTemplateLoading(this.getClass(), "/template");
-        Map<String,String> params = new HashMap<>();
-        params.put("discountName", name);
+        Map<String,List<String>> params = new HashMap<>();
+        params.put("discounts", discountNames);
         try {
             var t = freemarker.getTemplate("mail.ftl");
             var text = FreeMarkerTemplateUtils.processTemplateIntoString(t, params);
-            helper.setTo(emails);
-            helper.setSubject("New Discount!!!");
+            helper.setTo(email);
+            helper.setSubject("New Discounts!!!");
             helper.setText(text, true);
         } catch (MessagingException | IOException | TemplateException e){
             log.error("Cannot send mail!", e);

@@ -58,13 +58,4 @@ public interface DiscountDAO extends CommonRepository<Discount> {
             SELECT new com.exadel.sandbox.team5.util.Pair(d.name, d.views) FROM Discount d order by d.name
             """)
     List<Pair> getViewsByDiscounts();
-
-    @Query(value = """
-            SELECT new com.exadel.sandbox.team5.util.Pair(c.id, d.name)  FROM Discount d
-                LEFT JOIN d.category c
-                JOIN Params p ON p.name='lastExecution'
-            WHERE TIMEDIFF(d.periodStart, p.value)>'12:00:00'
-                GROUP BY d.id
-            """)
-    List<Pair> getNewDiscounts();
 }

@@ -29,7 +29,7 @@ public class Employee extends AuditableEntity {
     @JoinColumn(name = "countryId")
     private Country country;
 
-    @Column(name="email")
+    @Column(name = "email")
     private String email;
 
     @ManyToMany

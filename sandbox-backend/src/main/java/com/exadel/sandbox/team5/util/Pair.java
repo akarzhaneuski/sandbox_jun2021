@@ -27,4 +27,9 @@ public class Pair {
         this.first = String.valueOf(first);
         this.second = second;
     }
+
+    public Pair(String first, String second) {
+        this.first = first;
+        this.second = second;
+    }
 }

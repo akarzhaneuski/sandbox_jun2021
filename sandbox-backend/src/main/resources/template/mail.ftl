@@ -31,10 +31,13 @@
                                     <h1 style="font-size:24px;margin:0 0 20px 0;font-family:Arial,sans-serif;">Hello
                                         USER!</h1>
                                     <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">
-                                        You have some new discounts waiting for you.</p>
+                                        You have some new discounts waiting for you:
+                                        <#list discounts as discount>
+                                            ${discount},
+                                        </#list></p>
                                     <p style="margin:0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;"><a
-                                                href="http://www.example.com"
-                                                style="color:#ee4c50;text-decoration:underline;">CHEK NEW DISCOUNT ${discountName}</a>
+                                                href="https://exadel-discounts-5.herokuapp.com/"
+                                                style="color:#ee4c50;text-decoration:underline;">CHEK NEW DISCOUNTS</a>
                                     </p>
                                 </td>
                             </tr>
@@ -50,7 +53,7 @@
                                                 <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">
                                                     Delicious and free rolls for new clients.</p>
                                                 <p style="margin:0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">
-                                                    <a href="http://www.example.com"
+                                                    <a href="https://exadel-discounts-5.herokuapp.com/"
                                                        style="color:#ee4c50;text-decoration:underline;">Order now</a>
                                                 </p>
                                             </td>
@@ -60,7 +63,7 @@
                                                     <img src="https://assets.codepen.io/210284/right.gif" alt=""
                                                          width="260" style="height:auto;display:block;"/></p>
                                                 <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">
-                                                    Hurry up! The validity of the promotion is up to 28.07.2021</p>
+                                                    Hurry up! It will not continue forever!</p>
                                                 <!-- <p style="margin:0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;"><a href="http://www.example.com" style="color:#ee4c50;text-decoration:underline;">Order now</a></p> -->
                                             </td>
                                         </tr>
@@ -77,7 +80,7 @@
                             <tr>
                                 <td style="padding:0;width:50%;" align="left">
                                     <p style="margin:0;font-size:14px;line-height:16px;font-family:Arial,sans-serif;color:#ffffff;">
-                                        &reg; Someone, Somewhere 2021<br/><a href="http://www.example.com"
+                                        &reg; Exadel 2021<br/><a href="http://www.example.com"
                                                                              style="color:#ffffff;text-decoration:underline;">Unsubscribe</a>
                                     </p>
                                 </td>
