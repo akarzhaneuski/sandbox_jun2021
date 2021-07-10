@@ -111,28 +111,4 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     public Map<String, String> getOrdersByCategories() {
         return entityDao.getAllOrdersForCategories().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
     }
-//
-//    @Override
-//    public InputStream exportServiceCSV() {
-//
-//        return CSVConvertor.createCSVFile(getOrdersByDiscounts(), "Discounts", "Orders");
-//    }
-//
-//    @Override
-//    public InputStream additionalExportServiceCSV() {
-//
-//        return CSVConvertor.createCSVFile(getOrdersByCategories(), "Categories", "Orders");
-//    }
-//
-//    @Override
-//    public InputStream exportServiceXLSX() {
-//
-//        return CSVConvertor.createXLSXFile(getOrdersByDiscounts(), "Discounts", "Orders");
-//    }
-//
-//    @Override
-//    public InputStream additionalExportServiceXLSX() {
-//
-//        return CSVConvertor.createXLSXFile(getOrdersByCategories(), "Categories", "Orders");
-//    }
 }

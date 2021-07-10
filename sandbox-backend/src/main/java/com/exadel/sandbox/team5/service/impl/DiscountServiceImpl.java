@@ -79,16 +79,4 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
         entityDao.findById(discountId).orElseThrow(NoSuchElementException::new);
         entityDao.incrementViewsByDiscountId(discountId);
     }
-//
-//    @Override
-//    public InputStream exportServiceCSV() {
-//
-//        return CSVConvertor.createCSVFile(getViewsByDiscounts(), "Discounts", "Views");
-//    }
-//
-//    @Override
-//    public InputStream exportServiceXLSX() {
-//
-//        return CSVConvertor.createXLSXFile(getViewsByDiscounts(), "Discounts", "Views");
-//    }
 }

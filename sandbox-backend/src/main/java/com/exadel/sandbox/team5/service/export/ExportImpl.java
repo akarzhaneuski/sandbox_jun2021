@@ -1,12 +1,14 @@
 package com.exadel.sandbox.team5.service.export;
 
-import com.exadel.sandbox.team5.service.convertor.CSVConvertor;
-import com.exadel.sandbox.team5.service.convertor.XLSXConvertor;
+import com.exadel.sandbox.team5.util.CSVConvertor;
+import com.exadel.sandbox.team5.util.XLSXConvertor;
+import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
 import java.util.Map;
 
-public class ExportImpl implements ExportService{
+@Component
+public class ExportImpl implements ExportService {
 
     @Override
     public InputStream exportServiceCSV(Map<String, String> map, String entity, String amount) {

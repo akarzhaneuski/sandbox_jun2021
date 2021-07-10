@@ -18,16 +18,4 @@ public class TagServiceImpl extends CRUDServiceDtoImpl<TagDAO, Tag, TagDto> impl
         super(tagDAO, Tag.class, TagDto.class, mapper);
         this.orderService = orderService;
     }
-
-//    @Override
-//    public InputStream exportServiceCSV() {
-//
-//        return CSVConvertor.createCSVFile(orderService.getOrdersByTags(), "Tags", "Orders");
-//    }
-//
-//    @Override
-//    public InputStream exportServiceXLSX() {
-//
-//        return CSVConvertor.createXLSXFile(orderService.getOrdersByTags(), "Tags", "Orders");
-//    }
 }

@@ -25,14 +25,4 @@ public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, 
     public List<CompanyDto> getCompaniesByLocation(Long id) {
         return mapper.mapAll(entityDao.findAllByCountryId(id), CompanyDto.class);
     }
-
-//    @Override
-//    public InputStream exportServiceCSV() {
-//        return Convertor.createCSVFile(orderService.getOrdersByCompanies(), "Companies", "Orders");
-//    }
-//
-//    @Override
-//    public InputStream exportServiceXLSX() {
-//        return Convertor.createXLSXFile(orderService.getOrdersByCompanies(), "Companies", "Orders");
-//    }
 }

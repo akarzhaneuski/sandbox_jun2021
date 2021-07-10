@@ -1,4 +1,4 @@
-package com.exadel.sandbox.team5.service.convertor;
+package com.exadel.sandbox.team5.util;
 
 import lombok.experimental.UtilityClass;
 import org.apache.poi.ss.usermodel.Cell;
@@ -15,7 +15,9 @@ import java.util.Map;
 
 @UtilityClass
 public class XLSXConvertor {
+
     public static InputStream createXLSXFile(Map<String, String> mapEntry, String statisticEntity, String amount) {
+
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();) {
             Workbook writeBook = new XSSFWorkbook();
             Sheet sheet = writeBook.createSheet();
