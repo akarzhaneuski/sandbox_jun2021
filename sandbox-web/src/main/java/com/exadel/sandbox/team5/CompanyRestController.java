@@ -77,11 +77,11 @@ public class CompanyRestController {
 
     @GetMapping("/statistic/downloadXLSXOrdersByCompanies")
     public ResponseEntity getOrderByStatisticXLSXFile(){
-        String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByCompanies.csv";
-        InputStreamResource file = new InputStreamResource(exportCompany.ordersByCompaniesCSV());
+        String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByCompanies.xlsx";
+        InputStreamResource file = new InputStreamResource(exportCompany.ordersByCompaniesXLSX());
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
-                .contentType(MediaType.parseMediaType("application/csv"))
+                .contentType(MediaType.parseMediaType("application/xlsx"))
                 .body(file);
     }
 }

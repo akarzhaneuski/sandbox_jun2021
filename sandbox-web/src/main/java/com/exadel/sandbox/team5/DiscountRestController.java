@@ -105,6 +105,17 @@ public class DiscountRestController {
                 .body(file);
     }
 
+    @GetMapping("/statistic/downloadXLSXOrdersByDiscounts")
+    public ResponseEntity getOrdersByDiscountsXLSXFile() {
+
+        String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByDiscounts.xlsx";
+        InputStreamResource file = new InputStreamResource(exportOrder.ordersByCategoriesXLSX());
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .contentType(MediaType.parseMediaType("application/xlsx"))
+                .body(file);
+    }
+
     @GetMapping("/statistic/downloadCSVViewsByDiscounts")
     public ResponseEntity getViewsByDiscountsCSVFile() {
 
@@ -113,6 +124,17 @@ public class DiscountRestController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
                 .contentType(MediaType.parseMediaType("application/csv"))
+                .body(file);
+    }
+
+    @GetMapping("/statistic/downloadXLSXViewsByDiscounts")
+    public ResponseEntity getViewsByDiscountsXLSXFile() {
+
+        String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_ViewsByDiscounts.xlsx";
+        InputStreamResource file = new InputStreamResource(exportDiscount.viewsByDiscountsXLSX());
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .contentType(MediaType.parseMediaType("application/xlsx"))
                 .body(file);
     }
 }
