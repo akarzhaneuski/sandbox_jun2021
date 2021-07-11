@@ -14,6 +14,8 @@ import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.ValidatePromoCodeGenerator;
 import com.exadel.sandbox.team5.util.CreateOrder;
 import com.exadel.sandbox.team5.util.Pair;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,7 +62,7 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     @Override
     public OrderDto createOrder(CreateOrder createOrder) {
 
-        Employee employee = employeeService.getById(1L);//TODO should be fix after security merge
+        Employee employee = employeeService.getByLogin(getCurrentUsername());
 
         if (discountService.getById(createOrder.getDiscountId()) != null) {
 
@@ -110,5 +112,10 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     @Override
     public Map<String, String> getOrdersByCategories() {
         return entityDao.getAllOrdersForCategories().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+    }
+
+    public String getCurrentUsername() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
     }
 }
