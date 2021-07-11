@@ -49,7 +49,7 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     public OrderDto invalidatePromoCode(Long discountId, String promoCode) {
 
         Order selectedOrder = entityDao.getOrderByDiscountIdAndEmployeePromocode(discountId, promoCode);
-
+        System.out.println(selectedOrder.toString());
         if (selectedOrder != null && selectedOrder.getPromoCodePeriodEnd().getTime() > new Date().getTime()) {
             entityDao.setPromoCodeStatus(false, promoCode);
             return mapper.map(selectedOrder, OrderDto.class);

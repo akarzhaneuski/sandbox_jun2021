@@ -15,6 +15,13 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     private final EmployeeService employeeService;
 
+//    UserDetailsService описывается как основной интерфейс, который загружает пользовательские данные
+//    в документации Spring.
+
+
+//    loadUserByUsername принимает имя пользователя в качестве параметра и возвращает объект
+//    идентификации пользователя.
+
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         Employee employee = employeeService.getByLogin(login);
