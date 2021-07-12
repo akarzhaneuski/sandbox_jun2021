@@ -13,4 +13,5 @@ public interface DiscountService extends CRUDService<DiscountDto> {
     Map<String, String> getViewsByDiscounts();
 
     void incrementViews(Long discountId);
+
 }
