@@ -18,7 +18,7 @@ import java.util.Set;
 @Table(name = "discount")
 public class Discount extends AuditableEntity implements Serializable {
 
-    @ManyToMany(cascade = {CascadeType.PERSIST})
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "discount_tag",
             joinColumns = {@JoinColumn(name = "discountId")},
@@ -26,7 +26,7 @@ public class Discount extends AuditableEntity implements Serializable {
     )
     private Set<Tag> tags = new HashSet<>();
 
-    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "companyId")
     private Company company;
 
