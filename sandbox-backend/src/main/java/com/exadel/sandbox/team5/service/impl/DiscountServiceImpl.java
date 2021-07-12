@@ -14,6 +14,8 @@ import com.exadel.sandbox.team5.util.QueryUtils;
 import com.exadel.sandbox.team5.util.ResultPage;
 import com.exadel.sandbox.team5.util.SearchCriteria;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -87,7 +89,10 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
                 cities, companies, searchCriteria.getRate(), searchCriteria.getPageRequest());
         ResultPage<DiscountDto> result = mapper.mapToPage(res, DiscountDto.class);
         setRate(getRate(result.getContent()), result.getContent());
-        return result;
+        //fixme fix sorting by rate
+        List<DiscountDto> sorted = new ArrayList<>(result.getContent());
+        sorted.sort((o1, o2) -> (int) (o2.getRate() - o1.getRate()));
+        return new ResultPage<>(sorted, result.getTotalElements());
     }
 
     private Map<Long, Double> getRate(List<DiscountDto> result) {
