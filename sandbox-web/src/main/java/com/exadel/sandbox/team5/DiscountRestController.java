@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -51,6 +52,13 @@ public class DiscountRestController {
     public DiscountDto update(@PathVariable Long id, @RequestBody DiscountDto entity) {
         entity.setId(id);
         return service.update(entity);
+    }
+
+    @PutMapping("/{id}/uploadImage")
+    public DiscountDto updateImage(@PathVariable Long id, @RequestBody MultipartFile file) {
+        DiscountDto discount = service.getById(id);
+        discount.setImageId(imageService.save(file));
+        return discount;
     }
 
     @DeleteMapping("/{id}")
