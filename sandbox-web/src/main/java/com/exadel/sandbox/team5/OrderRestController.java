@@ -42,8 +42,8 @@ public class OrderRestController {
     }
 
     @PutMapping("/invalidate/{promoCode}")
-    public OrderDto invalidate(@PathVariable String promoCode) {
-        return orderService.invalidatePromoCode(promoCode);
+    public OrderDto invalidate(@PathVariable String uuid) {
+        return orderService.invalidatePromoCode(uuid);
     }
 
     @PutMapping("/create")
