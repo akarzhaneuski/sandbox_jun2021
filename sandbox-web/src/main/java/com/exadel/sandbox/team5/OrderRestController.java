@@ -41,9 +41,9 @@ public class OrderRestController {
         orderService.delete(id);
     }
 
-    @GetMapping("/invalidate")
-    public OrderDto invalidate(@PathVariable Long discountId, @PathVariable String promoCode) {
-        return orderService.invalidatePromoCode(discountId, promoCode);
+    @PutMapping("/invalidate/{promoCode}")
+    public OrderDto invalidate(@PathVariable String promoCode) {
+        return orderService.invalidatePromoCode(promoCode);
     }
 
     @PutMapping("/create")

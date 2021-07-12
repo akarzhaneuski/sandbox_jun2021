@@ -4,6 +4,7 @@ package com.exadel.sandbox.team5.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Setter
 @Getter
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "tag")
-public class Tag extends BaseEntity {
+public class Tag extends BaseEntity implements Serializable{
 
     @Column(name = "tagName")
     private String name;

@@ -3,6 +3,7 @@ package com.exadel.sandbox.team5.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,7 +14,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "company")
-public class Company extends AuditableEntity {
+public class Company extends AuditableEntity implements Serializable {
 
     @Column(name = "name")
     private String name;
