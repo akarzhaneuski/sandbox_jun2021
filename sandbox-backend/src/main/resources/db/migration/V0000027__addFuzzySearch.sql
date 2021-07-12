@@ -1,5 +1,3 @@
-DROP function IF EXISTS `soundex_match`;
-
 DELIMITER $$
 
 CREATE FUNCTION `soundex_match`(
@@ -45,8 +43,6 @@ BEGIN
 END$$
 
 DELIMITER ;
-
-DROP function IF EXISTS `soundex_match_all`;
 
 DELIMITER $$
 
