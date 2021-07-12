@@ -15,7 +15,7 @@ public interface EmployeeDAO extends CommonRepository<Employee> {
     @Query(value = """
             SELECT new com.exadel.sandbox.team5.util.Pair(e.email, d.name)  FROM Employee e
                 JOIN e.subscriptions c
-                JOIN Discount d ON d.category=c.id 
+                JOIN Discount d ON d.category.id=c.id 
                 JOIN Params p ON p.name='lastExecution'
             WHERE d.periodStart > p.value
                 GROUP BY e.email,d.name

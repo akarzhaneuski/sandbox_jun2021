@@ -1,14 +1,10 @@
 package com.exadel.sandbox.team5.service.impl;
 
 import com.exadel.sandbox.team5.dao.EmployeeDAO;
-import com.exadel.sandbox.team5.entity.Category;
-import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.service.MailSenderService;
-import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -16,6 +12,7 @@ import freemarker.template.Configuration;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,12 +28,12 @@ public class MailSenderServiceImpl implements MailSenderService {
     private final JavaMailSender sender;
     private final EmployeeDAO employeeDAO;
     private final Configuration freemarker;
+    private MimeMessage message;
+    private MimeMessageHelper helper;
 
     @Override
     public void sendEmailToUsers(String notification) {
-        var message = sender.createMimeMessage();
-        var helper = new MimeMessageHelper(message);
-        freemarker.setClassForTemplateLoading(this.getClass(), "/template");
+        setUp();
         Map<String, String> params = new HashMap<>();
         params.put("text",notification);
         try {
@@ -53,9 +50,7 @@ public class MailSenderServiceImpl implements MailSenderService {
 
     @Override
     public void sendEmails(String email, List<String> discountNames) {
-        var message = sender.createMimeMessage();
-        var helper = new MimeMessageHelper(message);
-        freemarker.setClassForTemplateLoading(this.getClass(), "/template");
+        setUp();
         Map<String,List<String>> params = new HashMap<>();
         params.put("discounts", discountNames);
         try {
@@ -68,5 +63,11 @@ public class MailSenderServiceImpl implements MailSenderService {
             log.error("Cannot send mail!", e);
         }
         sender.send(message);
+    }
+
+    private void setUp() {
+        message = sender.createMimeMessage();
+        helper = new MimeMessageHelper(message);
+        freemarker.setClassForTemplateLoading(this.getClass(), "/template");
     }
 }

@@ -8,7 +8,7 @@ public interface ParamsDAO extends CommonRepository<Params> {
 
     @Modifying
     @Query(value = """
-            UPDATE params p SET p.value=:time WHERE p.name='lastExecution';
+            UPDATE params p SET p.value=:date WHERE p.name='lastExecution';
             """,nativeQuery = true)
-    void updateLastExecutionTime(String time);
+    void updateLastExecutionTime(String date);
 }
