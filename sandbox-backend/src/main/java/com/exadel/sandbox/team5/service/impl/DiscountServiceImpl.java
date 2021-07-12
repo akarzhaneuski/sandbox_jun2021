@@ -5,13 +5,15 @@ import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.ReviewDAO;
 import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.search.DiscountSearchCriteria;
+import com.exadel.sandbox.team5.entity.BaseEntity;
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.util.Pair;
 import com.exadel.sandbox.team5.util.QueryUtils;
+import com.exadel.sandbox.team5.util.ResultPage;
+import com.exadel.sandbox.team5.util.SearchCriteria;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -30,11 +32,11 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
     }
 
     @Override
-    public ResultPage<DiscountDto> getAllSort(SearchCriteria criteria) {
-        Page<Discount> dis = discountDAO.findAll(criteria.getPageRequest());
-        ResultPage<DiscountDto> discountDTOs = mapper.mapToPage(dis, DiscountDto.class);
-        setRate(getRate(discountDTOs.getContent()), discountDTOs.getContent());
-        return discountDTOs;
+    public ResultPage<DiscountDto> getAllByCriteria(SearchCriteria criteria) {
+        Page<Discount> dis = entityDao.findAll(criteria.getPageRequest());
+        ResultPage<DiscountDto> result = mapper.mapToPage(dis, DiscountDto.class);
+        setRate(getRate(result.getContent()), result.getContent());
+        return result;
     }
 
     @Override
@@ -46,17 +48,15 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
         return discountDto;
     }
 
-    //fixme What should this method do?
     @Override
     public List<DiscountDto> getAll() {
-        List<Discount> discounts = discountDAO.findAll();
-        return mapper.mapAll(discounts, DiscountDto.class);
+        return getAllByCriteria(new SearchCriteria()).getContent();
     }
 
     @Override
     public DiscountDto save(DiscountDto discount) {
         Discount dis = mapper.map(discount, Discount.class);
-        return mapper.map(discountDAO.saveAndFlush(dis), DiscountDto.class);
+        return mapper.map(entityDao.saveAndFlush(dis), DiscountDto.class);
     }
 
     @Override
@@ -66,13 +66,14 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
 
     @Override
     public void delete(Long id) {
-        discountDAO.deleteById(id);
+        entityDao.deleteById(id);
     }
 
+    //fixme добавить стандартную сортировку по дате добавления после включения аудита
     @Override
     public ResultPage<DiscountDto> getByCriteria(DiscountSearchCriteria searchCriteria) {
         if (searchCriteria.isEmpty()) {
-            return getAllSort(searchCriteria);
+            return getAllByCriteria(searchCriteria);
         }
         String searchText = StringUtils.isNullOrEmpty(searchCriteria.getSearchText())
                 ? null
@@ -81,12 +82,12 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
         Set<String> cities = QueryUtils.safeCollectionParam(searchCriteria.getLocationCriteria().getCities());
         Set<String> companies = QueryUtils.safeCollectionParam(searchCriteria.getCompanies());
 
-        var result = entityDao.findDiscountsByCriteria(searchText,
+        var res = entityDao.findDiscountsByCriteria(searchText,
                 tags, searchCriteria.getLocationCriteria().getCountry(),
-                cities, companies, searchCriteria.getRate());
-        List<DiscountDto> discountDTOs = mapper.mapAll(result, DiscountDto.class);
-        setRate(getRate(result), discountDTOs);
-        return new PageImpl<>(discountDTOs, searchCriteria.getPageRequest(), discountDTOs.size());
+                cities, companies, searchCriteria.getRate(), searchCriteria.getPageRequest());
+        ResultPage<DiscountDto> result = mapper.mapToPage(res, DiscountDto.class);
+        setRate(getRate(result.getContent()), result.getContent());
+        return result;
     }
 
     private Map<Long, Double> getRate(List<DiscountDto> result) {
@@ -96,12 +97,11 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
     }
 
     //реализовать сортировку по рейтингу
-    private List<DiscountDto> setRate(Map<Long, Double> rtMap, List<DiscountDto> dtoList) {
+    private void setRate(Map<Long, Double> rateMap, List<DiscountDto> dtoList) {
         for (DiscountDto d : dtoList) {
-            if (rtMap.get(d.getId()) == null) d.setRate(0.0);
-            else d.setRate(rtMap.get(d.getId()));
+            if (rateMap.get(d.getId()) == null) d.setRate(0.0);
+            else d.setRate(rateMap.get(d.getId()));
         }
-        return dtoList;
     }
 
     @Override

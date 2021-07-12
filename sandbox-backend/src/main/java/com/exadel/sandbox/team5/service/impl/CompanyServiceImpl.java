@@ -5,6 +5,10 @@ import com.exadel.sandbox.team5.dto.CompanyDto;
 import com.exadel.sandbox.team5.entity.Company;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.CompanyService;
+import com.exadel.sandbox.team5.util.CompanySearchCriteria;
+import com.exadel.sandbox.team5.util.ResultPage;
+import com.exadel.sandbox.team5.util.SearchCriteria;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +27,7 @@ public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, 
     }
 
     public ResultPage<CompanyDto> getAllSort(SearchCriteria criteria) {
-        Page<Company> companies = dao.findAll(criteria.getPageRequest());
+        Page<Company> companies = entityDao.findAll(criteria.getPageRequest());
         return mapper.mapToPage(companies, CompanyDto.class);
     }
 
@@ -32,7 +36,7 @@ public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, 
         if (criteria.isEmpty()) {
             return getAllSort(criteria);
         }
-        Page<Company> result = dao.findByNameContaining(criteria.getSearchText(), criteria.getPageRequest());
+        Page<Company> result = entityDao.findByNameContaining(criteria.getSearchText(), criteria.getPageRequest());
         return mapper.mapToPage(result, CompanyDto.class);
     }
 }

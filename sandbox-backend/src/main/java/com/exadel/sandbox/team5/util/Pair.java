@@ -24,7 +24,7 @@ public class Pair {
     }
 
     public Pair(int first, long second) {
-        this.first = "" + first;
-        this.second = "" + second;
+        this.first = Integer.toString(first);
+        this.second = Long.toString(second);
     }
 }
