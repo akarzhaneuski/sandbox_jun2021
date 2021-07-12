@@ -3,7 +3,6 @@ package com.exadel.sandbox.team5;
 import com.exadel.sandbox.team5.dto.OrderDto;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.util.CreateOrder;
-import com.exadel.sandbox.team5.util.InvalidateOrder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,9 +41,9 @@ public class OrderRestController {
         orderService.delete(id);
     }
 
-    @PutMapping("/invalidate")
-    public OrderDto invalidate(@RequestBody InvalidateOrder invalidateOrder) {
-        return orderService.invalidatePromoCode(invalidateOrder.getDiscountId(), invalidateOrder.getPromocode());
+    @PutMapping("/invalidate/{promoCode}")
+    public OrderDto invalidate(@PathVariable String promoCode) {
+        return orderService.invalidatePromoCode(promoCode);
     }
 
     @PutMapping("/create")

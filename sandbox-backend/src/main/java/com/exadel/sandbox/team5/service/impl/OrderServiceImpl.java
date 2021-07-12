@@ -49,9 +49,9 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     }
 
     @Override
-    public OrderDto invalidatePromoCode(Long discountId, String promoCode) {
+    public OrderDto invalidatePromoCode(String promoCode) {
 
-        Order selectedOrder = entityDao.getOrderByDiscountIdAndEmployeePromocode(discountId, promoCode);
+        Order selectedOrder = entityDao.getOrderByEmployeePromocode(promoCode);
 
         if (selectedOrder != null && selectedOrder.getPromoCodePeriodEnd().getTime() > new Date().getTime()) {
             entityDao.setPromoCodeStatus(false, promoCode);

@@ -15,7 +15,7 @@ public interface OrderDAO extends CommonRepository<Order> {
 
     List<Order> findAllByEmployeeId(Long id);
 
-    Order getOrderByDiscountIdAndEmployeePromocode(Long id, String promoCode);
+    Order getOrderByEmployeePromocode(String promoCode);
 
     @Modifying
     @Query(value = "update `order` o set o.promoCodeStatus = :status where o.employeePromocode = :promoCode", nativeQuery = true)
