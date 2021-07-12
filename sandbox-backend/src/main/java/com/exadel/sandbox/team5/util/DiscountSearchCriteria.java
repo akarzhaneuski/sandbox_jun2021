@@ -25,6 +25,6 @@ public class DiscountSearchCriteria extends SearchCriteria {
     }
 
     public boolean isEmpty() {
-        return searchText == null && tags == null && locationCriteria == null;
+        return searchText == null && tags.isEmpty() && locationCriteria == null;
     }
 }

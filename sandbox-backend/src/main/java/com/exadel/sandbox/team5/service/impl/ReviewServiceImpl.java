@@ -22,6 +22,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewDAO reviewDAO;
     private final MapperConverter mapper;
+    private static final int MAX_RATE = 5;
 
     @Override
     public ReviewDto getById(Long id) {
@@ -54,7 +55,7 @@ public class ReviewServiceImpl implements ReviewService {
         Map<Integer, Integer> countRate = reviewDAO.findAllRateByDiscountId(id).stream()
                 .collect(Collectors.toMap(x -> Integer.parseInt(x.getFirst()), y -> Integer.parseInt(y.getSecond())));
         Map<Integer, Integer> result = new LinkedHashMap<>();
-        for (int i = 5; i >= 1; i--) {
+        for (int i = MAX_RATE; i >= 1; i--) {
             result.put(i, countRate.getOrDefault(i, 0));
         }
         return result;
