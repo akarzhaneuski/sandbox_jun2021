@@ -14,6 +14,7 @@ import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.ValidatePromoCodeGenerator;
 import com.exadel.sandbox.team5.util.CreateOrder;
 import com.exadel.sandbox.team5.util.Pair;
+import com.exadel.sandbox.team5.util.SecurityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,21 +35,23 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     private final DiscountService discountService;
     private final DiscountDAO discountDAO;
     private final CompanyDAO companyDAO;
+    private final SecurityUtils securityUtils;
 
 
     public OrderServiceImpl(OrderDAO orderDAO, MapperConverter mapper, EmployeeService employeeService,
-                            DiscountService discountService, DiscountDAO discountDAO, CompanyDAO companyDAO) {
+                            DiscountService discountService, DiscountDAO discountDAO, CompanyDAO companyDAO, SecurityUtils securityUtils) {
         super(orderDAO, Order.class, OrderDto.class, mapper);
         this.employeeService = employeeService;
         this.discountService = discountService;
         this.discountDAO = discountDAO;
         this.companyDAO = companyDAO;
+        this.securityUtils = securityUtils;
     }
 
     @Override
-    public OrderDto invalidatePromoCode(Long discountId, String promoCode) {
+    public OrderDto invalidatePromoCode(String promoCode) {
 
-        Order selectedOrder = entityDao.getOrderByDiscountIdAndEmployeePromocode(discountId, promoCode);
+        Order selectedOrder = entityDao.getOrderByEmployeePromocode(promoCode);
 
         if (selectedOrder != null && selectedOrder.getPromoCodePeriodEnd().getTime() > new Date().getTime()) {
             entityDao.setPromoCodeStatus(false, promoCode);
@@ -60,7 +63,7 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     @Override
     public OrderDto createOrder(CreateOrder createOrder) {
 
-        Employee employee = employeeService.getById(1L);//TODO should be fix after security merge
+        Employee employee = employeeService.getByLogin(securityUtils.getCurrentUsername());
 
         if (discountService.getById(createOrder.getDiscountId()) != null) {
 

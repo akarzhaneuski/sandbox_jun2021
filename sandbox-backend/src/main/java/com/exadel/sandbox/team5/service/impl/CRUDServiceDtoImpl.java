@@ -6,10 +6,12 @@ import com.exadel.sandbox.team5.entity.BaseEntity;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.CRUDService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@Transactional
 @RequiredArgsConstructor
 public class CRUDServiceDtoImpl<S extends CommonRepository<E>, E extends BaseEntity, D extends IdentifierDto> implements CRUDService<D> {
 
