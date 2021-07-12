@@ -53,7 +53,7 @@ public class CompanyRestController {
     public CompanyDto updateImage(@PathVariable Long id, @RequestBody MultipartFile file) {
         CompanyDto company = companyService.getById(id);
         company.setImageId(imageService.save(file));
-        return company;
+        return companyService.update(company);
     }
 
     @DeleteMapping("/{id}")

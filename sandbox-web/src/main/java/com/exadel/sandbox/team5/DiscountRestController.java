@@ -58,7 +58,7 @@ public class DiscountRestController {
     public DiscountDto updateImage(@PathVariable Long id, @RequestBody MultipartFile file) {
         DiscountDto discount = service.getById(id);
         discount.setImageId(imageService.save(file));
-        return discount;
+        return service.update(discount);
     }
 
     @DeleteMapping("/{id}")
