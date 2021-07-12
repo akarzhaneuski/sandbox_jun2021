@@ -83,13 +83,13 @@ public class DiscountRestController {
         return qrCodeService.generateQRCode(promoCode);
     }
 
-    @GetMapping("/statistic")
-    public Map<String, String> getStatistic() {
+    @GetMapping("/statistic/orders")
+    public Map<String, String> getStatisticByOrders() {
         return orderService.getOrdersByDiscounts();
     }
 
     @GetMapping("/statistic/views")
-    public Map<String, String> getViewsStatistic() {
+    public Map<String, String> getStatisticByViews() {
         return service.getViewsByDiscounts();
     }
 

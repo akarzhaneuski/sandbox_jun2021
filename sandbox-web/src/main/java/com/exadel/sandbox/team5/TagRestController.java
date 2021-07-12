@@ -4,6 +4,7 @@ import com.exadel.sandbox.team5.dto.TagDto;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.TagService;
 import com.exadel.sandbox.team5.service.export.ExportService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -40,13 +41,14 @@ public class TagRestController {
         return tagService.save(entity);
     }
 
-    @GetMapping("/statistic")
-    public Map<String, String> getStatistic() {
+    @GetMapping("/statistic/orders")
+    public Map<String, String> getStatisticByOrders() {
         return orderService.getOrdersByTags();
     }
 
+    @ApiOperation("Statistic of Orders By Categories")
     @GetMapping("/statistic/categories")
-    public Map<String, String> getStatisticByCategories() {
+    public Map<String, String> getStatisticOrdersByCategories() {
         return orderService.getOrdersByCategories();
     }
 
