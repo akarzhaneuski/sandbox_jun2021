@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -44,8 +43,7 @@ public class DiscountRestController {
     }
 
     @PostMapping
-    public DiscountDto save(@RequestBody DiscountDto entity, MultipartFile file) {
-        entity.setImageId(imageService.save(file));
+    public DiscountDto save(@RequestBody DiscountDto entity) {
         return service.save(entity);
     }
 

@@ -11,7 +11,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -39,8 +38,7 @@ public class CompanyRestController {
     }
 
     @PostMapping
-    public CompanyDto save(@RequestBody CompanyDto company, MultipartFile file) {
-        company.setImageId(imageService.save(file));
+    public CompanyDto save(@RequestBody CompanyDto company) {
         return companyService.save(company);
     }
 
