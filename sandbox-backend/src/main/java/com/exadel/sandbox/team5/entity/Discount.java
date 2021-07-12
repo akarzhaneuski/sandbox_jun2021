@@ -18,7 +18,7 @@ import java.util.Set;
 @Table(name = "discount")
 public class Discount extends AuditableEntity implements Serializable {
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST})
     @JoinTable(
             name = "discount_tag",
             joinColumns = {@JoinColumn(name = "discountId")},
@@ -26,7 +26,7 @@ public class Discount extends AuditableEntity implements Serializable {
     )
     private Set<Tag> tags = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "companyId")
     private Company company;
 
@@ -53,15 +53,15 @@ public class Discount extends AuditableEntity implements Serializable {
     @Column(name = "imageId")
     private Long imageId;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "categoryId")
-    private Category category;
+    private  Category category;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "countryId")
     private Country country;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST})
     @JoinTable(
             name = "discount_address",
             joinColumns = @JoinColumn(name = "discountId", referencedColumnName = "id"),
