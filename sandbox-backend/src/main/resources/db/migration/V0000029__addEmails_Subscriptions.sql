@@ -1,4 +1,4 @@
-CREATE TABLE employee_category(
+CREATE TABLE employee_notification_category(
     id          INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     categoryId  INT NOT NULL,
     employeeId  INT NOT NULL,
@@ -9,13 +9,13 @@ CREATE TABLE employee_category(
 
 ALTER TABLE employee ADD COLUMN email VARCHAR(320);
 
-UPDATE employee SET email='exadelovichjhon@gmail.com' WHERE id=1;
-UPDATE employee SET email='E00002@pochtu.net' WHERE id=2;
-UPDATE employee SET email='E00003@pochtu.net' WHERE id=3;
-UPDATE employee SET email='E00004@pochtu.net' WHERE id=4;
-UPDATE employee SET email='M00001@pochtu.net' WHERE id=5;
+UPDATE employee SET email='exadelovichjhon@gmail.com' WHERE login='E00001';
+UPDATE employee SET email='E00002@pochtu.net' WHERE login='E00002';
+UPDATE employee SET email='E00003@pochtu.net' WHERE login='E00003';
+UPDATE employee SET email='E00004@pochtu.net' WHERE login='E00004';
+UPDATE employee SET email='M00001@pochtu.net' WHERE login='M00001';
 
-INSERT INTO employee_category (categoryId, employeeId)
+INSERT INTO employee_notification_category (categoryId, employeeId)
     VALUES (1,1),
            (2,1),
            (1,2),
