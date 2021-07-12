@@ -66,8 +66,8 @@ public class CompanyRestController {
         return companyService.getCompaniesByLocation(locationId);
     }
 
-    @GetMapping("/statistic")
-    public Map<String, String> getStatistic() {
+    @GetMapping("/statistic/orders")
+    public Map<String, String> getStatisticByOrders() {
         return orderService.getOrdersByCompanies();
     }
 
