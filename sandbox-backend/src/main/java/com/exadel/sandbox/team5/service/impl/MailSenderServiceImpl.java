@@ -1,18 +1,15 @@
 package com.exadel.sandbox.team5.service.impl;
 
+import com.amazonaws.services.sns.AmazonSNS;
 import com.exadel.sandbox.team5.dao.EmployeeDAO;
-import com.exadel.sandbox.team5.entity.Category;
-import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.service.MailSenderService;
-import freemarker.template.Template;
+import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import freemarker.template.Configuration;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import javax.mail.MessagingException;
@@ -32,20 +29,22 @@ public class MailSenderServiceImpl implements MailSenderService {
     private final EmployeeDAO employeeDAO;
     private final Configuration freemarker;
 
+    private final AmazonSNS snsClient;
+
     @Override
     public void sendEmailToUsers(String notification) {
         var message = sender.createMimeMessage();
         var helper = new MimeMessageHelper(message);
         freemarker.setClassForTemplateLoading(this.getClass(), "/template");
         Map<String, String> params = new HashMap<>();
-        params.put("text",notification);
+        params.put("text", notification);
         try {
             var t = freemarker.getTemplate("notification.ftl");
             var text = FreeMarkerTemplateUtils.processTemplateIntoString(t, params);
             helper.setTo(employeeDAO.getAllEmails().toArray(new String[0]));
             helper.setSubject("Hello there");
             helper.setText(text, true);
-        } catch (MessagingException | IOException | TemplateException e){
+        } catch (MessagingException | IOException | TemplateException e) {
             log.error("Cannot send mail!", e);
         }
         sender.send(message);
@@ -56,7 +55,7 @@ public class MailSenderServiceImpl implements MailSenderService {
         var message = sender.createMimeMessage();
         var helper = new MimeMessageHelper(message);
         freemarker.setClassForTemplateLoading(this.getClass(), "/template");
-        Map<String,List<String>> params = new HashMap<>();
+        Map<String, List<String>> params = new HashMap<>();
         params.put("discounts", discountNames);
         try {
             var t = freemarker.getTemplate("mail.ftl");
@@ -64,9 +63,16 @@ public class MailSenderServiceImpl implements MailSenderService {
             helper.setTo(email);
             helper.setSubject("New Discounts!!!");
             helper.setText(text, true);
-        } catch (MessagingException | IOException | TemplateException e){
+        } catch (MessagingException | IOException | TemplateException e) {
             log.error("Cannot send mail!", e);
         }
         sender.send(message);
     }
+
+    @Override
+    public void sendBySNS() {
+
+    }
+
+
 }
