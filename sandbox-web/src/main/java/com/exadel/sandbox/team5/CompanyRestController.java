@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,6 +46,13 @@ public class CompanyRestController {
     @PutMapping("/{id}")
     public CompanyDto update(@PathVariable Long id, @RequestBody CompanyDto company) {
         company.setId(id);
+        return companyService.update(company);
+    }
+
+    @PutMapping("/{id}/uploadImage")
+    public CompanyDto updateImage(@PathVariable Long id, @RequestBody MultipartFile file) {
+        CompanyDto company = companyService.getById(id);
+        company.setImageId(imageService.save(file));
         return companyService.update(company);
     }
 
