@@ -2,6 +2,7 @@ package com.exadel.sandbox.team5.dao;
 
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.util.Pair;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-public interface DiscountDAO extends JpaRepository<Discount, Long> {
+public interface DiscountDAO extends CommonRepository<Discount> {
 
     @Query(value = """
             SELECT d.*, AVG(COALESCE(r.rate, 0)) rate
@@ -23,21 +24,26 @@ public interface DiscountDAO extends JpaRepository<Discount, Long> {
                             LEFT JOIN country c ON d.countryId = c.id 
                             LEFT JOIN discount_address da ON d.id = da.discountId
                             LEFT JOIN address a ON da.addressId = a.id
-                            LEFT JOIN city s ON a.cityId = s.id                    
+                            LEFT JOIN city s ON a.cityId = s.id  
+                            LEFT JOIN company co ON d.companyId = co.id                
                             LEFT JOIN review r ON d.id = r.discountId
-            WHERE (:name is null or d.description like :name or d.name like :name)
-                            AND (:tags is null or t.tagName = :tags)
+            WHERE (:name is null or d.description like :name or d.name like :name 
+                            or soundex_match(:name, d.name, ' ')
+                            or soundex_match(:name, d.description, ' ')
+                            or soundex_match_all(:name, d.name, ' ')
+                            or soundex_match_all(:name, d.description, ' '))
+                            AND (coalesce(:tags, null) is null or t.tagName in (:tags))
                             AND (:country is null or c.name = :country)
-                            AND (:cities is null or s.name = :cities)
-            GROUP BY d.id #{#pageable}
-                HAVING rate>=(:rate);
-            """,
-            countQuery = "SELECT count(*) FROM discount"
-            , nativeQuery = true)
-    Page<Discount> findDiscountsByCriteria(@Param("name") String searchText,
+                            AND (coalesce(:cities, null) is null or s.name in (:cities))
+                            AND (coalesce(:companies, null) is null or co.name in (:companies))
+            GROUP BY d.id
+                HAVING rate>=(:rate)
+            """, nativeQuery = true)
+    List<Discount> findDiscountsByCriteria(@Param("name") String searchText,
                                            @Param("tags") Set<String> tags,
                                            @Param("country") String country,
                                            @Param("cities") Set<String> cities,
+                                           @Param("companies") Set<String> companies,
                                            @Param("rate") int rate,
                                            Pageable pageable);
 
@@ -49,4 +55,15 @@ public interface DiscountDAO extends JpaRepository<Discount, Long> {
                 GROUP BY d.id
             """)
     List<Pair> getAllOrdersForDiscounts();
+
+    @Modifying
+    @Query(value = """
+            UPDATE discount SET views = views + 1 WHERE discount.id = (:discountId);
+            """, nativeQuery = true)
+    void incrementViewsByDiscountId(@Param("discountId") Long discountId);
+
+    @Query(value = """
+            SELECT new com.exadel.sandbox.team5.util.Pair(d.name, d.views) FROM Discount d order by d.name
+            """)
+    List<Pair> getViewsByDiscounts();
 }

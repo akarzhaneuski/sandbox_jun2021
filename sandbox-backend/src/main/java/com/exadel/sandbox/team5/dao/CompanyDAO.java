@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CompanyDAO extends JpaRepository<Company, Long> {
+public interface CompanyDAO extends CommonRepository<Company> {
 
     @Query(value = """
             SELECT c.*

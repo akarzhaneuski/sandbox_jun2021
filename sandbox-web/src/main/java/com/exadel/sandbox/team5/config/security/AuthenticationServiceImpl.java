@@ -20,7 +20,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public void authenticate(String login, String password) {
         if (!authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(login, password)).isAuthenticated()) {
+                new UsernamePasswordAuthenticationToken(login, password)).isAuthenticated()) {
             throw new BadCredentialsException("Incorrect username or password");
         }
     }
@@ -28,7 +28,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public Token createToken(String username) {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        final String jwt = jwtUtil.generateToken(userDetails);
+        final String jwt = "Bearer " + jwtUtil.generateToken(userDetails);
         return new Token(jwt);
     }
 }

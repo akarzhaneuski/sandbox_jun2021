@@ -25,6 +25,7 @@ logging:
   level:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org.hibernate.SQL: DEBUG
+    org.springframework.web: DEBUG
 
 app:
   jwtSecret: JoIfaQvdx7rbFYOTyjdAcOk/xyGTF8YuSt5N477flHiPbuA7tuFky

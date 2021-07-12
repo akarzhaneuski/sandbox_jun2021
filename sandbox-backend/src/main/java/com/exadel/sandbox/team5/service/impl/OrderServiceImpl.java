@@ -14,7 +14,6 @@ import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.ValidatePromoCodeGenerator;
 import com.exadel.sandbox.team5.util.CreateOrder;
 import com.exadel.sandbox.team5.util.Pair;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,48 +27,31 @@ import java.util.stream.Collectors;
 
 @Transactional
 @Service
-@RequiredArgsConstructor
-public class OrderServiceImpl implements OrderService {
+public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderDto> implements OrderService {
 
-    private final OrderDAO orderDAO;
+
     private final EmployeeService employeeService;
     private final DiscountService discountService;
-    private final MapperConverter mapper;
     private final DiscountDAO discountDAO;
     private final CompanyDAO companyDAO;
 
-    @Override
-    public OrderDto getById(Long id) {
-        return mapper.map(orderDAO.findById(id).orElseThrow(NoSuchElementException::new), OrderDto.class);
-    }
 
-    @Override
-    public List<OrderDto> getAll() {
-        return mapper.mapAll(orderDAO.findAll(), OrderDto.class);
-    }
-
-    @Override
-    public OrderDto save(OrderDto order) {
-        return mapper.map(orderDAO.saveAndFlush(mapper.map((order), Order.class)), OrderDto.class);
-    }
-
-    @Override
-    public OrderDto update(OrderDto order) {
-        return this.save(order);
-    }
-
-    @Override
-    public void delete(Long id) {
-        orderDAO.deleteById(id);
+    public OrderServiceImpl(OrderDAO orderDAO, MapperConverter mapper, EmployeeService employeeService,
+                            DiscountService discountService, DiscountDAO discountDAO, CompanyDAO companyDAO) {
+        super(orderDAO, Order.class, OrderDto.class, mapper);
+        this.employeeService = employeeService;
+        this.discountService = discountService;
+        this.discountDAO = discountDAO;
+        this.companyDAO = companyDAO;
     }
 
     @Override
     public OrderDto invalidatePromoCode(Long discountId, String promoCode) {
 
-        Order selectedOrder = orderDAO.getOrderByDiscountIdAndEmployeePromocode(discountId, promoCode);
+        Order selectedOrder = entityDao.getOrderByDiscountIdAndEmployeePromocode(discountId, promoCode);
 
         if (selectedOrder != null && selectedOrder.getPromoCodePeriodEnd().getTime() > new Date().getTime()) {
-            orderDAO.setPromoCodeStatus(false, promoCode);
+            entityDao.setPromoCodeStatus(false, promoCode);
             return mapper.map(selectedOrder, OrderDto.class);
         }
         throw new NoSuchElementException();
@@ -95,7 +77,7 @@ public class OrderServiceImpl implements OrderService {
                 order.setPromoCodePeriodStart(currentDate);
                 order.setPromoCodePeriodEnd(currentDatePlusOneDay);
 
-                return mapper.map(orderDAO.save(order), OrderDto.class);
+                return mapper.map(entityDao.save(order), OrderDto.class);
             }
 
         }
@@ -103,7 +85,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private List<Order> activeOrdersByStatus(Employee employee) {
-        return orderDAO.findAllByEmployeeId(employee.getId()).stream().filter(Order::getPromoCodeStatus).collect(Collectors.toList());
+        return entityDao.findAllByEmployeeId(employee.getId()).stream().filter(Order::getPromoCodeStatus).collect(Collectors.toList());
     }
 
     private List<Order> activeOrdersByTime(List<Order> activeOrders) {
@@ -122,6 +104,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Map<String, String> getOrdersByTags() {
-        return orderDAO.getAllOrdersForTags().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+        return entityDao.getAllOrdersForTags().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+    }
+
+    @Override
+    public Map<String, String> getOrdersByCategories() {
+        return entityDao.getAllOrdersForCategories().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
     }
 }

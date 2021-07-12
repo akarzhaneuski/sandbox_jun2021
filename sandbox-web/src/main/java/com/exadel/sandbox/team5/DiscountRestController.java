@@ -2,6 +2,7 @@ package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.ReviewDto;
+import com.exadel.sandbox.team5.dto.search.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.service.*;
 import com.exadel.sandbox.team5.util.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.util.ResultPage;
@@ -74,6 +75,16 @@ public class DiscountRestController {
     @GetMapping("/statistic")
     public Map<String, String> getStatistic() {
         return orderService.getOrdersByDiscounts();
+    }
+
+    @GetMapping("/statistic/views")
+    public Map<String, String> getViewsStatistic() {
+        return service.getViewsByDiscounts();
+    }
+
+    @PutMapping("/{id}/views")
+    public void increaseViews(@PathVariable Long id){
+        service.incrementViews(id);
     }
 }
 
