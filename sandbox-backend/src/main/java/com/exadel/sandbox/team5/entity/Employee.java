@@ -34,7 +34,7 @@ public class Employee extends AuditableEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "employee_category",
+            name = "employee_notification_category",
             joinColumns = {@JoinColumn(name = "employeeId")},
             inverseJoinColumns = {@JoinColumn(name = "categoryId")}
     )
