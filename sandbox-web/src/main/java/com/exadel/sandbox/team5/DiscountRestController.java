@@ -1,10 +1,10 @@
 package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.DiscountDto;
-import com.exadel.sandbox.team5.dto.ReviewDto;
 import com.exadel.sandbox.team5.dto.search.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.service.*;
 import com.exadel.sandbox.team5.service.export.ExportService;
+import com.exadel.sandbox.team5.util.ResultPage;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +39,7 @@ public class DiscountRestController {
         return service.getById(id);
     }
 
+    //fixme delete this method?
     @GetMapping
     public List<DiscountDto> getAll() {
         return service.getAll();
@@ -67,12 +69,12 @@ public class DiscountRestController {
     }
 
     @GetMapping("/{discountId}/reviews")
-    public List<ReviewDto> getReviewsByDiscount(@PathVariable Long discountId) {
+    public Map<Integer, Integer> getReviewsByDiscount(@PathVariable Long discountId) {
         return reviewService.getReviewsByDiscount(discountId);
     }
 
     @PostMapping("/search")
-    public Page<DiscountDto> getByCriteria(@RequestBody DiscountSearchCriteria searchCriteria) {
+    public ResultPage<DiscountDto> getByCriteria(@RequestBody DiscountSearchCriteria searchCriteria) {
         return service.getByCriteria(searchCriteria);
     }
 
