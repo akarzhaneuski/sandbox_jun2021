@@ -7,6 +7,4 @@ public interface MailSenderService {
     void sendEmailToUsers(String message);
 
     void sendEmails(String email, List<String> discountNames);
-
-    void sendBySNS();
 }

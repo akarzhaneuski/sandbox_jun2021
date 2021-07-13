@@ -2,13 +2,13 @@ package com.exadel.sandbox.team5.service.impl;
 
 import com.exadel.sandbox.team5.dao.EmployeeDAO;
 import com.exadel.sandbox.team5.service.MailSenderService;
+import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import freemarker.template.Configuration;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import javax.mail.MessagingException;
@@ -35,14 +35,14 @@ public class MailSenderServiceImpl implements MailSenderService {
     public void sendEmailToUsers(String notification) {
         setUp();
         Map<String, String> params = new HashMap<>();
-        params.put("text",notification);
+        params.put("text", notification);
         try {
             var t = freemarker.getTemplate("notification.ftl");
             var text = FreeMarkerTemplateUtils.processTemplateIntoString(t, params);
             helper.setTo(employeeDAO.getAllEmails().toArray(new String[0]));
             helper.setSubject("Hello there");
             helper.setText(text, true);
-        } catch (MessagingException | IOException | TemplateException e){
+        } catch (MessagingException | IOException | TemplateException e) {
             log.error("Cannot send mail!", e);
         }
         sender.send(message);
@@ -51,7 +51,7 @@ public class MailSenderServiceImpl implements MailSenderService {
     @Override
     public void sendEmails(String email, List<String> discountNames) {
         setUp();
-        Map<String,List<String>> params = new HashMap<>();
+        Map<String, List<String>> params = new HashMap<>();
         params.put("discounts", discountNames);
         try {
             var t = freemarker.getTemplate("mail.ftl");
@@ -59,7 +59,7 @@ public class MailSenderServiceImpl implements MailSenderService {
             helper.setTo(email);
             helper.setSubject("New Discounts!!!");
             helper.setText(text, true);
-        } catch (MessagingException | IOException | TemplateException e){
+        } catch (MessagingException | IOException | TemplateException e) {
             log.error("Cannot send mail!", e);
         }
         sender.send(message);
