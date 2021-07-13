@@ -74,42 +74,21 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
         if (searchCriteria.isEmpty()) {
             return getAllByCriteria(searchCriteria);
         }
-        DiscountSearchCriteria validSearchCriteria = validate(searchCriteria);
-        Set<String> cities = QueryUtils.safeCollectionParam(validSearchCriteria.getLocationCriteria().getCities());
-        var res = entityDao.findDiscountsByCriteria(validSearchCriteria.getSearchText(),
-                validSearchCriteria.getTags(),
-                validSearchCriteria.getLocationCriteria().getCountry(),
-                cities,
-                validSearchCriteria.getCompanies(),
-                validSearchCriteria.getRate(),
-                validSearchCriteria.getPageRequest());
+        var res = entityDao.findDiscountsByCriteria(searchCriteria.getSearchText(),
+                searchCriteria.getTags(),
+                searchCriteria.getLocationCriteria().getCountry(),
+                searchCriteria.getLocationCriteria().getCities(),
+                searchCriteria.getCompanies(),
+                searchCriteria.getRate(),
+                searchCriteria.getPageRequest());
         ResultPage<DiscountDto> result = mapper.mapToPage(res, DiscountDto.class);
         setRate(getRate(result.getContent()), result.getContent());
-        if (validSearchCriteria.getOrders().isEmpty()) {
+        if (searchCriteria.getOrders() != null && searchCriteria.getOrders().isEmpty()) {
             List<DiscountDto> sorted = new ArrayList<>(result.getContent());
             sorted.sort((o1, o2) -> (int) (o2.getRate() - o1.getRate()));
             return new ResultPage<>(sorted, result.getTotalElements());
         }
         return result;
-    }
-
-    private DiscountSearchCriteria validate(DiscountSearchCriteria searchCriteria) {
-        if (searchCriteria.getOrders().isEmpty() || searchCriteria.getOrders().contains(new Sorting("ASC", "rate"))) {
-            searchCriteria.setOrders(new ArrayList<>());
-        }
-        String searchText = StringUtils.isNullOrEmpty(searchCriteria.getSearchText())
-                ? null
-                : QueryUtils.getWildcard(searchCriteria.getSearchText());
-        Set<String> tags = QueryUtils.safeCollectionParam(searchCriteria.getTags());
-        Set<String> companies = QueryUtils.safeCollectionParam(searchCriteria.getCompanies());
-        return new DiscountSearchCriteria(searchCriteria.getPageNum(),
-                searchCriteria.getItemsPerPage(),
-                searchCriteria.getOrders(),
-                tags,
-                searchCriteria.getRate(),
-                searchText,
-                searchCriteria.getLocationCriteria(),
-                companies);
     }
 
     private Map<Long, Double> getRate(List<DiscountDto> result) {
