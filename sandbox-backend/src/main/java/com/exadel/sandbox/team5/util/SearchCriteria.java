@@ -31,4 +31,8 @@ public class SearchCriteria {
         orders.forEach(x -> result.add(new Sort.Order(x.getDirection(), x.getSortBy())));
         return PageRequest.of(pageNum, itemsPerPage, Sort.by(result));
     }
+
+    public void setOrders(List<Sorting> orders) {
+        this.orders = orders;
+    }
 }

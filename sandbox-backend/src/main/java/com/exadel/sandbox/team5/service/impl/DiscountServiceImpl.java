@@ -9,10 +9,7 @@ import com.exadel.sandbox.team5.entity.BaseEntity;
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
-import com.exadel.sandbox.team5.util.Pair;
-import com.exadel.sandbox.team5.util.QueryUtils;
-import com.exadel.sandbox.team5.util.ResultPage;
-import com.exadel.sandbox.team5.util.SearchCriteria;
+import com.exadel.sandbox.team5.util.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.parameters.P;
@@ -77,22 +74,42 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
         if (searchCriteria.isEmpty()) {
             return getAllByCriteria(searchCriteria);
         }
+        DiscountSearchCriteria validSearchCriteria = validate(searchCriteria);
+        Set<String> cities = QueryUtils.safeCollectionParam(validSearchCriteria.getLocationCriteria().getCities());
+        var res = entityDao.findDiscountsByCriteria(validSearchCriteria.getSearchText(),
+                validSearchCriteria.getTags(),
+                validSearchCriteria.getLocationCriteria().getCountry(),
+                cities,
+                validSearchCriteria.getCompanies(),
+                validSearchCriteria.getRate(),
+                validSearchCriteria.getPageRequest());
+        ResultPage<DiscountDto> result = mapper.mapToPage(res, DiscountDto.class);
+        setRate(getRate(result.getContent()), result.getContent());
+        if (validSearchCriteria.getOrders().isEmpty()) {
+            List<DiscountDto> sorted = new ArrayList<>(result.getContent());
+            sorted.sort((o1, o2) -> (int) (o2.getRate() - o1.getRate()));
+            return new ResultPage<>(sorted, result.getTotalElements());
+        }
+        return result;
+    }
+
+    private DiscountSearchCriteria validate(DiscountSearchCriteria searchCriteria) {
+        if (searchCriteria.getOrders().isEmpty() || searchCriteria.getOrders().contains(new Sorting("ASC", "rate"))) {
+            searchCriteria.setOrders(new ArrayList<>());
+        }
         String searchText = StringUtils.isNullOrEmpty(searchCriteria.getSearchText())
                 ? null
                 : QueryUtils.getWildcard(searchCriteria.getSearchText());
         Set<String> tags = QueryUtils.safeCollectionParam(searchCriteria.getTags());
-        Set<String> cities = QueryUtils.safeCollectionParam(searchCriteria.getLocationCriteria().getCities());
         Set<String> companies = QueryUtils.safeCollectionParam(searchCriteria.getCompanies());
-
-        var res = entityDao.findDiscountsByCriteria(searchText,
-                tags, searchCriteria.getLocationCriteria().getCountry(),
-                cities, companies, searchCriteria.getRate(), searchCriteria.getPageRequest());
-        ResultPage<DiscountDto> result = mapper.mapToPage(res, DiscountDto.class);
-        setRate(getRate(result.getContent()), result.getContent());
-        //fixme fix sorting by rate
-        List<DiscountDto> sorted = new ArrayList<>(result.getContent());
-        sorted.sort((o1, o2) -> (int) (o2.getRate() - o1.getRate()));
-        return new ResultPage<>(sorted, result.getTotalElements());
+        return new DiscountSearchCriteria(searchCriteria.getPageNum(),
+                searchCriteria.getItemsPerPage(),
+                searchCriteria.getOrders(),
+                tags,
+                searchCriteria.getRate(),
+                searchText,
+                searchCriteria.getLocationCriteria(),
+                companies);
     }
 
     private Map<Long, Double> getRate(List<DiscountDto> result) {
