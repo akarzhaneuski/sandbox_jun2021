@@ -49,12 +49,12 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     }
 
     @Override
-    public OrderDto invalidatePromoCode(String promoCode) {
+    public OrderDto invalidatePromoCode(String uuid) {
 
-        Order selectedOrder = entityDao.getOrderByEmployeePromocode(promoCode);
+        Order selectedOrder = entityDao.getOrderByEmployeePromocode(uuid);
 
         if (selectedOrder != null && selectedOrder.getPromoCodePeriodEnd().getTime() > new Date().getTime()) {
-            entityDao.setPromoCodeStatus(false, promoCode);
+            entityDao.setPromoCodeStatus(false, uuid);
             return mapper.map(selectedOrder, OrderDto.class);
         }
         throw new NoSuchElementException();
