@@ -5,7 +5,6 @@ import com.exadel.sandbox.team5.util.QueryUtils;
 import com.exadel.sandbox.team5.util.SearchCriteria;
 import com.exadel.sandbox.team5.util.Sorting;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
 import java.util.*;
