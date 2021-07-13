@@ -62,4 +62,10 @@ public interface DiscountDAO extends CommonRepository<Discount> {
             SELECT new com.exadel.sandbox.team5.util.Pair(d.name, d.views) FROM Discount d WHERE d.views IS NOT NULL order by d.name
             """)
     List<Pair> getViewsByDiscounts();
+
+    @Modifying
+    @Query(value = """
+            UPDATE Discount d SET d.isNew=0 WHERE d.name IN (:discountNames)
+            """)
+    void markDiscountsAsSent(List<String> discountNames);
 }

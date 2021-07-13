@@ -1,7 +1,7 @@
 package com.exadel.sandbox.team5.service.job;
 
+import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.EmployeeDAO;
-import com.exadel.sandbox.team5.dao.ParamsDAO;
 import com.exadel.sandbox.team5.service.MailSenderService;
 import com.exadel.sandbox.team5.util.Pair;
 import com.google.common.collect.Multimap;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,7 +23,7 @@ import java.util.List;
 @Component
 public class SubscriptionScheduler {
     private final EmployeeDAO employeeDAO;
-    private final ParamsDAO paramsDAO;
+    private final DiscountDAO discountDAO;
     private final MailSenderService mailSender;
 
     private static final int delay = 3600000 * 12;
@@ -35,6 +34,6 @@ public class SubscriptionScheduler {
                 .collect(Multimaps.toMultimap(Pair::getFirst, Pair::getSecond, MultimapBuilder.treeKeys().arrayListValues()::build));
         if (emails.isEmpty()) return;
         emails.asMap().forEach((k, v) -> mailSender.sendEmails(k, List.copyOf(v)));
-        paramsDAO.updateLastExecutionTime(String.valueOf(Instant.now()));
+        discountDAO.markDiscountsAsSent(emails.values().stream().toList());
     }
 }
