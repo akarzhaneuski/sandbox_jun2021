@@ -13,13 +13,13 @@ import java.util.Set;
 @NoArgsConstructor
 public class DiscountSearchCriteria extends SearchCriteria {
     private Set<String> tags;
-    private int rate;
+    private double rate;
     private String searchText;
     private LocationSearchCriteria locationCriteria;
     private Set<String> companies;
 
     public DiscountSearchCriteria(int pageNum, int itemsPerPage, List<Sorting> orders, Set<String> tags,
-                                  int rate, String searchText, @Nullable LocationSearchCriteria locationCriteria,
+                                  double rate, String searchText, @Nullable LocationSearchCriteria locationCriteria,
                                   Set<String> companies) {
         super(pageNum, itemsPerPage, orders);
         this.tags = tags;

@@ -64,7 +64,7 @@ public interface DiscountDAO extends CommonRepository<Discount> {
                                            @Param("country") String country,
                                            @Param("cities") Set<String> cities,
                                            @Param("companies") Set<String> companies,
-                                           @Param("rate") int rate,
+                                           @Param("rate") double rate,
                                            Pageable pageable);
 
     @Query(value = """
