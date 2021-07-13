@@ -8,7 +8,6 @@ import com.exadel.sandbox.team5.util.ResultPage;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
 import java.util.List;
 import java.util.Map;
 
@@ -96,8 +94,9 @@ public class DiscountRestController {
     }
 
     @PutMapping("/{id}/views")
-    public void increaseViews(@PathVariable Long id) {
+    public ResponseEntity increaseViews(@PathVariable Long id) {
         service.incrementViews(id);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/statistic/downloadCSVOrdersByDiscounts")
