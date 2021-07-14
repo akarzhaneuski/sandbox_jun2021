@@ -15,8 +15,9 @@ import java.util.Set;
 
 @Repository
 public interface DiscountDAO extends CommonRepository<Discount> {
+
     @Query(value = """
-            SELECT d.*, AVG(COALESCE(r.rate, 0))
+            SELECT d.*, AVG(COALESCE(r.rate, 0)) rate
                         FROM discount d
                             LEFT JOIN discount_tag dt ON d.id = dt.discountId
                             LEFT JOIN tag t ON t.id = dt.tagId
@@ -39,7 +40,7 @@ public interface DiscountDAO extends CommonRepository<Discount> {
                 HAVING rate>=(:rate)
             """,
             countQuery = """
-                                SELECT count(distinct d.id), AVG(COALESCE(r.rate, 0)) rate
+                    SELECT COUNT(distinct d.id), AVG(COALESCE(r.rate, 0)) rate
                                 FROM discount d
                                     LEFT JOIN discount_tag dt ON d.id = dt.discountId
                                     LEFT JOIN tag t ON t.id = dt.tagId
