@@ -1,16 +1,16 @@
 package com.exadel.sandbox.team5.dto;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class TagDto extends IdentifierDto {
+public class CategoryDtoWithoutId {
 
     private String name;
-    private Long categoryId;
+    private Set<TagDtoWithoutIdCategory> tags;
 }

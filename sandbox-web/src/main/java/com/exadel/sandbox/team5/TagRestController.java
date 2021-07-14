@@ -4,7 +4,6 @@ import com.exadel.sandbox.team5.dto.TagDto;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.TagService;
 import com.exadel.sandbox.team5.service.export.ExportService;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -46,11 +45,11 @@ public class TagRestController {
         return orderService.getOrdersByTags();
     }
 
-    @ApiOperation("Statistic of Orders By Categories")
-    @GetMapping("/statistic/categories")
-    public Map<String, String> getStatisticOrdersByCategories() {
-        return orderService.getOrdersByCategories();
-    }
+//    @ApiOperation("Statistic of Orders By Categories")
+//    @GetMapping("/statistic/categories")
+//    public Map<String, String> getStatisticOrdersByCategories() {
+//        return orderService.getOrdersByCategories();
+//    }
 
     @GetMapping("/statistic/downloadCSVOrdersByTag")
     public ResponseEntity getOrdersByTagCSVFile() {
@@ -68,23 +67,5 @@ public class TagRestController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
                 .contentType(MediaType.parseMediaType("application/xlsx"))
                 .body(new InputStreamResource(exportService.exportServiceXLSX(orderService.getOrdersByTags(), "Tags", "Orders")));
-    }
-
-    @GetMapping("/statistic/downloadCSVOrdersByCategories")
-    public ResponseEntity getOrdersByCategoriesCSVFile() {
-        String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByCategories.csv";
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
-                .contentType(MediaType.parseMediaType("application/csv"))
-                .body(new InputStreamResource(exportService.exportServiceCSV(orderService.getOrdersByCategories(), "Categories", "Orders")));
-    }
-
-    @GetMapping("/statistic/downloadXLSXOrdersByCategories")
-    public ResponseEntity getOrdersByCategoriesXLSXFile() {
-        String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByCategories.xlsx";
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
-                .contentType(MediaType.parseMediaType("application/xlsx"))
-                .body(new InputStreamResource(exportService.exportServiceXLSX(orderService.getOrdersByCategories(), "Categories", "Orders")));
     }
 }
