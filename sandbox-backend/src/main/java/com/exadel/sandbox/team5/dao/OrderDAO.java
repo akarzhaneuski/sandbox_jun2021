@@ -22,33 +22,6 @@ public interface OrderDAO extends CommonRepository<Order> {
     void setPromoCodeStatus(@Param("status") Boolean status, @Param("promoCode") String promoCode);
 
     @Query(value = """
-            SELECT COUNT(o.id) FROM `order` o
-                LEFT JOIN discount d ON o.discountId = d.id
-                LEFT JOIN company c ON d.companyId = c.id
-            WHERE c.id=(:companyId)
-                GROUP BY o.id;
-                """, nativeQuery = true)
-    int getOrdersByCompanyId(@Param("companyId") Long companyId);//should be removed, never used
-
-    @Query(value = """
-            SELECT COUNT(o.id) FROM `order` o
-                LEFT JOIN discount d ON o.discountId = d.id
-            WHERE d.id=(:discountId)
-                GROUP BY o.id;
-                """, nativeQuery = true)
-    int getOrdersByDiscountId(@Param("discountId") Long discountId);//should be removed, never used
-
-    @Query(value = """
-            SELECT COUNT(o.id) FROM `order` o
-                LEFT JOIN discount d ON o.discountId = d.id
-                LEFT JOIN discount_tag dt on d.id = dt.discountId
-                LEFT JOIN tag t on t.id = dt.tagId
-            WHERE t.tagName=(:tag)
-                GROUP BY o.id;
-            """, nativeQuery = true)
-    int getOrdersByTag(@Param("tag") String tag);//should be removed, never used
-
-    @Query(value = """
             SELECT new com.exadel.sandbox.team5.util.Pair(t.name, COUNT(o.id))
             FROM Order o
                 JOIN o.discount d

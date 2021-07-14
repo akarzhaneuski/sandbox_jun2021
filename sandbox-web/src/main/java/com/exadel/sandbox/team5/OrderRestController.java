@@ -31,11 +31,6 @@ public class OrderRestController {
         return orderService.getAll();
     }
 
-    @PostMapping
-    public OrderDto save(@RequestBody OrderDto order) {
-        return orderService.save(order);
-    }
-
     @PutMapping("/{id}")
     public OrderDto update(@PathVariable Long id, @RequestBody OrderDto order) {
         order.setId(id);
