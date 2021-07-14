@@ -5,6 +5,8 @@ import com.exadel.sandbox.team5.service.CompanyService;
 import com.exadel.sandbox.team5.service.ImageClientService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.export.ExportService;
+import com.exadel.sandbox.team5.util.CompanySearchCriteria;
+import com.exadel.sandbox.team5.util.ResultPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -61,6 +63,7 @@ public class CompanyRestController {
         companyService.delete(id);
     }
 
+    //fixme is need add pagination here? or unite with search method?
     @GetMapping("/{locationId}/companies")
     public List<CompanyDto> getCompaniesByLocation(@PathVariable Long locationId) {
         return companyService.getCompaniesByLocation(locationId);
@@ -89,5 +92,10 @@ public class CompanyRestController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
                 .contentType(MediaType.parseMediaType("application/xlsx"))
                 .body(new InputStreamResource(exportService.exportServiceXLSX(orderService.getOrdersByCompanies(), "Companies", "Orders")));
+    }
+
+    @PostMapping("/search")
+    public ResultPage<CompanyDto> search(@RequestBody CompanySearchCriteria criteria) {
+        return companyService.getByCriteria(criteria);
     }
 }

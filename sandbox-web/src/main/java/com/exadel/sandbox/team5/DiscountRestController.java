@@ -1,14 +1,13 @@
 package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.DiscountDto;
-import com.exadel.sandbox.team5.dto.ReviewDto;
 import com.exadel.sandbox.team5.dto.search.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.service.*;
 import com.exadel.sandbox.team5.service.export.ExportService;
+import com.exadel.sandbox.team5.util.ResultPage;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,6 +37,7 @@ public class DiscountRestController {
         return service.getById(id);
     }
 
+    //fixme delete this method?
     @GetMapping
     public List<DiscountDto> getAll() {
         return service.getAll();
@@ -67,12 +67,12 @@ public class DiscountRestController {
     }
 
     @GetMapping("/{discountId}/reviews")
-    public List<ReviewDto> getReviewsByDiscount(@PathVariable Long discountId) {
+    public Map<Integer, Integer> getReviewsByDiscount(@PathVariable Long discountId) {
         return reviewService.getReviewsByDiscount(discountId);
     }
 
     @PostMapping("/search")
-    public Page<DiscountDto> getByCriteria(@RequestBody DiscountSearchCriteria searchCriteria) {
+    public ResultPage<DiscountDto> getByCriteria(@RequestBody DiscountSearchCriteria searchCriteria) {
         return service.getByCriteria(searchCriteria);
     }
 
@@ -94,8 +94,9 @@ public class DiscountRestController {
     }
 
     @PutMapping("/{id}/views")
-    public void increaseViews(@PathVariable Long id) {
+    public ResponseEntity increaseViews(@PathVariable Long id) {
         service.incrementViews(id);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/statistic/downloadCSVOrdersByDiscounts")

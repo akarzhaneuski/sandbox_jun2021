@@ -45,7 +45,7 @@ logging:
 
 app:
   jwtSecret: JoIfaQvdx7rbFYOTyjdAcOk/xyGTF8YuSt5N477flHiPbuA7tuFky
-  jwtExpirationMs: 3600000
+  jwtExpirationMs: 36000000
   bucketNameS3: ${S3_BUCKET:exadel-image}
   region: ${S3_REGION:eu-west-3}
 
