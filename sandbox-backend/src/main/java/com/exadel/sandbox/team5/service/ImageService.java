@@ -4,7 +4,7 @@ import com.exadel.sandbox.team5.dto.ImageDto;
 
 public interface ImageService {
 
-    ImageDto getImage(Long id);
+    ImageDto getImage(String name);
 
     Long save(ImageDto image);
 }
