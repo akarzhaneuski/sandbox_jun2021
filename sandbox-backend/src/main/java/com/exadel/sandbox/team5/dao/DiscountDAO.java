@@ -40,7 +40,8 @@ public interface DiscountDAO extends CommonRepository<Discount> {
                 HAVING rate>=(:rate)
             """,
             countQuery = """
-                                    SELECT count(*) FROM discount d
+                                SELECT COUNT(*), AVG(COALESCE(r.rate, 0)) rate
+                                FROM discount d
                                     LEFT JOIN discount_tag dt ON d.id = dt.discountId
                                     LEFT JOIN tag t ON t.id = dt.tagId
                                     LEFT JOIN country c ON d.countryId = c.id 
@@ -58,7 +59,9 @@ public interface DiscountDAO extends CommonRepository<Discount> {
                                     AND (:country is null or c.name = :country)
                                     AND (coalesce(:cities, null) is null or s.name in (:cities))
                                     AND (coalesce(:companies, null) is null or co.name in (:companies))
-                                    """, nativeQuery = true)
+                    GROUP BY d.id
+                        HAVING rate>=(:rate)
+                                            """, nativeQuery = true)
     Page<Discount> findDiscountsByCriteria(@Param("name") String searchText,
                                            @Param("tags") Set<String> tags,
                                            @Param("country") String country,
