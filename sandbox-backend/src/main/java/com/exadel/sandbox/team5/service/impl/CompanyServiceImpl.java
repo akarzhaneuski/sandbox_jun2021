@@ -31,18 +31,16 @@ public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, 
     }
 
     public ResultPage<CompanyDto> getAllSort(SearchCriteria criteria) {
-//        Page<Company> companies = entityDao.findAll(criteria.getPageRequest());
-//        return mapper.mapToPage(companies, CompanyDto.class);
-        return null;
+        Page<Company> companies = entityDao.findAll(criteria.getPageRequest());
+        return mapper.mapToPage(companies, CompanyDto.class);
     }
 
     @Override
     public ResultPage<CompanyDto> getByCriteria(CompanySearchCriteria criteria) {
-//        if (criteria.isEmpty()) {
-//            return getAllSort(criteria);
-//        }
-//        Page<Company> result = entityDao.findByNameContaining(criteria.getSearchText(), criteria.getPageRequest());
-//        return mapper.mapToPage(result, CompanyDto.class);
-        return null;
+        if (criteria.isEmpty()) {
+            return getAllSort(criteria);
+        }
+        Page<Company> result = entityDao.findByNameContaining(criteria.getSearchText(), criteria.getPageRequest());
+        return mapper.mapToPage(result, CompanyDto.class);
     }
 }
