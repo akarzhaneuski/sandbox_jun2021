@@ -12,6 +12,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,27 +31,32 @@ public class CompanyRestController {
     private final ImageClientService imageService;
     private final ExportService exportService;
 
+    @PreAuthorize("hasAnyAuthority('USER', 'MODERATOR')")
     @GetMapping("/{id}")
     public CompanyDto getCompany(@PathVariable Long id) {
         return companyService.getById(id);
     }
 
+    @PreAuthorize("hasAnyAuthority('USER', 'MODERATOR')")
     @GetMapping
     public List<CompanyDto> getAll() {
         return companyService.getAll();
     }
 
+    @PreAuthorize("hasAnyAuthority('MODERATOR')")
     @PostMapping
     public CompanyDto save(@RequestBody CompanyDto company) {
         return companyService.save(company);
     }
 
+    @PreAuthorize("hasAnyAuthority('MODERATOR')")
     @PutMapping("/{id}")
     public CompanyDto update(@PathVariable Long id, @RequestBody CompanyDto company) {
         company.setId(id);
         return companyService.update(company);
     }
 
+    @PreAuthorize("hasAnyAuthority('MODERATOR')")
     @PutMapping("/{id}/uploadImage")
     public CompanyDto updateImage(@PathVariable Long id, @RequestBody MultipartFile file) {
         CompanyDto company = companyService.getById(id);
@@ -58,6 +64,7 @@ public class CompanyRestController {
         return companyService.update(company);
     }
 
+    @PreAuthorize("hasAnyAuthority('MODERATOR')")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         companyService.delete(id);
@@ -69,11 +76,13 @@ public class CompanyRestController {
         return companyService.getCompaniesByLocation(locationId);
     }
 
+    @PreAuthorize("hasAnyAuthority('MODERATOR')")
     @GetMapping("/statistic/orders")
     public Map<String, String> getStatisticByOrders() {
         return orderService.getOrdersByCompanies();
     }
 
+    @PreAuthorize("hasAnyAuthority('MODERATOR')")
     @GetMapping("/statistic/downloadCSVOrdersByCompanies")
     public ResponseEntity getOrdersByCompaniesCSVFile() {
 
@@ -84,6 +93,7 @@ public class CompanyRestController {
                 .body(new InputStreamResource(exportService.exportServiceCSV(orderService.getOrdersByCompanies(), "Companies", "Orders")));
     }
 
+    @PreAuthorize("hasAnyAuthority('MODERATOR')")
     @GetMapping("/statistic/downloadXLSXOrdersByCompanies")
     public ResponseEntity getOrdersByCompaniesXLSXFile() {
 
@@ -94,6 +104,7 @@ public class CompanyRestController {
                 .body(new InputStreamResource(exportService.exportServiceXLSX(orderService.getOrdersByCompanies(), "Companies", "Orders")));
     }
 
+    @PreAuthorize("hasAnyAuthority('USER', 'MODERATOR')")
     @PostMapping("/search")
     public ResultPage<CompanyDto> search(@RequestBody CompanySearchCriteria criteria) {
         return companyService.getByCriteria(criteria);
