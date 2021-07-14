@@ -1,7 +1,7 @@
 package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.CategoryDto;
-import com.exadel.sandbox.team5.dto.CategoryDtoWithoutId;
+import com.exadel.sandbox.team5.dto.CategoryDtoWithTagDtoWithoutIdCategory;
 import com.exadel.sandbox.team5.service.CategoryService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.export.ExportService;
@@ -32,9 +32,14 @@ public class CategoryRestController {
         return categoryService.getAll();
     }
 
+    @PostMapping("/saveWithTags")
+    CategoryDto save(@RequestBody CategoryDtoWithTagDtoWithoutIdCategory categoryDtoWithTagDtoWithoutIdCategory){
+        return categoryService.save(categoryDtoWithTagDtoWithoutIdCategory);
+    }
+
     @PostMapping("/save")
-    CategoryDto save(@RequestBody CategoryDtoWithoutId categoryDto){
-        return categoryService.save(categoryDto);
+    CategoryDto save(@RequestBody String categoryName){
+        return categoryService.save(categoryName);
     }
 
     @DeleteMapping("/{id}")

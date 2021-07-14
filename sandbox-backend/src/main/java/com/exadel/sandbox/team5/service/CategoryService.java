@@ -1,9 +1,11 @@
 package com.exadel.sandbox.team5.service;
 
 import com.exadel.sandbox.team5.dto.CategoryDto;
-import com.exadel.sandbox.team5.dto.CategoryDtoWithoutId;
+import com.exadel.sandbox.team5.dto.CategoryDtoWithTagDtoWithoutIdCategory;
 
 public interface CategoryService extends CRUDService<CategoryDto>{
 
-    CategoryDto save (CategoryDtoWithoutId categoryDtoWithoutId);
+    CategoryDto save (CategoryDtoWithTagDtoWithoutIdCategory CategoryDtoWithTagDtoWithoutIdCategory);
+
+    CategoryDto save(String category);
 }

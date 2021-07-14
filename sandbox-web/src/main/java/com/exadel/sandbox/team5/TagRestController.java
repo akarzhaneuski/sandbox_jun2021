@@ -45,12 +45,6 @@ public class TagRestController {
         return orderService.getOrdersByTags();
     }
 
-//    @ApiOperation("Statistic of Orders By Categories")
-//    @GetMapping("/statistic/categories")
-//    public Map<String, String> getStatisticOrdersByCategories() {
-//        return orderService.getOrdersByCategories();
-//    }
-
     @GetMapping("/statistic/downloadCSVOrdersByTag")
     public ResponseEntity getOrdersByTagCSVFile() {
         String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByTags.csv";
