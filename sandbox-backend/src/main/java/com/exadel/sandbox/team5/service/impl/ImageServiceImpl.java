@@ -30,8 +30,8 @@ public class ImageServiceImpl implements ImageService {
     private final AmazonS3 s3Client;
 
 
-    public ImageDto getImage(Long id) {
-        Image img = imageDAO.findById(id).orElseThrow(NoSuchElementException::new);
+    public ImageDto getImage(String name) {
+        Image img = imageDAO.findImageByName(name).orElseThrow(NoSuchElementException::new);
         ImageDto image = mapper.map(img, ImageDto.class);
         image.setContent(s3Client.getObject(bucketName, img.getName()).getObjectContent());
         return image;
