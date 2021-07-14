@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/images")
@@ -27,6 +28,11 @@ public class ImageRestController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(image.getContentType()));
         return new ResponseEntity<>(content, headers, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public List<ImageDto> getAllImageTest() {
+        return service.getAll();
     }
 
     @PostMapping

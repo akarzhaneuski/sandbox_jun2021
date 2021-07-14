@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -51,6 +52,12 @@ public class ImageServiceImpl implements ImageService {
         img.setImageURL(bucketName);
         img.setName(imageName);
         return imageDAO.save(img).getId();
+    }
+
+    @Override
+    public List<ImageDto> getAll() {
+        var images = imageDAO.findAll();
+        return mapper.mapAll(images, ImageDto.class);
     }
 
     private String parseImageName(ImageDto image, String name) {
