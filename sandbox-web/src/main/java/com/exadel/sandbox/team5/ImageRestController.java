@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/images")
@@ -20,13 +21,18 @@ public class ImageRestController {
     private final ImageClientService clientService;
     private final ImageService service;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<byte[]> getImage(@PathVariable Long id) throws IOException {
-        ImageDto image = service.getImage(id);
+    @GetMapping("/{fileName}")
+    public ResponseEntity<byte[]> getImage(@PathVariable String fileName) throws IOException {
+        ImageDto image = service.getImage(fileName);
         byte[] content = image.getContent().readAllBytes();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(image.getContentType()));
         return new ResponseEntity<>(content, headers, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public List<ImageDto> getAllImageTest() {
+        return service.getAll();
     }
 
     @PostMapping
