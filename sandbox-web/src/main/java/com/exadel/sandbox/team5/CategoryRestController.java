@@ -28,18 +28,24 @@ public class CategoryRestController {
     private final OrderService orderService;
 
     @GetMapping("/getAll")
-    List<CategoryDto> getAll(){
+    List<CategoryDto> getAll() {
         return categoryService.getAll();
     }
 
     @PostMapping("/saveWithTags")
-    CategoryDto save(@RequestBody CategoryDtoWithTagDtoWithoutIdCategory categoryDtoWithTagDtoWithoutIdCategory){
+    CategoryDto save(@RequestBody CategoryDtoWithTagDtoWithoutIdCategory categoryDtoWithTagDtoWithoutIdCategory) {
         return categoryService.save(categoryDtoWithTagDtoWithoutIdCategory);
     }
 
     @PostMapping("/save")
-    CategoryDto save(@RequestBody String categoryName){
+    CategoryDto save(@RequestBody String categoryName) {
         return categoryService.save(categoryName);
+    }
+
+    @PutMapping("/{id}")
+    public CategoryDto update(@PathVariable Long id, @RequestBody CategoryDto categoryDto) {
+        categoryDto.setId(id);
+        return categoryService.update(categoryDto);
     }
 
     @DeleteMapping("/{id}")
