@@ -13,8 +13,16 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("*").allowedMethods("*")
-                        .allowedHeaders("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+                registry.addMapping("/**").
+                        allowedOrigins("*").
+                        allowedMethods("*")
+                        .allowedHeaders(
+                                "Content-Type",
+                                "Access-Control-Allow-Headers",
+                                "Authorization",
+                                "X-Requested-With",
+                                "Access-Control-Allow-Origin"
+                        );
             }
         };
     }

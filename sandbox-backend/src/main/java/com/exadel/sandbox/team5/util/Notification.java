@@ -1,17 +1,16 @@
 package com.exadel.sandbox.team5.util;
 
-import lombok.*;
-import org.springframework.lang.Nullable;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
-@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class Notification {
-    private String message;
-    private String subject;
-
-    public Notification(String message, @Nullable String subject) {
-        this.message=message;
-        this.subject=subject;
-    }
+    private String email;
+    private Long discountId;
+    private String discountName;
 }

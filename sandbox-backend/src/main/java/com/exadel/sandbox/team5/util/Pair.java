@@ -32,4 +32,9 @@ public class Pair {
         this.first = first;
         this.second = second;
     }
+
+    public Pair(int first, long second) {
+        this.first = Integer.toString(first);
+        this.second = Long.toString(second);
+    }
 }
