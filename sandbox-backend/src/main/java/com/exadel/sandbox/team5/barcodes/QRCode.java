@@ -11,8 +11,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 public class QRCode {
 
@@ -28,12 +26,5 @@ public class QRCode {
         LuminanceSource source = new BufferedImageLuminanceSource(encodedBufferedImage);
         var result = new QRCodeReader().decode(new BinaryBitmap(new HybridBinarizer(source)));
         return result.getText();
-    }
-
-    public static String generateQRUrl(String uuid) {
-        var expirationTime = 604800000L; // 7 days
-        var qrValidatePeriod = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + expirationTime;
-        return "https://sandbox-team5.herokuapp.com/api/orders/validate/"
-                + uuid + "/" + qrValidatePeriod;
     }
 }

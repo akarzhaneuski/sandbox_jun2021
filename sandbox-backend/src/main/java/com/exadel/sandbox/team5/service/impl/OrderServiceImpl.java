@@ -57,29 +57,33 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     }
 
     @Override
-    public OrderDto createOrder(CreateOrder createOrder) {
+    public String createOrder(CreateOrder createOrder) {
 
-        Employee employee = employeeService.getById(1L);//TODO should be fix after security merge
-
-        if (discountService.getById(createOrder.getDiscountId()) != null) {
-
-            if (activeOrdersByTime(activeOrdersByStatus(employee)).size() < createOrder.getMaxOrderSize()) {
-                Order order = new Order();
-                order.setDiscount(mapper.map(discountService.getById(createOrder.getDiscountId()), Discount.class));
-                order.setEmployee(employeeService.getById(employee.getId()));
-                order.setEmployeePromocode(new ValidatePromoCodeGenerator().generateUUID());
-                order.setPromoCodeStatus(true); //maybe this is not necessary here, because we are setting it in QR
-                Date currentDate = new Date();
-                LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-                localDateTime = localDateTime.plusDays(createOrder.getAmountDiscountDays());
-                Date currentDatePlusOneDay = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-                order.setPromoCodePeriodStart(currentDate);
-                order.setPromoCodePeriodEnd(currentDatePlusOneDay);
-
-                return mapper.map(entityDao.save(order), OrderDto.class);
-            }
+        if (discountService.getById(createOrder.getDiscountId()) == null) {
+            throw new IllegalArgumentException("Discount id is null!");
         }
-        throw new NoSuchElementException();
+        var employee = employeeService.getByLogin(securityUtils.getCurrentUsername());
+
+        if (activeOrdersByTime(activeOrdersByStatus(employee)).size() < createOrder.getMaxOrderSize()) {
+            String employeePromocode = new ValidatePromoCodeGenerator().generateUUID();
+            var now = LocalDateTime.now();
+            var orderToSave = Order.builder()
+                    .discount(mapper.map(discountService.getById(createOrder.getDiscountId()), Discount.class))
+                    .employee(employeeService.getById(employee.getId()))
+                    .employeePromocode(employeePromocode)
+                    .promoCodeStatus(true)
+                    .promoCodePeriodStart(localDateTimeToDate(now))
+                    .promoCodePeriodEnd(localDateTimeToDate(now.plusDays(createOrder.getAmountDiscountDays())))
+                    .build();
+
+            entityDao.save(orderToSave);
+            return employeePromocode;
+        }
+        throw new IllegalArgumentException("Your discount limit is exceeded");
+    }
+
+    private Date localDateTimeToDate(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 
     private List<Order> activeOrdersByStatus(Employee employee) {

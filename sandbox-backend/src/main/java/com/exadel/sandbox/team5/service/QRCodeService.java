@@ -22,8 +22,13 @@ public interface QRCodeService {
     boolean checkUUID(String uuid);
 
     /**
-     * @param uuid unique code from link
-     * @return true if promocodeStatus status is active;
+     * @param promocode of discount
+     * @return true if promocode exists
      */
-    boolean checkPromocodeStatus(String uuid);
+    boolean ifPromocodeExists(String promocode);
+
+    /**
+     * @return true if uuid and promocode exists in DB
+     */
+    boolean ifQRCodeIsValid(String uuid, String promocode);
 }

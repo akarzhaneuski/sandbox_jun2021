@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team5.service.impl;
 
 import com.exadel.sandbox.team5.barcodes.QRCode;
+import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.OrderDAO;
 import com.exadel.sandbox.team5.service.QRCodeService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.Date;
 import java.util.NoSuchElementException;
 
 @Transactional
@@ -21,13 +23,13 @@ import java.util.NoSuchElementException;
 public class QRCodeServiceImpl implements QRCodeService {
 
     private final OrderDAO orderDAO;
+    private final DiscountDAO discountDAO;
 
     @Override
     public byte[] generateQRCode(String uuid) {
         try (var baos = new ByteArrayOutputStream()) {
-            String qrParams = QRCode.generateQRUrl(uuid);
+            String qrParams = generateQRUrl(uuid);
             var image = QRCode.generateQRCodeImage(qrParams);
-            orderDAO.setPromoCodeStatus(true, uuid);
             ImageIO.write(image, "png", baos);
             return baos.toByteArray();
         } catch (Exception e) {
@@ -51,7 +53,24 @@ public class QRCodeServiceImpl implements QRCodeService {
     }
 
     @Override
-    public boolean checkPromocodeStatus(String uuid){
-        return orderDAO.checkPromoCodeStatus(uuid);
+    public boolean ifPromocodeExists(String promocode) {
+        if (discountDAO.getPromocode(promocode) == null) {
+            return false;
+        }
+        return discountDAO.getPromocode(promocode).equals(promocode);
+    }
+
+    @Override
+    public boolean ifQRCodeIsValid(String uuid, String promocode) {
+        return checkUUID(uuid)
+                && orderDAO.getPromoCodeStatusByUUID(uuid)
+                && ifPromocodeExists(promocode)
+                && orderDAO.getPromocodePeriodEndByUUID(uuid).compareTo(new Date()) > 0;
+    }
+
+    private String generateQRUrl(String uuid) {
+        String promocode = orderDAO.getPromocodeFromDiscountByUUID(uuid);
+        return "https://sandbox-team5.herokuapp.com/api/orders/validate/"
+                + uuid + "/" + promocode;
     }
 }

@@ -28,7 +28,7 @@ public interface OrderDAO extends CommonRepository<Order> {
             WHERE c.id=(:companyId)
                 GROUP BY o.id;
                 """, nativeQuery = true)
-    int getOrdersByCompanyId(@Param("companyId") Long companyId);
+    int getOrdersByCompanyId(@Param("companyId") Long companyId);//should be removed, never used
 
     @Query(value = """
             SELECT COUNT(o.id) FROM `order` o
@@ -36,7 +36,7 @@ public interface OrderDAO extends CommonRepository<Order> {
             WHERE d.id=(:discountId)
                 GROUP BY o.id;
                 """, nativeQuery = true)
-    int getOrdersByDiscountId(@Param("discountId") Long discountId);
+    int getOrdersByDiscountId(@Param("discountId") Long discountId);//should be removed, never used
 
     @Query(value = """
             SELECT COUNT(o.id) FROM `order` o
@@ -46,7 +46,7 @@ public interface OrderDAO extends CommonRepository<Order> {
             WHERE t.tagName=(:tag)
                 GROUP BY o.id;
             """, nativeQuery = true)
-    int getOrdersByTag(@Param("tag") String tag);
+    int getOrdersByTag(@Param("tag") String tag);//should be removed, never used
 
     @Query(value = """
             SELECT new com.exadel.sandbox.team5.util.Pair(t.name, COUNT(o.id))
@@ -56,7 +56,6 @@ public interface OrderDAO extends CommonRepository<Order> {
             GROUP BY t.id
             """)
     List<Pair> getAllOrdersForTags();
-
 
     @Query(value = """
             SELECT o.employeePromocode
@@ -71,11 +70,25 @@ public interface OrderDAO extends CommonRepository<Order> {
             """, nativeQuery = true)
     void changePromoCodeStatusAfterExpirationTime(@Param("currentTime") Date currentTime);
 
-
     @Query(value = """
             SELECT o.promoCodeStatus
             FROM `order` o
             WHERE o.employeePromocode=(:uuid);
             """, nativeQuery = true)
-    boolean checkPromoCodeStatus(@Param("uuid") String uuid);
+    boolean getPromoCodeStatusByUUID(@Param("uuid") String uuid);
+
+    @Query(value = """
+            SELECT d.promocode
+            FROM discount d
+            LEFT JOIN `order` o on d.id = o.discountId
+            WHERE o.employeePromocode=(:uuid);
+            """, nativeQuery = true)
+    String getPromocodeFromDiscountByUUID(@Param("uuid") String uuid);
+
+    @Query(value = """
+            SELECT o.promoCodePeriodEnd
+            FROM `order` o
+            WHERE o.employeePromocode=(:uuid);
+            """, nativeQuery = true)
+    Date getPromocodePeriodEndByUUID(@Param("uuid") String uuid);
 }
