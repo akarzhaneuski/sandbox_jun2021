@@ -18,6 +18,6 @@ public class Category extends BaseEntity implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "category", cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<Tag> tags;
 }

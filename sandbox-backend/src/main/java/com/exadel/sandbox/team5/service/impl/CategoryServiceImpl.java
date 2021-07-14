@@ -3,12 +3,12 @@ package com.exadel.sandbox.team5.service.impl;
 import com.exadel.sandbox.team5.dao.CategoryDAO;
 import com.exadel.sandbox.team5.dao.TagDAO;
 import com.exadel.sandbox.team5.dto.CategoryDto;
-import com.exadel.sandbox.team5.dto.CategoryDtoWithTagDtoWithoutIdCategory;
 import com.exadel.sandbox.team5.dto.TagDto;
-import com.exadel.sandbox.team5.dto.TagDtoWithoutIdCategory;
 import com.exadel.sandbox.team5.entity.Category;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.CategoryService;
+import com.exadel.sandbox.team5.util.CategoryWithTagWithoutIdCategory;
+import com.exadel.sandbox.team5.util.TagWithoutIdCategory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,12 +29,12 @@ public class CategoryServiceImpl extends CRUDServiceDtoImpl<CategoryDAO, Categor
     }
 
     @Override
-    public CategoryDto save(CategoryDtoWithTagDtoWithoutIdCategory categoryDtoWithTagDtoWithoutIdCategory) {
+    public CategoryDto save(CategoryWithTagWithoutIdCategory categoryWithTagWithoutIdCategory) {
 
         Set<TagDto> tagDTOSet = new HashSet<>();
 
-        Set<TagDtoWithoutIdCategory> tagSet = categoryDtoWithTagDtoWithoutIdCategory.getTags();
-        String categoryName = categoryDtoWithTagDtoWithoutIdCategory.getName();
+        Set<TagWithoutIdCategory> tagSet = categoryWithTagWithoutIdCategory.getTags();
+        String categoryName = categoryWithTagWithoutIdCategory.getName();
         var categoryDto = new CategoryDto();
         categoryDto.setName(categoryName);
         entityDao.saveAndFlush(mapper.map(categoryDto, entityClass));
@@ -42,7 +42,7 @@ public class CategoryServiceImpl extends CRUDServiceDtoImpl<CategoryDAO, Categor
         Long categoryId = entityDao.findCategoryIdByName(categoryName);
         categoryDto.setId(categoryId);
 
-        for (TagDtoWithoutIdCategory tag : tagSet) {
+        for (TagWithoutIdCategory tag : tagSet) {
             var tagDto = new TagDto();
             tagDto.setName(tag.getName());
             tagDto.setCategoryId(categoryId);
