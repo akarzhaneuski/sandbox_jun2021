@@ -9,8 +9,8 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CategoryWithTagWithoutIdCategory {
+public class CategoryWithTagsDto {
 
     private String name;
-    private Set<TagWithoutIdCategory> tags;
+    private Set<StringContainer> tags;
 }

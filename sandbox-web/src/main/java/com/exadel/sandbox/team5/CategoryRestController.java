@@ -5,7 +5,7 @@ import com.exadel.sandbox.team5.service.CategoryService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.export.ExportService;
 import com.exadel.sandbox.team5.service.export.FileNameGenerator;
-import com.exadel.sandbox.team5.util.CategoryWithTagWithoutIdCategory;
+import com.exadel.sandbox.team5.util.CategoryWithTagsDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
@@ -34,8 +34,8 @@ public class CategoryRestController {
 
     @ApiOperation("Save category with tags")
     @PostMapping
-    CategoryDto save(@RequestBody CategoryWithTagWithoutIdCategory categoryWithTagWithoutIdCategory) {
-        return categoryService.save(categoryWithTagWithoutIdCategory);
+    CategoryDto save(@RequestBody CategoryWithTagsDto categoryWithTagsDto) {
+        return categoryService.save(categoryWithTagsDto);
     }
 
     @ApiOperation("Save category only")

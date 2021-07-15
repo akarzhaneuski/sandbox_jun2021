@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TagWithoutIdCategory {
+public class StringContainer {
 
     private String name;
 }

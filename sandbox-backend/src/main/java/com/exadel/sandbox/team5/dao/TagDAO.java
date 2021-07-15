@@ -9,7 +9,7 @@ public interface TagDAO extends CommonRepository<Tag> {
 
     @Query(value = """
             SELECT c.id
-            FROM sandbox.tag c
+            FROM tag c
             WHERE c.tagName=(:tagName);
             """, nativeQuery = true)
     Long findTagIdByName(String tagName);

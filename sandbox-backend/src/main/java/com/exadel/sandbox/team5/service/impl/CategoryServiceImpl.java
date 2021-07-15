@@ -7,8 +7,8 @@ import com.exadel.sandbox.team5.dto.TagDto;
 import com.exadel.sandbox.team5.entity.Category;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.CategoryService;
-import com.exadel.sandbox.team5.util.CategoryWithTagWithoutIdCategory;
-import com.exadel.sandbox.team5.util.TagWithoutIdCategory;
+import com.exadel.sandbox.team5.util.CategoryWithTagsDto;
+import com.exadel.sandbox.team5.util.StringContainer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,12 +29,12 @@ public class CategoryServiceImpl extends CRUDServiceDtoImpl<CategoryDAO, Categor
     }
 
     @Override
-    public CategoryDto save(CategoryWithTagWithoutIdCategory categoryWithTagWithoutIdCategory) {
+    public CategoryDto save(CategoryWithTagsDto categoryWithTagsDto) {
 
         Set<TagDto> tagDTOSet = new HashSet<>();
 
-        Set<TagWithoutIdCategory> tagSet = categoryWithTagWithoutIdCategory.getTags();
-        String categoryName = categoryWithTagWithoutIdCategory.getName();
+        Set<StringContainer> tagSet = categoryWithTagsDto.getTags();
+        String categoryName = categoryWithTagsDto.getName();
         var categoryDto = new CategoryDto();
         categoryDto.setName(categoryName);
         entityDao.saveAndFlush(mapper.map(categoryDto, entityClass));
@@ -42,7 +42,7 @@ public class CategoryServiceImpl extends CRUDServiceDtoImpl<CategoryDAO, Categor
         Long categoryId = entityDao.findCategoryIdByName(categoryName);
         categoryDto.setId(categoryId);
 
-        for (TagWithoutIdCategory tag : tagSet) {
+        for (StringContainer tag : tagSet) {
             var tagDto = new TagDto();
             tagDto.setName(tag.getName());
             tagDto.setCategoryId(categoryId);
