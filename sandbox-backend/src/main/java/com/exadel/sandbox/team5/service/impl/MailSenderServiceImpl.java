@@ -37,7 +37,7 @@ public class MailSenderServiceImpl implements MailSenderService {
         Map<String, String> params = new HashMap<>();
         params.put("text",notification);
         try {
-            var t = freemarker.getTemplate("notification.ftl");
+            var t = freemarker.getTemplate("UI_notification.ftl");
             var text = FreeMarkerTemplateUtils.processTemplateIntoString(t, params);
             helper.setTo(employeeDAO.getAllEmails().toArray(new String[0]));
             helper.setSubject("Notification");
@@ -54,7 +54,7 @@ public class MailSenderServiceImpl implements MailSenderService {
         Map<String,List<String>> params = new HashMap<>();
         params.put("discounts", discountNames);
         try {
-            var t = freemarker.getTemplate("mail.ftl");
+            var t = freemarker.getTemplate("UI_mail.ftl");
             var text = FreeMarkerTemplateUtils.processTemplateIntoString(t, params);
             helper.setTo(email);
             helper.setSubject("Subscription notification");
