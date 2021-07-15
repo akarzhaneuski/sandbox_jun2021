@@ -7,6 +7,7 @@ import com.exadel.sandbox.team5.dto.search.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
+import com.exadel.sandbox.team5.service.SnsService;
 import com.exadel.sandbox.team5.util.Pair;
 import com.exadel.sandbox.team5.util.ResultPage;
 import com.exadel.sandbox.team5.util.SearchCriteria;
@@ -22,6 +23,8 @@ import java.util.stream.Collectors;
 public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discount, DiscountDto> implements DiscountService {
 
     private final ReviewDAO reviewDAO;
+
+    private SnsService snsService;
 
     public DiscountServiceImpl(DiscountDAO entityDao, MapperConverter mapper, ReviewDAO reviewDAO) {
         super(entityDao, Discount.class, DiscountDto.class, mapper);
@@ -52,6 +55,7 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
 
     @Override
     public DiscountDto save(DiscountDto discount) {
+        if(discount.isNotifySubscribers()) snsService.sendToSubscribers(discount);
         Discount dis = mapper.map(discount, Discount.class);
         return mapper.map(entityDao.saveAndFlush(dis), DiscountDto.class);
     }

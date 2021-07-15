@@ -19,7 +19,8 @@ public class AWSConfiguration {
     @Value("${app.region}")
     private String region;
 
-    private final String REGION2 = "us-east-2";
+    @Value("${app.snsRegion}")
+    private String snsRegion;
 
     @Bean
     public AmazonS3 getClient() {
@@ -31,7 +32,7 @@ public class AWSConfiguration {
     @Bean
     public AmazonSNS snsClient() {
         return AmazonSNSClientBuilder.standard().withCredentials(DefaultAWSCredentialsProviderChain.getInstance())
-                .withRegion(Regions.fromName(REGION2))
+                .withRegion(Regions.fromName(snsRegion))
                 .build();
     }
 
