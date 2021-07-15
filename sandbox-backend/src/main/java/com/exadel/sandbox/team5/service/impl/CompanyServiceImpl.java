@@ -18,11 +18,9 @@ import java.util.List;
 @Service
 public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, CompanyDto> implements CompanyService {
 
-    private final OrderServiceImpl orderService;
 
-    public CompanyServiceImpl(CompanyDAO entityDao, MapperConverter mapper, OrderServiceImpl orderService) {
+    public CompanyServiceImpl(CompanyDAO entityDao, MapperConverter mapper) {
         super(entityDao, Company.class, CompanyDto.class, mapper);
-        this.orderService = orderService;
     }
 
     @Override

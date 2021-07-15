@@ -25,9 +25,10 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
     private final ReviewDAO reviewDAO;
     private final ImageDAO imageDAO;
 
-    public DiscountServiceImpl(DiscountDAO entityDao, MapperConverter mapper, ReviewDAO reviewDAO) {
+    public DiscountServiceImpl(DiscountDAO entityDao, MapperConverter mapper, ReviewDAO reviewDAO, ImageDAO imageDAO) {
         super(entityDao, Discount.class, DiscountDto.class, mapper);
         this.reviewDAO = reviewDAO;
+        this.imageDAO = imageDAO;
     }
 
     @Override
@@ -39,10 +40,13 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
     }
 
     private ResultPage<DiscountDto> mapDto(Page<Discount> dis) {
+        List<Long> imageId = dis.getContent().stream().map(Discount::getImageId).collect(Collectors.toList());
+        Map<Long, String> allNameImages = imageDAO.getAllName(imageId);
+        Map<Long, String> nameImageToDto = new HashMap<>();
+        dis.forEach(d -> nameImageToDto.put(d.getId(), allNameImages.get(d.getImageId())));
         ResultPage<DiscountDto> result = mapper.mapToPage(dis, DiscountDto.class);
         setRate(getRate(result.getContent()), result.getContent());
-        Map<Long, String> allNameImages = imageDAO.getAllNameById();
-        result.getContent().forEach(d -> d.setNameImage());
+        result.getContent().forEach(discountDto -> discountDto.setNameImage(nameImageToDto.get(discountDto.getId())));
         return result;
     }
 
@@ -51,7 +55,9 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
         Discount discount = entityDao.findById(id).orElseThrow(NoSuchElementException::new);
         DiscountDto discountDto = mapper.map(discount, DiscountDto.class);
         discountDto.setRate(reviewDAO.findRate(discountDto.getId()));
-        discountDto.setNameImage(imageDAO.getById(discount.getImageId()).getName());
+        if (discount.getImageId() != null) {
+            discountDto.setNameImage(imageDAO.getById(discount.getImageId()).getName());
+        }
         return discountDto;
     }
 
@@ -105,7 +111,6 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
                 .collect(Collectors.toMap(x -> Long.parseLong(x.getFirst()), y -> Double.parseDouble(y.getSecond())));
     }
 
-    //реализовать сортировку по рейтингу
     private void setRate(Map<Long, Double> rateMap, List<DiscountDto> dtoList) {
         for (DiscountDto d : dtoList) {
             if (rateMap.get(d.getId()) == null) d.setRate(0.0);
