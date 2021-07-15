@@ -40,7 +40,7 @@ public class MailSenderServiceImpl implements MailSenderService {
             var t = freemarker.getTemplate("notification.ftl");
             var text = FreeMarkerTemplateUtils.processTemplateIntoString(t, params);
             helper.setTo(employeeDAO.getAllEmails().toArray(new String[0]));
-            helper.setSubject("Hello there");
+            helper.setSubject("Notification");
             helper.setText(text, true);
         } catch (MessagingException | IOException | TemplateException e){
             log.error("Cannot send mail!", e);
@@ -57,7 +57,7 @@ public class MailSenderServiceImpl implements MailSenderService {
             var t = freemarker.getTemplate("mail.ftl");
             var text = FreeMarkerTemplateUtils.processTemplateIntoString(t, params);
             helper.setTo(email);
-            helper.setSubject("New Discounts!!!");
+            helper.setSubject("Subscription notification");
             helper.setText(text, true);
         } catch (MessagingException | IOException | TemplateException e){
             log.error("Cannot send mail!", e);
