@@ -5,6 +5,7 @@ import com.exadel.sandbox.team5.service.CompanyService;
 import com.exadel.sandbox.team5.service.ImageClientService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.export.ExportService;
+import com.exadel.sandbox.team5.service.export.FileNameGenerator;
 import com.exadel.sandbox.team5.util.CompanySearchCriteria;
 import com.exadel.sandbox.team5.util.ResultPage;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +29,8 @@ public class CompanyRestController {
     private final OrderService orderService;
     private final ImageClientService imageService;
     private final ExportService exportService;
+    private final FileNameGenerator fileNameGenerator;
+
 
     @PreAuthorize("hasAnyAuthority('USER', 'MODERATOR')")
     @GetMapping("/{id}")
@@ -86,9 +87,8 @@ public class CompanyRestController {
     @GetMapping("/statistic/downloadCSVOrdersByCompanies")
     public ResponseEntity getOrdersByCompaniesCSVFile() {
 
-        String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByCompanies.csv";
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileNameGenerator.csvFileNameGenerator("OrdersByCompanies"))
                 .contentType(MediaType.parseMediaType("application/csv"))
                 .body(new InputStreamResource(exportService.exportServiceCSV(orderService.getOrdersByCompanies(), "Companies", "Orders")));
     }
@@ -97,9 +97,8 @@ public class CompanyRestController {
     @GetMapping("/statistic/downloadXLSXOrdersByCompanies")
     public ResponseEntity getOrdersByCompaniesXLSXFile() {
 
-        String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByCompanies.xlsx";
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileNameGenerator.xlsxFileNameGenerator("OrdersByCompanies"))
                 .contentType(MediaType.parseMediaType("application/xlsx"))
                 .body(new InputStreamResource(exportService.exportServiceXLSX(orderService.getOrdersByCompanies(), "Companies", "Orders")));
     }
