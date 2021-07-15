@@ -8,7 +8,7 @@ public interface ImageService {
 
     ImageDto getImage(String name);
 
-    Long save(ImageDto image);
+    String save(ImageDto image);
 
     List<ImageDto> getAll();
 }

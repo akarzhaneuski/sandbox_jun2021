@@ -36,7 +36,7 @@ public class ImageRestController {
     }
 
     @PostMapping
-    public Long saveImage(@RequestBody MultipartFile file) {
+    public String saveImage(@RequestBody MultipartFile file) {
         return clientService.save(file);
     }
 }

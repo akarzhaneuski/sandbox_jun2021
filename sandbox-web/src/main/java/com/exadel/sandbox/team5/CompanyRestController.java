@@ -60,7 +60,7 @@ public class CompanyRestController {
     @PutMapping("/{id}/uploadImage")
     public CompanyDto updateImage(@PathVariable Long id, @RequestBody MultipartFile file) {
         CompanyDto company = companyService.getById(id);
-        company.setImageId(imageService.save(file));
+        company.setNameImage(imageService.save(file));
         return companyService.update(company);
     }
 
