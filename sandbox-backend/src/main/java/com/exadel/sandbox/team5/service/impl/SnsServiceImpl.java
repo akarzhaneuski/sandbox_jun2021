@@ -7,7 +7,6 @@ import com.exadel.sandbox.team5.service.SnsService;
 import com.exadel.sandbox.team5.util.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,19 +15,20 @@ import org.springframework.stereotype.Service;
 public class SnsServiceImpl implements SnsService {
     private final AmazonSNS amazonSNS;
 
-    @Value("${app.snsRegion}")
-    private String snsRegion;
+    //    @Value("${app.snsRegion}")
+    private final String REGION = "us-east-2";
 
-    private final String ARN = String.format("arn:aws:sns:%s:468080558953:",snsRegion);
+    private final String ARN = String.format("arn:aws:sns:%s:468080558953:", REGION);
 
     public PublishResult sendToAllUsers(Message message) {
-        if (message.getSubject() == null) return amazonSNS.publish("arn:aws:sns:us-east-2:468080558953:ToAllUsers", message.getMessage());
+        if (message.getSubject() == null)
+            return amazonSNS.publish("arn:aws:sns:us-east-2:468080558953:ToAllUsers", message.getMessage());
         return amazonSNS.publish("arn:aws:sns:us-east-2:468080558953:ToAllUsers", message.getMessage(), message.getSubject());
     }
 
     public void sendToSubscribers(DiscountDto discountDto) {
-        var topic = ARN+discountDto.getCategory().getName();
-        var message = String.format("New discount %s is waiting for you!",discountDto.getName());
+        var topic = ARN + discountDto.getCategory().getName();
+        var message = String.format("New discount %s is waiting for you!", discountDto.getName());
         amazonSNS.publish(topic, message, "Subscription notification");
     }
 }

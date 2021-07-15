@@ -11,6 +11,7 @@ import com.exadel.sandbox.team5.service.SnsService;
 import com.exadel.sandbox.team5.util.Pair;
 import com.exadel.sandbox.team5.util.ResultPage;
 import com.exadel.sandbox.team5.util.SearchCriteria;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
 
     private final ReviewDAO reviewDAO;
 
+    @Autowired
     private SnsService snsService;
 
     public DiscountServiceImpl(DiscountDAO entityDao, MapperConverter mapper, ReviewDAO reviewDAO) {

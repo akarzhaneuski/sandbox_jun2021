@@ -71,6 +71,6 @@ public class Discount extends AuditableEntity implements Serializable {
     @Column(name = "views")
     private Long views;
 
-    @Column(name = "isNew")
-    private boolean isNew;
+    @Column(name = "isSent")
+    private boolean isSent;
 }

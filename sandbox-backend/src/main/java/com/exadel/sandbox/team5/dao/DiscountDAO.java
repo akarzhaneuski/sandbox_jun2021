@@ -90,7 +90,7 @@ public interface DiscountDAO extends CommonRepository<Discount> {
 
     @Modifying
     @Query(value = """
-            UPDATE Discount d SET d.isNew=0 WHERE d.id IN (:discountIds)
+            UPDATE Discount d SET d.isSent=1 WHERE d.id IN (:discountIds)
             """)
     void markDiscountsAsSent(List<Long> discountIds);
 }
