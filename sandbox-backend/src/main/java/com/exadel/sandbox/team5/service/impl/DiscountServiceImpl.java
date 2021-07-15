@@ -6,6 +6,7 @@ import com.exadel.sandbox.team5.dao.ReviewDAO;
 import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.search.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.entity.Discount;
+import com.exadel.sandbox.team5.entity.Image;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.util.Pair;
@@ -41,9 +42,9 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
 
     private ResultPage<DiscountDto> mapDto(Page<Discount> dis) {
         List<Long> imageId = dis.getContent().stream().map(Discount::getImageId).collect(Collectors.toList());
-        Map<Long, String> allNameImages = imageDAO.getAllName(imageId);
+        List<Pair> allNameImages = imageDAO.getAllName(imageId);
         Map<Long, String> nameImageToDto = new HashMap<>();
-        dis.forEach(d -> nameImageToDto.put(d.getId(), allNameImages.get(d.getImageId())));
+//        dis.forEach(d -> nameImageToDto.put(d.getId(), allNameImages.);
         ResultPage<DiscountDto> result = mapper.mapToPage(dis, DiscountDto.class);
         setRate(getRate(result.getContent()), result.getContent());
         result.getContent().forEach(discountDto -> discountDto.setNameImage(nameImageToDto.get(discountDto.getId())));
@@ -74,7 +75,9 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
 
     @Override
     public DiscountDto update(DiscountDto discount) {
-        return this.save(discount);
+        Discount dis = mapper.map(discount, Discount.class);
+        dis.setImageId(imageDAO.findImageByName(discount.getNameImage()).orElseThrow(NoSuchElementException::new).getId());
+        return mapper.map(entityDao.saveAndFlush(dis), DiscountDto.class);
     }
 
     @Override
