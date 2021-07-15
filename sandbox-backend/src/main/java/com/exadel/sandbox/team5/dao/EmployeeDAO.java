@@ -16,7 +16,7 @@ public interface EmployeeDAO extends CommonRepository<Employee> {
             SELECT new com.exadel.sandbox.team5.util.Notification(e.email, d.id, d.name)  FROM Employee e
                 JOIN e.subscriptions c
                 JOIN Discount d ON d.category.id=c.id 
-            WHERE d.isNew=true AND e.email IS NOT null
+            WHERE d.isSent=false AND e.email IS NOT null
                 GROUP BY e.email,d.id,d.name
             """)
     List<Notification> getNotificationData();

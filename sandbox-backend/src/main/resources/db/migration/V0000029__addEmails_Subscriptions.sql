@@ -9,7 +9,7 @@ CREATE TABLE employee_notification_category(
 
 ALTER TABLE employee ADD COLUMN email VARCHAR(320);
 
-ALTER TABLE discount ADD COLUMN isNew BOOLEAN DEFAULT 1;
+ALTER TABLE discount ADD COLUMN isSent BOOLEAN DEFAULT false;
 
 UPDATE employee SET email='exadelovichjhon@gmail.com' WHERE login='E00001';
 UPDATE employee SET email='E00002@pochtu.net' WHERE login='E00002';
