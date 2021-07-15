@@ -78,7 +78,7 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
 
                 return mapper.map(entityDao.save(order), OrderDto.class);
         }
-        throw new NoSuchElementException("Discount not fount.");
+        throw new NoSuchElementException("Discount not found.");
     }
 
     @Override
