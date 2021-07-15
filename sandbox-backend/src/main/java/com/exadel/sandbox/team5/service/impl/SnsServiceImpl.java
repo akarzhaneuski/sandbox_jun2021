@@ -15,7 +15,7 @@ public class SnsServiceImpl implements SnsService {
     private final AmazonSNS amazonSNS;
 
     public PublishResult sendToAllUsers(Message message) {
-        if (message.getSubject() == null) return amazonSNS.publish("ToAllUsers", message.getMessage());
-        return amazonSNS.publish("ToAllUsers", message.getMessage(), message.getSubject());
+        if (message.getSubject() == null) return amazonSNS.publish("arn:aws:sns:us-east-2:468080558953:ToAllUsers", message.getMessage());
+        return amazonSNS.publish("arn:aws:sns:us-east-2:468080558953:ToAllUsers", message.getMessage(), message.getSubject());
     }
 }

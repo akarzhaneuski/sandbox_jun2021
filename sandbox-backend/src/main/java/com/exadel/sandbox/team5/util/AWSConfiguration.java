@@ -1,7 +1,5 @@
 package com.exadel.sandbox.team5.util;
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
@@ -21,6 +19,8 @@ public class AWSConfiguration {
     @Value("${app.region}")
     private String region;
 
+    private final String REGION2 = "us-east-2";
+
     @Bean
     public AmazonS3 getClient() {
         return AmazonS3ClientBuilder.standard().withCredentials(DefaultAWSCredentialsProviderChain.getInstance())
@@ -31,12 +31,12 @@ public class AWSConfiguration {
     @Bean
     public AmazonSNS snsClient() {
         return AmazonSNSClientBuilder.standard().withCredentials(DefaultAWSCredentialsProviderChain.getInstance())
-                .withRegion(Regions.fromName(region))
+                .withRegion(Regions.fromName(REGION2))
                 .build();
     }
 
     @Bean
-    public AmazonSQS sqsClient(){
+    public AmazonSQS sqsClient() {
         return AmazonSQSClientBuilder.standard().withCredentials(DefaultAWSCredentialsProviderChain.getInstance())
                 .withRegion(Regions.fromName(region))
                 .build();
