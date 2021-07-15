@@ -53,24 +53,14 @@ public class QRCodeServiceImpl implements QRCodeService {
     }
 
     @Override
-    public boolean ifPromocodeExists(String promocode) {
-        if (discountDAO.getPromocode(promocode) == null) {
-            return false;
-        }
-        return discountDAO.getPromocode(promocode).equals(promocode);
-    }
-
-    @Override
-    public boolean ifQRCodeIsValid(String uuid, String promocode) {
+    public boolean ifQRCodeIsValid(String uuid) {
         return checkUUID(uuid)
                 && orderDAO.getPromoCodeStatusByUUID(uuid)
-                && ifPromocodeExists(promocode)
                 && orderDAO.getPromocodePeriodEndByUUID(uuid).compareTo(new Date()) > 0;
     }
 
     private String generateQRUrl(String uuid) {
-        String promocode = orderDAO.getPromocodeFromDiscountByUUID(uuid);
         return "https://sandbox-team5.herokuapp.com/api/orders/validate/"
-                + uuid + "/" + promocode;
+                + uuid;
     }
 }

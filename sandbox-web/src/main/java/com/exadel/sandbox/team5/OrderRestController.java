@@ -17,7 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderRestController {
 
-    private static final String RESPONSE_MESSAGE_TEMPLATE = "Promocode `%s` is %s";
     private final OrderService orderService;
     private final QRCodeService qrCodeService;
 
@@ -56,12 +55,10 @@ public class OrderRestController {
         return qrCodeService.generateQRCode(orderService.createOrder(createOrder));
     }
 
-    @ApiOperation("Checks link if unique code of employee and promocode exists in database and not expired promocode valid")
-    @GetMapping(value = "/validate/{uuid}/{promocode}")
+    @ApiOperation("Checks link if unique code of employee exists in database and not expired promocode valid")
+    @GetMapping(value = "/validate/{uuid}")
     @ResponseStatus(HttpStatus.OK)
-    public String validateQRCode(@PathVariable String uuid,
-                                 @PathVariable String promocode) {
-        return String.format(RESPONSE_MESSAGE_TEMPLATE, promocode,
-                qrCodeService.ifQRCodeIsValid(uuid, promocode) ? " valid" : " not valid");
+    public String validateQRCode(@PathVariable String uuid) {
+        return qrCodeService.ifQRCodeIsValid(uuid) ? "Valid" : "Not valid";
     }
 }

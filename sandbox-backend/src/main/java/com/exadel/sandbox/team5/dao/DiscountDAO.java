@@ -58,11 +58,4 @@ public interface DiscountDAO extends CommonRepository<Discount> {
             SELECT new com.exadel.sandbox.team5.util.Pair(d.name, d.views) FROM Discount d order by d.name
             """)
     List<Pair> getViewsByDiscounts();
-
-    @Query(value = """
-            SELECT d.promocode
-            FROM discount d
-            WHERE d.promocode=(:promocode);
-            """, nativeQuery = true)
-    String getPromocode(@Param("promocode") String promocode);
 }
