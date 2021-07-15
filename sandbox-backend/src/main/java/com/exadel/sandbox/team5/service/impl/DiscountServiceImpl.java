@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team5.service.impl;
 
 import com.exadel.sandbox.team5.dao.DiscountDAO;
+import com.exadel.sandbox.team5.dao.ImageDAO;
 import com.exadel.sandbox.team5.dao.ReviewDAO;
 import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.search.DiscountSearchCriteria;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discount, DiscountDto> implements DiscountService {
 
     private final ReviewDAO reviewDAO;
+    private final ImageDAO imageDAO;
 
     public DiscountServiceImpl(DiscountDAO entityDao, MapperConverter mapper, ReviewDAO reviewDAO) {
         super(entityDao, Discount.class, DiscountDto.class, mapper);
@@ -31,17 +33,25 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
     @Override
     public ResultPage<DiscountDto> getAllByCriteria(SearchCriteria criteria) {
         Page<Discount> dis = entityDao.findAll(criteria.getPageRequest());
+        return mapDto(dis); //mapper.mapToPage(dis, DiscountDto.class);
+//        setRate(getRate(result.getContent()), result.getContent());
+//        return result;
+    }
+
+    private ResultPage<DiscountDto> mapDto(Page<Discount> dis) {
         ResultPage<DiscountDto> result = mapper.mapToPage(dis, DiscountDto.class);
         setRate(getRate(result.getContent()), result.getContent());
+        Map<Long, String> allNameImages = imageDAO.getAllNameById();
+        result.getContent().forEach(d -> d.setNameImage());
         return result;
     }
 
     @Override
     public DiscountDto getById(Long id) {
-        DiscountDto discountDto = entityDao.findById(id)
-                .map(discount -> mapper.map(discount, DiscountDto.class))
-                .orElseThrow(NoSuchElementException::new);
+        Discount discount = entityDao.findById(id).orElseThrow(NoSuchElementException::new);
+        DiscountDto discountDto = mapper.map(discount, DiscountDto.class);
         discountDto.setRate(reviewDAO.findRate(discountDto.getId()));
+        discountDto.setNameImage(imageDAO.getById(discount.getImageId()).getName());
         return discountDto;
     }
 
