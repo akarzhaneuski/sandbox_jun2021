@@ -46,11 +46,11 @@ public class OrderRestController {
         return orderService.invalidatePromoCode(uuid);
     }
 
-    @PutMapping("/create")
-    public OrderDto create(@RequestBody CreateOrder createOrder) {
-        if (createOrder != null && createOrder.getAmountDiscountDays() == 0) {
-            createOrder.setAmountDiscountDays(7);
-        }
+    @PutMapping("/save/{discountId}")
+    public OrderDto create(@PathVariable String discountId) {
+        CreateOrder createOrder = new CreateOrder();
+        createOrder.setDiscountId(Long.valueOf(discountId));
+        createOrder.setAmountDiscountDays(7l);
         return orderService.createOrder(createOrder);
     }
 }

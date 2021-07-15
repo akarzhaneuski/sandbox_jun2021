@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -64,10 +63,7 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     public OrderDto createOrder(CreateOrder createOrder) {
 
         Employee employee = employeeService.getByLogin(securityUtils.getCurrentUsername());
-
         if (discountService.getById(createOrder.getDiscountId()) != null) {
-
-            if (activeOrdersByTime(activeOrdersByStatus(employee)).size() < createOrder.getMaxOrderSize()) {
                 Order order = new Order();
                 order.setDiscount(mapper.map(discountService.getById(createOrder.getDiscountId()), Discount.class));
                 order.setEmployee(employeeService.getById(employee.getId()));
@@ -81,18 +77,8 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
                 order.setPromoCodePeriodEnd(currentDatePlusOneDay);
 
                 return mapper.map(entityDao.save(order), OrderDto.class);
-            }
-
         }
-        throw new NoSuchElementException();
-    }
-
-    private List<Order> activeOrdersByStatus(Employee employee) {
-        return entityDao.findAllByEmployeeId(employee.getId()).stream().filter(Order::getPromoCodeStatus).collect(Collectors.toList());
-    }
-
-    private List<Order> activeOrdersByTime(List<Order> activeOrders) {
-        return activeOrders.stream().filter(e -> System.currentTimeMillis() < e.getPromoCodePeriodEnd().getTime()).collect(Collectors.toList());
+        throw new NoSuchElementException("Discount not fount.");
     }
 
     @Override

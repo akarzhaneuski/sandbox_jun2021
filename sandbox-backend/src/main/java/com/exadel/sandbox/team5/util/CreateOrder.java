@@ -9,6 +9,5 @@ import lombok.*;
 @EqualsAndHashCode
 public class CreateOrder {
     private long discountId;
-    private int maxOrderSize;
     private long amountDiscountDays;
 }
