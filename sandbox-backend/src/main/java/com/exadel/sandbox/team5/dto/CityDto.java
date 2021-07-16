@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,5 +12,5 @@ import java.util.Set;
 public class CityDto extends IdentifierDto{
 
     private String name;
-    private Set<AddressDto> addresses;
+    private CountryDto country;
 }
