@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/images")
@@ -31,14 +30,9 @@ public class ImageRestController {
         return new ResponseEntity<>(content, headers, HttpStatus.OK);
     }
 
-    @GetMapping
-    public List<ImageDto> getAllImageTest() {
-        return service.getAll();
-    }
-
     @PreAuthorize("hasAuthority('MODERATOR')")
     @PostMapping
-    public Long saveImage(@RequestBody MultipartFile file) {
+    public String saveImage(@RequestBody MultipartFile file) {
         return clientService.save(file);
     }
 }

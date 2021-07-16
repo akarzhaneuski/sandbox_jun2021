@@ -17,7 +17,7 @@ public class ImageClientServiceImpl implements ImageClientService {
     private final ImageService service;
 
     @Override
-    public Long save(MultipartFile file) {
+    public String save(MultipartFile file) {
         ImageDto image = new ImageDto();
         try {
             image.setContent(file.getInputStream());

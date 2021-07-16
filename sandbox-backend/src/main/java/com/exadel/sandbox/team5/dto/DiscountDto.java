@@ -24,7 +24,7 @@ public class DiscountDto extends IdentifierDto {
     private CompanyDto company;
     private Double rate;
     private CategoryDto category;
-    private Long imageId;
+    private String nameImage;
     private CountryDto country;
     private Long views;
 }
