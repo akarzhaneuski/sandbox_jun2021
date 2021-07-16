@@ -10,6 +10,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,16 +37,19 @@ public class TagRestController {
         return tagService.getAll();
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @PostMapping
     public TagDto save(@RequestBody TagDto entity) {
         return tagService.save(entity);
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/statistic/orders")
     public Map<String, String> getStatisticByOrders() {
         return orderService.getOrdersByTags();
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/statistic/downloadCSVOrdersByTag")
     public ResponseEntity getOrdersByTagCSVFile() {
         return ResponseEntity.ok()
@@ -54,6 +58,7 @@ public class TagRestController {
                 .body(new InputStreamResource(exportService.exportServiceCSV(orderService.getOrdersByTags(), "Tags", "Orders")));
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/statistic/downloadXLSXOrdersByTag")
     public ResponseEntity getOrdersByTagXLSXFile() {
         return ResponseEntity.ok()
