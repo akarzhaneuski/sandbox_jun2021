@@ -45,7 +45,7 @@ public interface OrderDAO extends CommonRepository<Order> {
                 JOIN t.category c
             GROUP BY c.id
             """)
-    List<Pair> getAllOrdersForCategories();>>>>>>> master
+    List<Pair> getAllOrdersForCategories();
 
     @Modifying
     @Query(value = """
