@@ -41,11 +41,6 @@ public class OrderRestController {
         orderService.delete(id);
     }
 
-    @PutMapping("/invalidate")
-    public OrderDto invalidate(@RequestBody OrderDto order) {
-        return orderService.invalidatePromoCode(order.getDiscount().getId(), order.getEmployeePromocode());
-    }
-
     @ApiOperation("Create order from register user and return QR code with link")
     @PostMapping(value = "/create", produces = MediaType.IMAGE_PNG_VALUE)
     public byte[] create(@RequestBody CreateOrder createOrder) {
@@ -55,10 +50,10 @@ public class OrderRestController {
         return qrCodeService.generateQRCode(orderService.createOrder(createOrder));
     }
 
-    @ApiOperation("Checks link if unique code of employee exists in database and not expired promocode valid")
+    @ApiOperation("Checks link if unique code of employee exists in database and promocode has not expired")
     @GetMapping(value = "/validate/{uuid}")
     @ResponseStatus(HttpStatus.OK)
     public String validateQRCode(@PathVariable String uuid) {
-        return qrCodeService.ifQRCodeIsValid(uuid) ? "Valid" : "Not valid";
+        return qrCodeService.validateQR(uuid);
     }
 }

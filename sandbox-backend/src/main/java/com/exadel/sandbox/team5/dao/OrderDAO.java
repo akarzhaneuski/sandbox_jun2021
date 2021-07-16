@@ -15,7 +15,7 @@ public interface OrderDAO extends CommonRepository<Order> {
 
     List<Order> findAllByEmployeeId(Long id);
 
-    Order getOrderByDiscountIdAndEmployeePromocode(Long id, String promoCode);
+    Order getOrderByEmployeePromocode(String uuid);
 
     @Modifying
     @Query(value = "update `order` o set o.promoCodeStatus = :status where o.employeePromocode = :promoCode", nativeQuery = true)
@@ -49,14 +49,6 @@ public interface OrderDAO extends CommonRepository<Order> {
             WHERE o.employeePromocode=(:uuid);
             """, nativeQuery = true)
     boolean getPromoCodeStatusByUUID(@Param("uuid") String uuid);
-
-    @Query(value = """
-            SELECT d.promocode
-            FROM discount d
-            LEFT JOIN `order` o on d.id = o.discountId
-            WHERE o.employeePromocode=(:uuid);
-            """, nativeQuery = true)
-    String getPromocodeFromDiscountByUUID(@Param("uuid") String uuid);
 
     @Query(value = """
             SELECT o.promoCodePeriodEnd

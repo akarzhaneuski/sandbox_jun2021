@@ -22,7 +22,6 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -45,15 +44,11 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     }
 
     @Override
-    public OrderDto invalidatePromoCode(Long discountId, String promoCode) {
-
-        Order selectedOrder = entityDao.getOrderByDiscountIdAndEmployeePromocode(discountId, promoCode);
-
+    public void invalidatePromoCode(String uuid) {
+        var selectedOrder = entityDao.getOrderByEmployeePromocode(uuid);
         if (selectedOrder != null && selectedOrder.getPromoCodePeriodEnd().getTime() > new Date().getTime()) {
-            entityDao.setPromoCodeStatus(false, promoCode);
-            return mapper.map(selectedOrder, OrderDto.class);
+            entityDao.setPromoCodeStatus(false, uuid);
         }
-        throw new NoSuchElementException();
     }
 
     @Override

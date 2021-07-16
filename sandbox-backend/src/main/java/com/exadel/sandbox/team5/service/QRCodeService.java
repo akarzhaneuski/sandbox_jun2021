@@ -16,13 +16,7 @@ public interface QRCodeService {
     String readQRCode(File file);
 
     /**
-     * @param uuid unique code from link
-     * @return true if this uuid exists in database
-     */
-    boolean checkUUID(String uuid);
-
-    /**
      * @return true if uuid and promocode exists in DB
      */
-    boolean ifQRCodeIsValid(String uuid);
+    String validateQR(String uuid);
 }

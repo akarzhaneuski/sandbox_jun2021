@@ -6,7 +6,8 @@ import com.exadel.sandbox.team5.util.CreateOrder;
 import java.util.Map;
 
 public interface OrderService extends CRUDService<OrderDto> {
-    OrderDto invalidatePromoCode(Long discountId, String promoCode);
+
+    void invalidatePromoCode(String uuid);
 
     String createOrder(CreateOrder createOrder);
 

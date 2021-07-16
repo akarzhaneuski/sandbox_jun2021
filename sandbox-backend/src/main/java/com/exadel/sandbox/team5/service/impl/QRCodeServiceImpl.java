@@ -1,8 +1,8 @@
 package com.exadel.sandbox.team5.service.impl;
 
 import com.exadel.sandbox.team5.barcodes.QRCode;
-import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.OrderDAO;
+import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.QRCodeService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -23,7 +23,7 @@ import java.util.NoSuchElementException;
 public class QRCodeServiceImpl implements QRCodeService {
 
     private final OrderDAO orderDAO;
-    private final DiscountDAO discountDAO;
+    private final OrderService orderService;
 
     @Override
     public byte[] generateQRCode(String uuid) {
@@ -33,8 +33,8 @@ public class QRCodeServiceImpl implements QRCodeService {
             ImageIO.write(image, "png", baos);
             return baos.toByteArray();
         } catch (Exception e) {
-            log.error("There was an error during barcode generation", e);
-            throw new NoSuchElementException(e);
+            log.error(e.getLocalizedMessage(), e);
+            throw new NoSuchElementException("There was an error during barcode generation");
         }
     }
 
@@ -45,22 +45,22 @@ public class QRCodeServiceImpl implements QRCodeService {
     }
 
     @Override
-    public boolean checkUUID(String uuid) {
-        if (orderDAO.getEmployeePromocodeByUUID(uuid) == null) {
-            return false;
+    public String validateQR(String uuid) {
+        var responseMessage = "\"Not valid\" \"%s\"";
+        if (!uuid.equals(orderDAO.getEmployeePromocodeByUUID(uuid))) {
+            return String.format(responseMessage, "Order not found. Promocode is incorrect");
         }
-        return orderDAO.getEmployeePromocodeByUUID(uuid).equals(uuid);
-    }
-
-    @Override
-    public boolean ifQRCodeIsValid(String uuid) {
-        return checkUUID(uuid)
-                && orderDAO.getPromoCodeStatusByUUID(uuid)
-                && orderDAO.getPromocodePeriodEndByUUID(uuid).compareTo(new Date()) > 0;
+        if (!orderDAO.getPromoCodeStatusByUUID(uuid)) {
+            return String.format(responseMessage, "Order has already been activated");
+        }
+        if (orderDAO.getPromocodePeriodEndByUUID(uuid).compareTo(new Date()) < 0) {
+            return String.format(responseMessage, "Order has expired");
+        }
+        orderService.invalidatePromoCode(uuid);
+        return "\"Valid\"";
     }
 
     private String generateQRUrl(String uuid) {
-        return "https://sandbox-team5.herokuapp.com/api/orders/validate/"
-                + uuid;
+        return "https://sandbox-team5.herokuapp.com/api/orders/validate/" + uuid;
     }
 }
