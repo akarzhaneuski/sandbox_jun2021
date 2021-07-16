@@ -12,15 +12,16 @@ import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.EmployeeService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.ValidatePromoCodeGenerator;
+import com.exadel.sandbox.team5.util.CreateOrder;
 import com.exadel.sandbox.team5.util.Pair;
 import com.exadel.sandbox.team5.util.SecurityUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -36,9 +37,6 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     private final CompanyDAO companyDAO;
     private final SecurityUtils securityUtils;
 
-    @Value("${constant.amountDiscountDays}")
-    Long amountDiscountDay;
-
 
     public OrderServiceImpl(OrderDAO orderDAO, MapperConverter mapper, EmployeeService employeeService,
                             DiscountService discountService, DiscountDAO discountDAO, CompanyDAO companyDAO, SecurityUtils securityUtils) {
@@ -51,38 +49,47 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     }
 
     @Override
-    public OrderDto invalidatePromoCode(String uuid) {
-
-        Order selectedOrder = entityDao.getOrderByEmployeePromocode(uuid);
-
+    public void invalidatePromoCode(String uuid) {
+        var selectedOrder = entityDao.getOrderByEmployeePromocode(uuid);
         if (selectedOrder != null && selectedOrder.getPromoCodePeriodEnd().getTime() > new Date().getTime()) {
             entityDao.setPromoCodeStatus(false, uuid);
-            return mapper.map(selectedOrder, OrderDto.class);
         }
         throw new NoSuchElementException();
     }
 
     @Override
-    public OrderDto createOrder(String discountId) {
-        var discountIdL = Long.valueOf(discountId);
+    public OrderDto createOrder(CreateOrder createOrder) {
 
         Employee employee = employeeService.getByLogin(securityUtils.getCurrentUsername());
-        if (discountService.getById(discountIdL) != null) {
+
+        if (discountService.getById(createOrder.getDiscountId()) != null) {
+
+            if (activeOrdersByTime(activeOrdersByStatus(employee)).size() < createOrder.getMaxOrderSize()) {
                 Order order = new Order();
-                order.setDiscount(mapper.map(discountService.getById(discountIdL), Discount.class));
+                order.setDiscount(mapper.map(discountService.getById(createOrder.getDiscountId()), Discount.class));
                 order.setEmployee(employeeService.getById(employee.getId()));
                 order.setEmployeePromocode(new ValidatePromoCodeGenerator().generateUUID());
                 order.setPromoCodeStatus(true);
                 Date currentDate = new Date();
                 LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-                localDateTime = localDateTime.plusDays(amountDiscountDay);
+                localDateTime = localDateTime.plusDays(createOrder.getAmountDiscountDays());
                 Date currentDatePlusOneDay = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
                 order.setPromoCodePeriodStart(currentDate);
                 order.setPromoCodePeriodEnd(currentDatePlusOneDay);
 
                 return mapper.map(entityDao.save(order), OrderDto.class);
+            }
+
         }
-        throw new NoSuchElementException("Discount not found.");
+        throw new NoSuchElementException();
+    }
+
+    private List<Order> activeOrdersByStatus(Employee employee) {
+        return entityDao.findAllByEmployeeId(employee.getId()).stream().filter(Order::getPromoCodeStatus).collect(Collectors.toList());
+    }
+
+    private List<Order> activeOrdersByTime(List<Order> activeOrders) {
+        return activeOrders.stream().filter(e -> System.currentTimeMillis() < e.getPromoCodePeriodEnd().getTime()).collect(Collectors.toList());
     }
 
     @Override

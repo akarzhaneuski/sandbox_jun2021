@@ -26,7 +26,6 @@ public class DiscountRestController {
 
     private final DiscountService service;
     private final ReviewService reviewService;
-    private final QRCodeService qrCodeService;
     private final OrderService orderService;
     private final ImageClientService imageService;
     private final ExportService exportService;
@@ -75,13 +74,6 @@ public class DiscountRestController {
     @PostMapping("/search")
     public ResultPage<DiscountDto> getByCriteria(@RequestBody DiscountSearchCriteria searchCriteria) {
         return service.getByCriteria(searchCriteria);
-    }
-
-    @ApiOperation("Generating QR code with param \"promoCode\"")
-    @GetMapping(value = "/qrcode", produces = MediaType.IMAGE_PNG_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public byte[] generateQRCode(@RequestParam("promoCode") String promoCode) {
-        return qrCodeService.generateQRCode(promoCode);
     }
 
     @GetMapping("/statistic/orders")
