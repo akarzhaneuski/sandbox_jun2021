@@ -1,8 +1,8 @@
 package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.config.security.pojo.AuthenticationRequest;
-import com.exadel.sandbox.team5.config.security.pojo.Token;
 import com.exadel.sandbox.team5.config.security.AuthenticationService;
+import com.exadel.sandbox.team5.dto.AuthorizationUserDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ public class AuthenticateRestController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Token> createToken(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<?> createToken(@RequestBody AuthenticationRequest request) {
         authenticationService.authenticate(request.getUsername(), request.getPassword());
         return ResponseEntity.ok(authenticationService.createToken(request.getUsername()));
     }
