@@ -6,7 +6,6 @@ import com.exadel.sandbox.team5.dao.ReviewDAO;
 import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.search.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.entity.Discount;
-import com.exadel.sandbox.team5.entity.Image;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.util.Pair;
@@ -34,21 +33,8 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
 
     @Override
     public ResultPage<DiscountDto> getAllByCriteria(SearchCriteria criteria) {
-        Page<Discount> dis = entityDao.findAll(criteria.getPageRequest());
-        return mapDto(dis); //mapper.mapToPage(dis, DiscountDto.class);
-//        setRate(getRate(result.getContent()), result.getContent());
-//        return result;
-    }
-
-    private ResultPage<DiscountDto> mapDto(Page<Discount> dis) {
-        List<Long> imageId = dis.getContent().stream().map(Discount::getImageId).collect(Collectors.toList());
-        List<Pair> allNameImages = imageDAO.getAllName(imageId);
-        Map<Long, String> nameImageToDto = new HashMap<>();
-//        dis.forEach(d -> nameImageToDto.put(d.getId(), allNameImages.);
-        ResultPage<DiscountDto> result = mapper.mapToPage(dis, DiscountDto.class);
-        setRate(getRate(result.getContent()), result.getContent());
-        result.getContent().forEach(discountDto -> discountDto.setNameImage(nameImageToDto.get(discountDto.getId())));
-        return result;
+        Page<Discount> discounts = entityDao.findAll(criteria.getPageRequest());
+        return mapDto(discounts);
     }
 
     @Override
@@ -70,20 +56,26 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
     @Override
     public DiscountDto save(DiscountDto discount) {
         Discount dis = mapper.map(discount, Discount.class);
-        return mapper.map(entityDao.saveAndFlush(dis), DiscountDto.class);
-    }
-
-    @Override
-    public DiscountDto update(DiscountDto discount) {
-        Discount dis = mapper.map(discount, Discount.class);
         dis.setImageId(imageDAO.findImageByName(discount.getNameImage()).orElseThrow(NoSuchElementException::new).getId());
         return mapper.map(entityDao.saveAndFlush(dis), DiscountDto.class);
     }
 
     @Override
-    public void delete(Long id) {
-        entityDao.deleteById(id);
+    public DiscountDto update(DiscountDto discount) {
+        return this.save(discount);
     }
+
+    @Override
+    public Map<String, String> getViewsByDiscounts() {
+        return entityDao.getViewsByDiscounts().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond, (o1, o2) -> o1, TreeMap::new));
+    }
+
+    @Override
+    public void incrementViews(Long discountId) {
+        entityDao.findById(discountId).orElseThrow(NoSuchElementException::new);
+        entityDao.incrementViewsByDiscountId(discountId);
+    }
+
 
     //fixme добавить стандартную сортировку по дате добавления после включения аудита
     @Override
@@ -91,20 +83,31 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
         if (searchCriteria.isEmpty()) {
             return getAllByCriteria(searchCriteria);
         }
-        var res = entityDao.findDiscountsByCriteria(searchCriteria.getSearchText(),
+        if (searchCriteria.getOrders() != null && searchCriteria.getOrders().isEmpty()) {
+            var discounts = findDiscountsByCriteria(searchCriteria);
+            var result = mapDto(discounts);
+            List<DiscountDto> sorted = new ArrayList<>(result.getContent());
+            sorted.sort((o1, o2) -> (int) (o2.getRate() - o1.getRate()));
+            return new ResultPage<>(sorted, result.getTotalElements());
+        }
+        var discounts = findDiscountsByCriteria(searchCriteria);
+        return mapDto(discounts);
+    }
+
+    private Page<Discount> findDiscountsByCriteria(DiscountSearchCriteria searchCriteria) {
+        return entityDao.findDiscountsByCriteria(searchCriteria.getSearchText(),
                 searchCriteria.getTags(),
                 searchCriteria.getLocationCriteria().getCountry(),
                 searchCriteria.getLocationCriteria().getCities(),
                 searchCriteria.getCompanies(),
                 searchCriteria.getRate(),
                 searchCriteria.getPageRequest());
-        ResultPage<DiscountDto> result = mapper.mapToPage(res, DiscountDto.class);
+    }
+
+    private ResultPage<DiscountDto> mapDto(Page<Discount> discounts) {
+        ResultPage<DiscountDto> result = mapper.mapToPage(discounts, DiscountDto.class);
         setRate(getRate(result.getContent()), result.getContent());
-        if (searchCriteria.getOrders() != null && searchCriteria.getOrders().isEmpty()) {
-            List<DiscountDto> sorted = new ArrayList<>(result.getContent());
-            sorted.sort((o1, o2) -> (int) (o2.getRate() - o1.getRate()));
-            return new ResultPage<>(sorted, result.getTotalElements());
-        }
+        setNameImage(discounts, result);
         return result;
     }
 
@@ -121,14 +124,12 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
         }
     }
 
-    @Override
-    public Map<String, String> getViewsByDiscounts() {
-        return entityDao.getViewsByDiscounts().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond, (o1, o2) -> o1, TreeMap::new));
-    }
-
-    @Override
-    public void incrementViews(Long discountId) {
-        entityDao.findById(discountId).orElseThrow(NoSuchElementException::new);
-        entityDao.incrementViewsByDiscountId(discountId);
+    private void setNameImage(Page<Discount> discounts, ResultPage<DiscountDto> result) {
+        List<Long> imageId = discounts.getContent().stream().map(Discount::getImageId).collect(Collectors.toList());
+        Map<Long, String> namesImages = imageDAO.getAllName(imageId).stream()
+                .collect(Collectors.toMap(x -> Long.parseLong(x.getFirst()), Pair::getSecond));
+        Map<Long, String> nameImageToDto = new HashMap<>();
+        discounts.forEach(d -> nameImageToDto.put(d.getId(), namesImages.get(d.getImageId())));
+        result.getContent().forEach(discountDto -> discountDto.setNameImage(nameImageToDto.get(discountDto.getId())));
     }
 }
