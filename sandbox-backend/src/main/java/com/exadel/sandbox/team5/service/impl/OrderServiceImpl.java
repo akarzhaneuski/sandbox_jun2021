@@ -23,7 +23,6 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -49,42 +48,41 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     }
 
     @Override
-    public OrderDto invalidatePromoCode(String uuid) {
-
-        Order selectedOrder = entityDao.getOrderByEmployeePromocode(uuid);
-
+    public void invalidatePromoCode(String uuid) {
+        var selectedOrder = entityDao.getOrderByEmployeePromocode(uuid);
         if (selectedOrder != null && selectedOrder.getPromoCodePeriodEnd().getTime() > new Date().getTime()) {
             entityDao.setPromoCodeStatus(false, uuid);
-            return mapper.map(selectedOrder, OrderDto.class);
         }
-        throw new NoSuchElementException();
     }
 
     @Override
-    public OrderDto createOrder(CreateOrder createOrder) {
+    public String createOrder(CreateOrder createOrder) {
 
-        Employee employee = employeeService.getByLogin(securityUtils.getCurrentUsername());
-
-        if (discountService.getById(createOrder.getDiscountId()) != null) {
-
-            if (activeOrdersByTime(activeOrdersByStatus(employee)).size() < createOrder.getMaxOrderSize()) {
-                Order order = new Order();
-                order.setDiscount(mapper.map(discountService.getById(createOrder.getDiscountId()), Discount.class));
-                order.setEmployee(employeeService.getById(employee.getId()));
-                order.setEmployeePromocode(new ValidatePromoCodeGenerator().generateUUID());
-                order.setPromoCodeStatus(true);
-                Date currentDate = new Date();
-                LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-                localDateTime = localDateTime.plusDays(createOrder.getAmountDiscountDays());
-                Date currentDatePlusOneDay = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-                order.setPromoCodePeriodStart(currentDate);
-                order.setPromoCodePeriodEnd(currentDatePlusOneDay);
-
-                return mapper.map(entityDao.save(order), OrderDto.class);
-            }
-
+        if (discountService.getById(createOrder.getDiscountId()) == null) {
+            throw new IllegalArgumentException("Discount id is null!");
         }
-        throw new NoSuchElementException();
+        var employee = employeeService.getByLogin(securityUtils.getCurrentUsername());
+
+        if (activeOrdersByTime(activeOrdersByStatus(employee)).size() < createOrder.getMaxOrderSize()) {
+            String employeePromocode = new ValidatePromoCodeGenerator().generateUUID();
+            var now = LocalDateTime.now();
+            var orderToSave = Order.builder()
+                    .discount(mapper.map(discountService.getById(createOrder.getDiscountId()), Discount.class))
+                    .employee(employeeService.getById(employee.getId()))
+                    .employeePromocode(employeePromocode)
+                    .promoCodeStatus(true)
+                    .promoCodePeriodStart(localDateTimeToDate(now))
+                    .promoCodePeriodEnd(localDateTimeToDate(now.plusDays(createOrder.getAmountDiscountDays())))
+                    .build();
+
+            entityDao.save(orderToSave);
+            return employeePromocode;
+        }
+        throw new IllegalArgumentException("Your discount limit is exceeded");
+    }
+
+    private Date localDateTimeToDate(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 
     private List<Order> activeOrdersByStatus(Employee employee) {
