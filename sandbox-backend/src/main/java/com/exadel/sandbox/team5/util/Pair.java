@@ -14,13 +14,23 @@ public class Pair {
     private String second;
 
     public Pair(long first, double second){
-        this.first=Long.toString(first);
-        this.second=Double.toString(second);
+        this.first=""+first;
+        this.second=""+second;
     }
 
-    public Pair(String first, long second){
-        this.first=first;
-        this.second=Long.toString(second);
+    public Pair(String first, long second) {
+        this.first = first;
+        this.second = String.valueOf(second);
+    }
+
+    public Pair(long first, String second) {
+        this.first = String.valueOf(first);
+        this.second = second;
+    }
+
+    public Pair(String first, String second) {
+        this.first = first;
+        this.second = second;
     }
 
     public Pair(int first, long second) {

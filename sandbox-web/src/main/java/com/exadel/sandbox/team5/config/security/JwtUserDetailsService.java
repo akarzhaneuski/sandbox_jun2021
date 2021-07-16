@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team5.config.security;
 
+import com.exadel.sandbox.team5.config.security.util.JwtUser;
 import com.exadel.sandbox.team5.config.security.util.JwtUserFactory;
 import com.exadel.sandbox.team5.entity.Employee;
 import com.exadel.sandbox.team5.service.EmployeeService;
@@ -17,6 +18,10 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        return createUserDetails(login);
+    }
+
+    public JwtUser createUserDetails(String login) {
         Employee employee = employeeService.getByLogin(login);
         return JwtUserFactory.create(employee);
     }

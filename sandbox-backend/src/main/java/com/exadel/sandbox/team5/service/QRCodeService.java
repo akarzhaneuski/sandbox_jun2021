@@ -14,4 +14,9 @@ public interface QRCodeService {
      * @return String text from image.
      */
     String readQRCode(File file);
+
+    /**
+     * @return true if uuid and promocode exists in DB
+     */
+    String validateQR(String uuid);
 }
