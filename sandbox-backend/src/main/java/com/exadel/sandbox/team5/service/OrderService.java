@@ -1,7 +1,6 @@
 package com.exadel.sandbox.team5.service;
 
 import com.exadel.sandbox.team5.dto.OrderDto;
-import com.exadel.sandbox.team5.util.CreateOrder;
 
 import java.util.Map;
 
@@ -9,7 +8,7 @@ public interface OrderService extends CRUDService<OrderDto> {
 
     void invalidatePromoCode(String uuid);
 
-    String createOrder(CreateOrder createOrder);
+    String createOrder(String discountId);
 
     Map<String, String> getOrdersByDiscounts();
 

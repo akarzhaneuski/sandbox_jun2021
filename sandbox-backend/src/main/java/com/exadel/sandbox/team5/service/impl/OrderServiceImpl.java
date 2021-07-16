@@ -12,9 +12,9 @@ import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.EmployeeService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.ValidatePromoCodeGenerator;
-import com.exadel.sandbox.team5.util.CreateOrder;
 import com.exadel.sandbox.team5.util.Pair;
 import com.exadel.sandbox.team5.util.SecurityUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +36,9 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     private final CompanyDAO companyDAO;
     private final SecurityUtils securityUtils;
 
+    @Value("${constant.amountDiscountDays}")
+    String amountDiscountDays;
+
 
     public OrderServiceImpl(OrderDAO orderDAO, MapperConverter mapper, EmployeeService employeeService,
                             DiscountService discountService, DiscountDAO discountDAO, CompanyDAO companyDAO, SecurityUtils securityUtils) {
@@ -56,29 +59,30 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     }
 
     @Override
-    public String createOrder(CreateOrder createOrder) {
+    public String createOrder(String discountId) {
 
-        if (discountService.getById(createOrder.getDiscountId()) == null) {
-            throw new IllegalArgumentException("Discount id is null!");
-        }
-        var employee = employeeService.getByLogin(securityUtils.getCurrentUsername());
+        Long discountIdL = Long.valueOf(discountId);
 
-        if (activeOrdersByTime(activeOrdersByStatus(employee)).size() < createOrder.getMaxOrderSize()) {
+        if (discountService.getById(discountIdL) != null) {
+            var employee = employeeService.getByLogin(securityUtils.getCurrentUsername());
+
             String employeePromocode = new ValidatePromoCodeGenerator().generateUUID();
             var now = LocalDateTime.now();
             var orderToSave = Order.builder()
-                    .discount(mapper.map(discountService.getById(createOrder.getDiscountId()), Discount.class))
+                    .discount(mapper.map(discountService.getById(discountIdL), Discount.class))
                     .employee(employeeService.getById(employee.getId()))
                     .employeePromocode(employeePromocode)
                     .promoCodeStatus(true)
                     .promoCodePeriodStart(localDateTimeToDate(now))
-                    .promoCodePeriodEnd(localDateTimeToDate(now.plusDays(createOrder.getAmountDiscountDays())))
+
+                    .promoCodePeriodEnd(localDateTimeToDate(now.plusDays(Long.valueOf(amountDiscountDays))))
                     .build();
 
             entityDao.save(orderToSave);
+
             return employeePromocode;
         }
-        throw new IllegalArgumentException("Your discount limit is exceeded");
+        throw new IllegalArgumentException("Discount not found");
     }
 
     private Date localDateTimeToDate(LocalDateTime localDateTime) {

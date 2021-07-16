@@ -3,7 +3,6 @@ package com.exadel.sandbox.team5;
 import com.exadel.sandbox.team5.dto.OrderDto;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.QRCodeService;
-import com.exadel.sandbox.team5.util.CreateOrder;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -43,12 +42,9 @@ public class OrderRestController {
 
 
     @ApiOperation("Create order from register user and return QR code with link")
-    @PostMapping(value = "/create", produces = MediaType.IMAGE_PNG_VALUE)
-    public byte[] create(@RequestBody CreateOrder createOrder) {
-        if (createOrder != null && createOrder.getAmountDiscountDays() == 0) {
-            createOrder.setAmountDiscountDays(7);
-        }
-        return qrCodeService.generateQRCode(orderService.createOrder(createOrder));
+    @PostMapping(value = "/create/{discountId}", produces = MediaType.IMAGE_PNG_VALUE)
+    public byte[] create(@PathVariable String discountId) {
+        return qrCodeService.generateQRCode(orderService.createOrder(discountId));
     }
 
     @ApiOperation("Checks link if unique code of employee exists in database and promocode has not expired")
