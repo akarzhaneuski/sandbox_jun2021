@@ -3,6 +3,8 @@ package com.exadel.sandbox.team5.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -26,4 +28,15 @@ public class Employee extends AuditableEntity {
     @ManyToOne
     @JoinColumn(name = "countryId")
     private Country country;
+
+    @Column(name = "email")
+    private String email;
+
+    @ManyToMany
+    @JoinTable(
+            name = "employee_notification_category",
+            joinColumns = {@JoinColumn(name = "employeeId")},
+            inverseJoinColumns = {@JoinColumn(name = "categoryId")}
+    )
+    private Set<Category> subscriptions = new HashSet<>();
 }

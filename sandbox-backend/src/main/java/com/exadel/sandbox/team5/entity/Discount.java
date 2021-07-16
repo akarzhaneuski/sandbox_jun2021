@@ -55,7 +55,7 @@ public class Discount extends AuditableEntity implements Serializable {
 
     @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "categoryId")
-    private  Category category;
+    private Category category;
 
     @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "countryId")
@@ -70,4 +70,7 @@ public class Discount extends AuditableEntity implements Serializable {
 
     @Column(name = "views")
     private Long views;
+
+    @Column(name = "isSent")
+    private boolean isSent;
 }
