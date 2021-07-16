@@ -18,10 +18,10 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        return createUser(login);
+        return createUserDetails(login);
     }
 
-    public JwtUser createUser(String login) {
+    public JwtUser createUserDetails(String login) {
         Employee employee = employeeService.getByLogin(login);
         return JwtUserFactory.create(employee);
     }

@@ -26,11 +26,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    //fixme crate new user or give location
     @Override
     public AuthorizationUserDto createToken(String username) {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        final JwtUser user = userDetailsService.createUser(username);
+        final JwtUser user = userDetailsService.createUserDetails(username);
         final String jwt = "Bearer " + jwtUtil.generateToken(userDetails);
         return new AuthorizationUserDto(jwt, user.getLocation(), user.getAuthorities());
     }
