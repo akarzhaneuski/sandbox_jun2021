@@ -77,7 +77,7 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
     }
 
 
-    //fixme добавить стандартную сортировку по дате добавления после включения аудита
+    //fixme добавить стандартную сортировку по дате добавления после включения аудита!
     @Override
     public ResultPage<DiscountDto> getByCriteria(DiscountSearchCriteria searchCriteria) {
         if (searchCriteria.isEmpty()) {
