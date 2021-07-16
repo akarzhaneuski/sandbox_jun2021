@@ -38,6 +38,7 @@ public interface OrderDAO extends CommonRepository<Order> {
             """, nativeQuery = true)
     String getEmployeePromocodeByUUID(@Param("uuid") String uuid);
 
+    @Query(value = """
             SELECT new com.exadel.sandbox.team5.util.Pair(c.name, COUNT(o.id))
             FROM Order o
                 JOIN o.discount d
