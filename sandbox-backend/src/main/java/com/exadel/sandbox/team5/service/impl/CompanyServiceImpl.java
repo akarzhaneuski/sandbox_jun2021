@@ -43,4 +43,15 @@ public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, 
         Page<Company> result = entityDao.findByNameContaining(criteria.getSearchText(), criteria.getPageRequest());
         return mapper.mapToPage(result, CompanyDto.class);
     }
+
+    @Override
+    public CompanyDto update(CompanyDto companyDto){
+        return this.save(companyDto);
+    }
+
+    @Override
+    public CompanyDto save(CompanyDto companyDto){
+        var company = mapper.map(companyDto, Company.class);
+        return mapper.map(entityDao.save(company), CompanyDto.class);
+    }
 }

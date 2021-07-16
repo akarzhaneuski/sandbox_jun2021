@@ -1,3 +1,5 @@
+DROP TABLE company_country;
+
 CREATE TABLE company_address(
         id  INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
         companyId  INT NOT NULL,
@@ -5,9 +7,7 @@ CREATE TABLE company_address(
         FOREIGN KEY (companyId)
            REFERENCES company (id),
         FOREIGN KEY (addressId)
-           REFERENCES address (id),
-        CONSTRAINT FK_company_address
-           UNIQUE (companyId, addressId)
+           REFERENCES address (id)
 );
 
 INSERT INTO company_address (companyId, addressId)

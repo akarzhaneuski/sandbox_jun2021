@@ -4,10 +4,8 @@ import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -20,7 +18,4 @@ public class Country extends BaseEntity implements Serializable {
 
     @Column(name = "name")
     private String name;
-
-    @OneToMany(mappedBy = "country")
-    private Set<City> cities;
 }
