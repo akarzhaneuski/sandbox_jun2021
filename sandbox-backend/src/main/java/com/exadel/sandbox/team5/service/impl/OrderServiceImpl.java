@@ -12,9 +12,9 @@ import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.EmployeeService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.ValidatePromoCodeGenerator;
-import com.exadel.sandbox.team5.util.CreateOrder;
 import com.exadel.sandbox.team5.util.Pair;
 import com.exadel.sandbox.team5.util.SecurityUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +35,9 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     private final DiscountDAO discountDAO;
     private final CompanyDAO companyDAO;
     private final SecurityUtils securityUtils;
+
+    @Value("${constant.amountDiscountDays}")
+    Long amountDiscountDay;
 
 
     public OrderServiceImpl(OrderDAO orderDAO, MapperConverter mapper, EmployeeService employeeService,
@@ -60,18 +63,19 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     }
 
     @Override
-    public OrderDto createOrder(CreateOrder createOrder) {
+    public OrderDto createOrder(String discountId) {
+        var discountIdL = Long.valueOf(discountId);
 
         Employee employee = employeeService.getByLogin(securityUtils.getCurrentUsername());
-        if (discountService.getById(createOrder.getDiscountId()) != null) {
+        if (discountService.getById(discountIdL) != null) {
                 Order order = new Order();
-                order.setDiscount(mapper.map(discountService.getById(createOrder.getDiscountId()), Discount.class));
+                order.setDiscount(mapper.map(discountService.getById(discountIdL), Discount.class));
                 order.setEmployee(employeeService.getById(employee.getId()));
                 order.setEmployeePromocode(new ValidatePromoCodeGenerator().generateUUID());
                 order.setPromoCodeStatus(true);
                 Date currentDate = new Date();
                 LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-                localDateTime = localDateTime.plusDays(createOrder.getAmountDiscountDays());
+                localDateTime = localDateTime.plusDays(amountDiscountDay);
                 Date currentDatePlusOneDay = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
                 order.setPromoCodePeriodStart(currentDate);
                 order.setPromoCodePeriodEnd(currentDatePlusOneDay);

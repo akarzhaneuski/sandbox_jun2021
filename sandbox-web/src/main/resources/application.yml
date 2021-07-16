@@ -32,3 +32,6 @@ app:
   bucketNameS3: ${S3_BUCKET:exadel-image}
   region: ${S3_REGION:eu-west-3}
 
+constant:
+  amountDiscountDays: 7
+

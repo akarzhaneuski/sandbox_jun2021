@@ -2,7 +2,6 @@ package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.OrderDto;
 import com.exadel.sandbox.team5.service.OrderService;
-import com.exadel.sandbox.team5.util.CreateOrder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,11 +45,9 @@ public class OrderRestController {
         return orderService.invalidatePromoCode(uuid);
     }
 
+
     @PutMapping("/save/{discountId}")
     public OrderDto create(@PathVariable String discountId) {
-        CreateOrder createOrder = new CreateOrder();
-        createOrder.setDiscountId(Long.valueOf(discountId));
-        createOrder.setAmountDiscountDays(7l);
-        return orderService.createOrder(createOrder);
+        return orderService.createOrder(discountId);
     }
 }
