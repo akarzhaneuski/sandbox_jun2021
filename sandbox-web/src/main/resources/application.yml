@@ -19,6 +19,23 @@ spring:
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${SPRING_MAIL_USERNAME}
+    password: ${SPRING_MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+          starttls:
+            enable: true
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
 
 logging:
   level:
@@ -31,4 +48,7 @@ app:
   jwtExpirationMs: 36000000
   bucketNameS3: ${S3_BUCKET:exadel-image}
   region: ${S3_REGION:eu-west-3}
+
+constant:
+  amountDiscountDays: 7
 

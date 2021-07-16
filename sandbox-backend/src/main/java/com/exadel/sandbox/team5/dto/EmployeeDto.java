@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,4 +17,6 @@ public class EmployeeDto extends IdentifierDto {
     private String login;
     private CountryDto country;
     private Role role;
+    private String email;
+    private Set<CategoryDto> subscriptions;
 }

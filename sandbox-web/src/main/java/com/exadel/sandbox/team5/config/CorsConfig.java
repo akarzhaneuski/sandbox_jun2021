@@ -15,8 +15,8 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**").
                         allowedOrigins("*").
-                        allowedMethods("*")
-                        .allowedHeaders(
+                        allowedMethods("*").
+                        allowedHeaders(
                                 "Content-Type",
                                 "Access-Control-Allow-Headers",
                                 "Authorization",

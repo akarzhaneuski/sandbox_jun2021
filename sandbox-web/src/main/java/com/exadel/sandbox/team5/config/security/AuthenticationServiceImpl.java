@@ -1,7 +1,8 @@
 package com.exadel.sandbox.team5.config.security;
 
-import com.exadel.sandbox.team5.config.security.pojo.Token;
+import com.exadel.sandbox.team5.config.security.util.JwtUser;
 import com.exadel.sandbox.team5.config.security.util.JwtUtil;
+import com.exadel.sandbox.team5.dto.AuthorizationUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -26,9 +27,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public Token createToken(String username) {
+    public AuthorizationUserDto createToken(String username) {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        final JwtUser user = userDetailsService.createUserDetails(username);
         final String jwt = "Bearer " + jwtUtil.generateToken(userDetails);
-        return new Token(jwt);
+        return new AuthorizationUserDto(jwt, user.getLocation(), user.getAuthorities());
     }
 }
