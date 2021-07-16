@@ -3,7 +3,13 @@ package com.exadel.sandbox.team5;
 import com.exadel.sandbox.team5.dto.TagDto;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.TagService;
+import com.exadel.sandbox.team5.service.export.ExportService;
+import com.exadel.sandbox.team5.service.export.FileNameGenerator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +22,9 @@ public class TagRestController {
 
     private final TagService tagService;
     private final OrderService orderService;
+    private final ExportService exportService;
+    private final FileNameGenerator fileNameGenerator;
+
 
     @GetMapping("/{id}")
     public TagDto getTag(@PathVariable Long id) {
@@ -32,8 +41,24 @@ public class TagRestController {
         return tagService.save(entity);
     }
 
-    @GetMapping("/statistic")
-    public Map<String, String> getStatistic() {
+    @GetMapping("/statistic/orders")
+    public Map<String, String> getStatisticByOrders() {
         return orderService.getOrdersByTags();
+    }
+
+    @GetMapping("/statistic/downloadCSVOrdersByTag")
+    public ResponseEntity getOrdersByTagCSVFile() {
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileNameGenerator.csvFileNameGenerator("OrdersByTags"))
+                .contentType(MediaType.parseMediaType("application/csv"))
+                .body(new InputStreamResource(exportService.exportServiceCSV(orderService.getOrdersByTags(), "Tags", "Orders")));
+    }
+
+    @GetMapping("/statistic/downloadXLSXOrdersByTag")
+    public ResponseEntity getOrdersByTagXLSXFile() {
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileNameGenerator.xlsxFileNameGenerator("OrdersByTags"))
+                .contentType(MediaType.parseMediaType("application/xlsx"))
+                .body(new InputStreamResource(exportService.exportServiceXLSX(orderService.getOrdersByTags(), "Tags", "Orders")));
     }
 }

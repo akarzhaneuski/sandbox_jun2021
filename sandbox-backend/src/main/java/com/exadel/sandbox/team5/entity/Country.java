@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Set;
 
 @Getter
@@ -15,7 +17,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "country")
-public class Country extends BaseEntity {
+public class Country extends BaseEntity implements Serializable {
 
     @Column(name = "name")
     private String name;

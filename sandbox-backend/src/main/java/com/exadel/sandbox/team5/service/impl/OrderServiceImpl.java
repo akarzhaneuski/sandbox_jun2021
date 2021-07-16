@@ -14,6 +14,7 @@ import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.ValidatePromoCodeGenerator;
 import com.exadel.sandbox.team5.util.CreateOrder;
 import com.exadel.sandbox.team5.util.Pair;
+import com.exadel.sandbox.team5.util.SecurityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,14 +34,17 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     private final DiscountService discountService;
     private final DiscountDAO discountDAO;
     private final CompanyDAO companyDAO;
+    private final SecurityUtils securityUtils;
 
 
-    public OrderServiceImpl(OrderDAO orderDAO, MapperConverter mapper, EmployeeService employeeService, DiscountService discountService, DiscountDAO discountDAO, CompanyDAO companyDAO) {
+    public OrderServiceImpl(OrderDAO orderDAO, MapperConverter mapper, EmployeeService employeeService,
+                            DiscountService discountService, DiscountDAO discountDAO, CompanyDAO companyDAO, SecurityUtils securityUtils) {
         super(orderDAO, Order.class, OrderDto.class, mapper);
         this.employeeService = employeeService;
         this.discountService = discountService;
         this.discountDAO = discountDAO;
         this.companyDAO = companyDAO;
+        this.securityUtils = securityUtils;
     }
 
     @Override
@@ -102,5 +106,10 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     @Override
     public Map<String, String> getOrdersByTags() {
         return entityDao.getAllOrdersForTags().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+    }
+
+    @Override
+    public Map<String, String> getOrdersByCategories() {
+        return entityDao.getAllOrdersForCategories().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
     }
 }

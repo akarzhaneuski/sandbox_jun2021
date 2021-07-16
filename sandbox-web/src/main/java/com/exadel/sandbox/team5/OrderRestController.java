@@ -41,6 +41,7 @@ public class OrderRestController {
         orderService.delete(id);
     }
 
+
     @ApiOperation("Create order from register user and return QR code with link")
     @PostMapping(value = "/create", produces = MediaType.IMAGE_PNG_VALUE)
     public byte[] create(@RequestBody CreateOrder createOrder) {

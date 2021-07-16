@@ -31,11 +31,21 @@ public interface OrderDAO extends CommonRepository<Order> {
     List<Pair> getAllOrdersForTags();
 
     @Query(value = """
+
             SELECT o.employeePromocode
             FROM `order` o
             WHERE o.employeePromocode=(:uuid);
             """, nativeQuery = true)
     String getEmployeePromocodeByUUID(@Param("uuid") String uuid);
+
+            SELECT new com.exadel.sandbox.team5.util.Pair(c.name, COUNT(o.id))
+            FROM Order o
+                JOIN o.discount d
+                LEFT JOIN d.tags t
+                JOIN t.category c
+            GROUP BY c.id
+            """)
+    List<Pair> getAllOrdersForCategories();>>>>>>> master
 
     @Modifying
     @Query(value = """
