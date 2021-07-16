@@ -6,7 +6,6 @@ import com.exadel.sandbox.team5.service.*;
 import com.exadel.sandbox.team5.service.export.ExportService;
 import com.exadel.sandbox.team5.service.export.FileNameGenerator;
 import com.exadel.sandbox.team5.util.ResultPage;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -38,7 +37,6 @@ public class DiscountRestController {
         return service.getById(id);
     }
 
-    //fixme delete this method?
     @GetMapping
     public List<DiscountDto> getAll() {
         return service.getAll();
@@ -82,6 +80,7 @@ public class DiscountRestController {
         return service.getByCriteria(searchCriteria);
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/statistic/orders")
     public Map<String, String> getStatisticByOrders() {
         return orderService.getOrdersByDiscounts();

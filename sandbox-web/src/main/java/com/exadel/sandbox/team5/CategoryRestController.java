@@ -12,6 +12,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,18 +33,21 @@ public class CategoryRestController {
         return categoryService.getAll();
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @ApiOperation("Save category with tags")
     @PostMapping
     CategoryDto save(@RequestBody CategoryWithTagsDto categoryWithTagsDto) {
         return categoryService.save(categoryWithTagsDto);
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @ApiOperation("Save category only")
     @PostMapping("/save")
     CategoryDto save(@RequestBody String categoryName) {
         return categoryService.save(categoryName);
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @PutMapping("/{id}")
     public CategoryDto update(@PathVariable Long id, String category) {
         CategoryDto categoryDto = new CategoryDto();
@@ -52,17 +56,20 @@ public class CategoryRestController {
         return categoryService.update(categoryDto);
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         categoryService.delete(id);
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @ApiOperation("Statistic of Orders By Categories")
     @GetMapping("/statistic/categories")
     public Map<String, String> getStatisticOrdersByCategories() {
         return orderService.getOrdersByCategories();
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/statistic/downloadCSVOrdersByCategories")
     public ResponseEntity getOrdersByCategoriesCSVFile() {
         return ResponseEntity.ok()
@@ -71,6 +78,7 @@ public class CategoryRestController {
                 .body(new InputStreamResource(exportService.exportServiceCSV(orderService.getOrdersByCategories(), "Categories", "Orders")));
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/statistic/downloadXLSXOrdersByCategories")
     public ResponseEntity getOrdersByCategoriesXLSXFile() {
         return ResponseEntity.ok()

@@ -49,6 +49,7 @@ public class TagRestController {
         return orderService.getOrdersByTags();
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/statistic/downloadCSVOrdersByTag")
     public ResponseEntity getOrdersByTagCSVFile() {
         return ResponseEntity.ok()
