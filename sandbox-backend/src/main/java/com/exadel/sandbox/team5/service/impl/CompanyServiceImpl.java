@@ -44,7 +44,9 @@ public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, 
     @Override
     public CompanyDto save(CompanyDto entityDto) {
         Company company = mapper.map(entityDto, Company.class);
-        company.setImageId(imageDAO.findImageByName(entityDto.getNameImage()).orElseThrow(NoSuchElementException::new).getId());
+        if (entityDto.getNameImage() != null) {
+            company.setImageId(imageDAO.findImageByName(entityDto.getNameImage()).orElseThrow(NoSuchElementException::new).getId());
+        }
         return mapper.map(entityDao.saveAndFlush(company), CompanyDto.class);
     }
 

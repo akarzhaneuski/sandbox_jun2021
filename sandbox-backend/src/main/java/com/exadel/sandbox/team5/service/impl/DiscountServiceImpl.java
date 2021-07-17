@@ -57,7 +57,9 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
     @Override
     public DiscountDto save(DiscountDto discount) {
         Discount dis = mapper.map(discount, Discount.class);
-        dis.setImageId(imageDAO.findImageByName(discount.getNameImage()).orElseThrow(NoSuchElementException::new).getId());
+        if (discount.getNameImage() != null) {
+            dis.setImageId(imageDAO.findImageByName(discount.getNameImage()).orElseThrow(NoSuchElementException::new).getId());
+        }
         return mapper.map(entityDao.saveAndFlush(dis), DiscountDto.class);
     }
 
