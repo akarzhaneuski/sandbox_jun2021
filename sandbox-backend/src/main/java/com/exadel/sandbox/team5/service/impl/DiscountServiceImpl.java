@@ -11,6 +11,7 @@ import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.util.Pair;
 import com.exadel.sandbox.team5.util.ResultPage;
 import com.exadel.sandbox.team5.util.SearchCriteria;
+import com.exadel.sandbox.team5.util.Sorting;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -83,15 +84,30 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
         if (searchCriteria.isEmpty()) {
             return getAllByCriteria(searchCriteria);
         }
-        if (searchCriteria.getOrders() != null && searchCriteria.getOrders().isEmpty()) {
-            var discounts = findDiscountsByCriteria(searchCriteria);
-            var result = mapDto(discounts);
-            List<DiscountDto> sorted = new ArrayList<>(result.getContent());
-            sorted.sort((o1, o2) -> (int) (o2.getRate() - o1.getRate()));
-            return new ResultPage<>(sorted, result.getTotalElements());
+        if (searchCriteria.getOrders() != null &&
+                searchCriteria.getOrders().contains(new Sorting("ASC", "rate"))) {
+            searchCriteria.setOrders(Collections.emptyList());
+            return findDiscountsByCriteriaSortedByRate(searchCriteria);
         }
-        var discounts = findDiscountsByCriteria(searchCriteria);
+        Page<Discount> discounts = findDiscountsByCriteria(searchCriteria);
         return mapDto(discounts);
+    }
+
+    private ResultPage<DiscountDto> findDiscountsByCriteriaSortedByRate(DiscountSearchCriteria searchCriteria) {
+        int pageNum = searchCriteria.getPageNum();
+        int itemOnPage = searchCriteria.getItemsPerPage();
+        DiscountSearchCriteria criteria = new DiscountSearchCriteria(0, Integer.MAX_VALUE,
+                searchCriteria.getOrders(), searchCriteria.getTags(), searchCriteria.getRate(),
+                searchCriteria.getSearchText(), searchCriteria.getLocationCriteria(), searchCriteria.getCompanies());
+        Page<Discount> discounts = findDiscountsByCriteria(criteria);
+        ResultPage<DiscountDto> discountsDto = mapDto(discounts);
+        List<DiscountDto> sorted = new ArrayList<>(discountsDto.getContent());
+        sorted.sort((o1, o2) -> (int) (o2.getRate() - o1.getRate()));
+        List<DiscountDto> result = sorted.stream()
+                .skip((long) pageNum * itemOnPage)
+                .limit(itemOnPage)
+                .collect(Collectors.toList());
+        return new ResultPage<>(result, discountsDto.getTotalElements());
     }
 
     private Page<Discount> findDiscountsByCriteria(DiscountSearchCriteria searchCriteria) {
