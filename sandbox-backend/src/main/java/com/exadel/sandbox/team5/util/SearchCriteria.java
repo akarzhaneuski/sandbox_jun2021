@@ -6,7 +6,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -28,9 +27,6 @@ public class SearchCriteria {
 
     public PageRequest getPageRequest() {
         if (orders == null || orders.isEmpty()) return PageRequest.of(pageNum, itemsPerPage);
-        if (orders.contains(new Sorting("ASC", "rate"))) {
-            orders = Collections.emptyList();
-        }
         List<Sort.Order> result = new ArrayList<>();
         orders.forEach(x -> result.add(new Sort.Order(x.getDirection(), x.getSortBy())));
         return PageRequest.of(pageNum, itemsPerPage, Sort.by(result));
