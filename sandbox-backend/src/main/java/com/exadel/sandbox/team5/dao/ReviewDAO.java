@@ -13,7 +13,12 @@ public interface ReviewDAO extends CommonRepository<Review> {
     @Query(value = "SELECT AVG (r.rate) from Review r where r.id= :id")
     Double findRate(Long id);
 
-    List<Review> findAllByDiscountId(Long id);
+    @Query(value = """
+            SELECT new com.exadel.sandbox.team5.util.Pair(r.rate, count (r.rate))
+            FROM Review r
+            WHERE r.discount.id= :id
+            GROUP BY r.rate""")
+    List<Pair> findAllRateByDiscountId(Long id);
 
     @Query(value = """
             SELECT new com.exadel.sandbox.team5.util.Pair(r.discount.id, AVG(r.rate))

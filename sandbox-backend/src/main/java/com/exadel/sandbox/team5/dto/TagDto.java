@@ -12,4 +12,5 @@ import lombok.Setter;
 public class TagDto extends IdentifierDto {
 
     private String name;
+    private Long categoryId;
 }

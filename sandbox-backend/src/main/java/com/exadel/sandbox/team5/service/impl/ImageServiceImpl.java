@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -30,14 +31,14 @@ public class ImageServiceImpl implements ImageService {
     private final AmazonS3 s3Client;
 
 
-    public ImageDto getImage(Long id) {
-        Image img = imageDAO.findById(id).orElseThrow(NoSuchElementException::new);
+    public ImageDto getImage(String name) {
+        Image img = imageDAO.findImageByName(name).orElseThrow(NoSuchElementException::new);
         ImageDto image = mapper.map(img, ImageDto.class);
         image.setContent(s3Client.getObject(bucketName, img.getName()).getObjectContent());
         return image;
     }
 
-    public Long save(ImageDto image) {
+    public String save(ImageDto image) {
         Image img = mapper.map(image, Image.class);
         String imageName = parseImageName(image, UUID.randomUUID().toString());
         try {
@@ -50,7 +51,13 @@ public class ImageServiceImpl implements ImageService {
         }
         img.setImageURL(bucketName);
         img.setName(imageName);
-        return imageDAO.save(img).getId();
+        return imageDAO.save(img).getName();
+    }
+
+    @Override
+    public List<ImageDto> getAll() {
+        var images = imageDAO.findAll();
+        return mapper.mapAll(images, ImageDto.class);
     }
 
     private String parseImageName(ImageDto image, String name) {

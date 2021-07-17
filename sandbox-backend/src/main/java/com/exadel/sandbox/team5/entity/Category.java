@@ -2,10 +2,8 @@ package com.exadel.sandbox.team5.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Setter
@@ -15,11 +13,11 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "category")
-public class Category extends BaseEntity {
+public class Category extends BaseEntity implements Serializable {
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<Tag> tags;
 }

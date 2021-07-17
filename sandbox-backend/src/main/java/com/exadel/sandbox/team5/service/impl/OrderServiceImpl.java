@@ -12,8 +12,9 @@ import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.EmployeeService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.ValidatePromoCodeGenerator;
-import com.exadel.sandbox.team5.util.CreateOrder;
 import com.exadel.sandbox.team5.util.Pair;
+import com.exadel.sandbox.team5.util.SecurityUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,6 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -34,54 +34,59 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     private final DiscountService discountService;
     private final DiscountDAO discountDAO;
     private final CompanyDAO companyDAO;
+    private final SecurityUtils securityUtils;
+
+    @Value("${constant.amountDiscountDays}")
+    String amountDiscountDays;
 
 
     public OrderServiceImpl(OrderDAO orderDAO, MapperConverter mapper, EmployeeService employeeService,
-                            DiscountService discountService, DiscountDAO discountDAO, CompanyDAO companyDAO) {
+                            DiscountService discountService, DiscountDAO discountDAO, CompanyDAO companyDAO, SecurityUtils securityUtils) {
         super(orderDAO, Order.class, OrderDto.class, mapper);
         this.employeeService = employeeService;
         this.discountService = discountService;
         this.discountDAO = discountDAO;
         this.companyDAO = companyDAO;
+        this.securityUtils = securityUtils;
     }
 
     @Override
-    public OrderDto invalidatePromoCode(Long discountId, String promoCode) {
-
-        Order selectedOrder = entityDao.getOrderByDiscountIdAndEmployeePromocode(discountId, promoCode);
-        System.out.println(selectedOrder.toString());
+    public void invalidatePromoCode(String uuid) {
+        var selectedOrder = entityDao.getOrderByEmployeePromocode(uuid);
         if (selectedOrder != null && selectedOrder.getPromoCodePeriodEnd().getTime() > new Date().getTime()) {
-            entityDao.setPromoCodeStatus(false, promoCode);
-            return mapper.map(selectedOrder, OrderDto.class);
+            entityDao.setPromoCodeStatus(false, uuid);
         }
-        throw new NoSuchElementException();
     }
 
     @Override
-    public OrderDto createOrder(CreateOrder createOrder) {
+    public String createOrder(String discountId) {
 
-        Employee employee = employeeService.getById(1L);//TODO should be fix after security merge
+        Long discountIdL = Long.valueOf(discountId);
 
-        if (discountService.getById(createOrder.getDiscountId()) != null) {
+        if (discountService.getById(discountIdL) != null) {
+            var employee = employeeService.getByLogin(securityUtils.getCurrentUsername());
 
-            if (activeOrdersByTime(activeOrdersByStatus(employee)).size() < createOrder.getMaxOrderSize()) {
-                Order order = new Order();
-                order.setDiscount(mapper.map(discountService.getById(createOrder.getDiscountId()), Discount.class));
-                order.setEmployee(employeeService.getById(employee.getId()));
-                order.setEmployeePromocode(new ValidatePromoCodeGenerator().generateUUID());
-                order.setPromoCodeStatus(true);
-                Date currentDate = new Date();
-                LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-                localDateTime = localDateTime.plusDays(createOrder.getAmountDiscountDays());
-                Date currentDatePlusOneDay = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-                order.setPromoCodePeriodStart(currentDate);
-                order.setPromoCodePeriodEnd(currentDatePlusOneDay);
+            String employeePromocode = new ValidatePromoCodeGenerator().generateUUID();
+            var now = LocalDateTime.now();
+            var orderToSave = Order.builder()
+                    .discount(mapper.map(discountService.getById(discountIdL), Discount.class))
+                    .employee(employeeService.getById(employee.getId()))
+                    .employeePromocode(employeePromocode)
+                    .promoCodeStatus(true)
+                    .promoCodePeriodStart(localDateTimeToDate(now))
 
-                return mapper.map(entityDao.save(order), OrderDto.class);
-            }
+                    .promoCodePeriodEnd(localDateTimeToDate(now.plusDays(Long.valueOf(amountDiscountDays))))
+                    .build();
 
+            entityDao.save(orderToSave);
+
+            return employeePromocode;
         }
-        throw new NoSuchElementException();
+        throw new IllegalArgumentException("Discount not found");
+    }
+
+    private Date localDateTimeToDate(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 
     private List<Order> activeOrdersByStatus(Employee employee) {

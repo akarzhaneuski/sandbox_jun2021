@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,17 +21,18 @@ public class ImageRestController {
     private final ImageClientService clientService;
     private final ImageService service;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<byte[]> getImage(@PathVariable Long id) throws IOException {
-        ImageDto image = service.getImage(id);
+    @GetMapping("/{fileName}")
+    public ResponseEntity<byte[]> getImage(@PathVariable String fileName) throws IOException {
+        ImageDto image = service.getImage(fileName);
         byte[] content = image.getContent().readAllBytes();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(image.getContentType()));
         return new ResponseEntity<>(content, headers, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @PostMapping
-    public Long saveImage(@RequestBody MultipartFile file) {
+    public String saveImage(@RequestBody MultipartFile file) {
         return clientService.save(file);
     }
 }

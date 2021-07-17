@@ -22,7 +22,7 @@ public class QRCode {
 
     public static String readQRCodeImage(File file)
             throws ChecksumException, NotFoundException, FormatException, IOException {
-        var encodedBufferedImage = ImageIO.read(file) ;
+        var encodedBufferedImage = ImageIO.read(file);
         LuminanceSource source = new BufferedImageLuminanceSource(encodedBufferedImage);
         var result = new QRCodeReader().decode(new BinaryBitmap(new HybridBinarizer(source)));
         return result.getText();
