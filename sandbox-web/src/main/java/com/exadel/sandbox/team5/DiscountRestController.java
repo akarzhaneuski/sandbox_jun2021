@@ -6,13 +6,13 @@ import com.exadel.sandbox.team5.service.*;
 import com.exadel.sandbox.team5.service.export.ExportService;
 import com.exadel.sandbox.team5.service.export.FileNameGenerator;
 import com.exadel.sandbox.team5.util.ResultPage;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,7 +26,6 @@ public class DiscountRestController {
 
     private final DiscountService service;
     private final ReviewService reviewService;
-    private final QRCodeService qrCodeService;
     private final OrderService orderService;
     private final ImageClientService imageService;
     private final ExportService exportService;
@@ -38,35 +37,39 @@ public class DiscountRestController {
         return service.getById(id);
     }
 
-    //fixme delete this method?
     @GetMapping
     public List<DiscountDto> getAll() {
         return service.getAll();
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @PostMapping
     public DiscountDto save(@RequestBody DiscountDto entity) {
         return service.save(entity);
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @PutMapping("/{id}")
     public DiscountDto update(@PathVariable Long id, @RequestBody DiscountDto entity) {
         entity.setId(id);
         return service.update(entity);
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @PutMapping("/{id}/uploadImage")
     public DiscountDto updateImage(@PathVariable Long id, @RequestBody MultipartFile file) {
         DiscountDto discount = service.getById(id);
-        discount.setImageId(imageService.save(file));
+        discount.setNameImage(imageService.save(file));
         return service.update(discount);
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         service.delete(id);
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/{discountId}/reviews")
     public Map<Integer, Integer> getReviewsByDiscount(@PathVariable Long discountId) {
         return reviewService.getReviewsByDiscount(discountId);
@@ -77,18 +80,13 @@ public class DiscountRestController {
         return service.getByCriteria(searchCriteria);
     }
 
-    @ApiOperation("Generating QR code with param \"promoCode\"")
-    @GetMapping(value = "/qrcode", produces = MediaType.IMAGE_PNG_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public byte[] generateQRCode(@RequestParam("promoCode") String promoCode) {
-        return qrCodeService.generateQRCode(promoCode);
-    }
-
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/statistic/orders")
     public Map<String, String> getStatisticByOrders() {
         return orderService.getOrdersByDiscounts();
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/statistic/views")
     public Map<String, String> getStatisticByViews() {
         return service.getViewsByDiscounts();
@@ -100,6 +98,7 @@ public class DiscountRestController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/statistic/downloadCSVOrdersByDiscounts")
     public ResponseEntity getOrdersByDiscountsCSVFile() {
 
@@ -109,6 +108,7 @@ public class DiscountRestController {
                 .body(new InputStreamResource(exportService.exportServiceCSV(orderService.getOrdersByDiscounts(), "Discounts", "Orders")));
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/statistic/downloadXLSXOrdersByDiscounts")
     public ResponseEntity getOrdersByDiscountsXLSXFile() {
 
@@ -118,6 +118,7 @@ public class DiscountRestController {
                 .body(new InputStreamResource(exportService.exportServiceXLSX(orderService.getOrdersByDiscounts(), "Discounts", "Orders")));
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/statistic/downloadCSVViewsByDiscounts")
     public ResponseEntity getViewsByDiscountsCSVFile() {
 
@@ -127,6 +128,7 @@ public class DiscountRestController {
                 .body(new InputStreamResource(exportService.exportServiceCSV(service.getViewsByDiscounts(), "Discounts", "Views")));
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/statistic/downloadXLSXViewsByDiscounts")
     public ResponseEntity getViewsByDiscountsXLSXFile() {
 

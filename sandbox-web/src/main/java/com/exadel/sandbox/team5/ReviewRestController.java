@@ -3,6 +3,7 @@ package com.exadel.sandbox.team5;
 import com.exadel.sandbox.team5.dto.ReviewDto;
 import com.exadel.sandbox.team5.service.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class ReviewRestController {
         return service.update(entity);
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         service.delete(id);

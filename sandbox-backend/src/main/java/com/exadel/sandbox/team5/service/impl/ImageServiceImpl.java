@@ -38,7 +38,7 @@ public class ImageServiceImpl implements ImageService {
         return image;
     }
 
-    public Long save(ImageDto image) {
+    public String save(ImageDto image) {
         Image img = mapper.map(image, Image.class);
         String imageName = parseImageName(image, UUID.randomUUID().toString());
         try {
@@ -51,7 +51,7 @@ public class ImageServiceImpl implements ImageService {
         }
         img.setImageURL(bucketName);
         img.setName(imageName);
-        return imageDAO.save(img).getId();
+        return imageDAO.save(img).getName();
     }
 
     @Override

@@ -14,6 +14,6 @@ import java.util.Set;
 public class CompanyDto extends IdentifierDto {
 
     private String name;
-    private Long imageId;
+    private String nameImage;
     private Set<AddressDto> addresses;
 }

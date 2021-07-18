@@ -32,25 +32,23 @@ public class CompanyRestController {
     private final FileNameGenerator fileNameGenerator;
 
 
-    @PreAuthorize("hasAnyAuthority('USER', 'MODERATOR')")
     @GetMapping("/{id}")
     public CompanyDto getCompany(@PathVariable Long id) {
         return companyService.getById(id);
     }
 
-    @PreAuthorize("hasAnyAuthority('USER', 'MODERATOR')")
     @GetMapping
     public List<CompanyDto> getAll() {
         return companyService.getAll();
     }
 
-    @PreAuthorize("hasAnyAuthority('MODERATOR')")
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @PostMapping
     public CompanyDto save(@RequestBody CompanyDto company) {
         return companyService.save(company);
     }
 
-    @PreAuthorize("hasAnyAuthority('MODERATOR')")
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @PutMapping("/{id}")
     public CompanyDto update(@PathVariable Long id, @RequestBody CompanyDto company) {
         company.setId(id);
@@ -59,33 +57,34 @@ public class CompanyRestController {
         return companyService.update(company);
     }
 
-    @PreAuthorize("hasAnyAuthority('MODERATOR')")
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @PutMapping("/{id}/uploadImage")
     public CompanyDto updateImage(@PathVariable Long id, @RequestBody MultipartFile file) {
         CompanyDto company = companyService.getById(id);
-        company.setImageId(imageService.save(file));
+        company.setNameImage(imageService.save(file));
         return companyService.update(company);
     }
 
-    @PreAuthorize("hasAnyAuthority('MODERATOR')")
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         companyService.delete(id);
     }
 
     //fixme is need add pagination here? or unite with search method?
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/{locationId}/companies")
     public List<CompanyDto> getCompaniesByLocation(@PathVariable Long locationId) {
         return companyService.getCompaniesByLocation(locationId);
     }
 
-    @PreAuthorize("hasAnyAuthority('MODERATOR')")
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/statistic/orders")
     public Map<String, String> getStatisticByOrders() {
         return orderService.getOrdersByCompanies();
     }
 
-    @PreAuthorize("hasAnyAuthority('MODERATOR')")
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/statistic/downloadCSVOrdersByCompanies")
     public ResponseEntity getOrdersByCompaniesCSVFile() {
 
@@ -95,7 +94,7 @@ public class CompanyRestController {
                 .body(new InputStreamResource(exportService.exportServiceCSV(orderService.getOrdersByCompanies(), "Companies", "Orders")));
     }
 
-    @PreAuthorize("hasAnyAuthority('MODERATOR')")
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/statistic/downloadXLSXOrdersByCompanies")
     public ResponseEntity getOrdersByCompaniesXLSXFile() {
 
@@ -105,7 +104,6 @@ public class CompanyRestController {
                 .body(new InputStreamResource(exportService.exportServiceXLSX(orderService.getOrdersByCompanies(), "Companies", "Orders")));
     }
 
-    @PreAuthorize("hasAnyAuthority('USER', 'MODERATOR')")
     @PostMapping("/search")
     public ResultPage<CompanyDto> search(@RequestBody CompanySearchCriteria criteria) {
         return companyService.getByCriteria(criteria);
