@@ -91,15 +91,4 @@ public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, 
         companies.forEach(d -> nameImageToDto.put(d.getId(), namesImages.get(d.getImageId())));
         result.getContent().forEach(discountDto -> discountDto.setNameImage(nameImageToDto.get(discountDto.getId())));
     }
-
-    @Override
-    public CompanyDto update(CompanyDto companyDto){
-        return this.save(companyDto);
-    }
-
-    @Override
-    public CompanyDto save(CompanyDto companyDto){
-        var company = mapper.map(companyDto, Company.class);
-        return mapper.map(entityDao.save(company), CompanyDto.class);
-    }
 }
