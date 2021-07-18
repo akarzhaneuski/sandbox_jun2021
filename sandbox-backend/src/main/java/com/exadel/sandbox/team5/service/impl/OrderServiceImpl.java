@@ -40,6 +40,7 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     String amountDiscountDays;
 
 
+
     public OrderServiceImpl(OrderDAO orderDAO, MapperConverter mapper, EmployeeService employeeService,
                             DiscountService discountService, DiscountDAO discountDAO, CompanyDAO companyDAO, SecurityUtils securityUtils) {
         super(orderDAO, Order.class, OrderDto.class, mapper);

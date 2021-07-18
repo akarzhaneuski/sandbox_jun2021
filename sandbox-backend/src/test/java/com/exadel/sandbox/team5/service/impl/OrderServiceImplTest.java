@@ -3,12 +3,17 @@ package com.exadel.sandbox.team5.service.impl;
 import com.exadel.sandbox.team5.dao.CompanyDAO;
 import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.OrderDAO;
+import com.exadel.sandbox.team5.service.DiscountService;
+import com.exadel.sandbox.team5.service.EmployeeService;
+import com.exadel.sandbox.team5.util.SecurityUtils;
+import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.HashMap;
@@ -21,14 +26,25 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(MockitoJUnitRunner.class)
 class OrderServiceImplTest {
 
+    @Mock
+    EmployeeService employeeService;
+    @Spy
+    DiscountService discountService;
+    @Mock
+    DiscountDAO discountDAO;
+    @Mock
+    CompanyDAO companyDAO;
+    @Mock
+    SecurityUtils securityUtils;
+
     @InjectMocks
     OrderServiceImpl orderService;
 
-    @Mock
-    DiscountDAO discountDAO;
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+    }
 
-    @Mock
-    CompanyDAO companyDAO;
 
     @Mock
     OrderDAO orderDAO;
@@ -40,8 +56,7 @@ class OrderServiceImplTest {
 
     @Test
     void testInvalidatePromoCode() throws NoSuchElementException {
-        //orderService.invalidatePromoCode(2l, "a452ec28-2c91-40e7-a973-373450ea5a92");
-        //assertEquals(OrderDto.class, orderService.invalidatePromoCode(2l, "8bec6f63-4d49-45eb-a5e4-57a3614b872f"));
+        assertEquals(String.class, orderService.createOrder("3"));
 
     }
 

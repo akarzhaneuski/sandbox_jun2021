@@ -10,10 +10,12 @@ import com.exadel.sandbox.team5.util.CompanySearchCriteria;
 import com.exadel.sandbox.team5.util.Pair;
 import com.exadel.sandbox.team5.util.ResultPage;
 import com.exadel.sandbox.team5.util.SearchCriteria;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,9 @@ import java.util.stream.Collectors;
 public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, CompanyDto> implements CompanyService {
 
     private final ImageDAO imageDAO;
+
+    @Autowired
+    private EntityManager em;
 
     public CompanyServiceImpl(CompanyDAO entityDao, MapperConverter mapper, ImageDAO imageDAO) {
         super(entityDao, Company.class, CompanyDto.class, mapper);
@@ -38,11 +43,20 @@ public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, 
         if (company.getImageId() != null) {
             companyDto.setNameImage(imageDAO.getById(company.getImageId()).getName());
         }
+
+//        save()
         return companyDto;
     }
 
     @Override
+    //@Transactional(propagation = )
     public CompanyDto save(CompanyDto entityDto) {
+//        em.persist(thisentityDto);
+//        em.getTransaction().begin();
+//        em.flush();
+//        em.getTransaction().commit();
+//        em.detach();
+
         Company company = mapper.map(entityDto, Company.class);
         if (entityDto.getNameImage() != null) {
             company.setImageId(imageDAO.findImageByName(entityDto.getNameImage()).orElseThrow(NoSuchElementException::new).getId());
