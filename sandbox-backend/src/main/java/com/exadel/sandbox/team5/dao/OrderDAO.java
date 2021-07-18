@@ -67,4 +67,12 @@ public interface OrderDAO extends CommonRepository<Order> {
             WHERE o.employeePromocode=(:uuid);
             """, nativeQuery = true)
     Date getPromocodePeriodEndByUUID(@Param("uuid") String uuid);
+
+    @Query(value = """
+            SELECT e.email
+            FROM employee e
+            LEFT JOIN `order` o on e.id = o.employeeId
+            WHERE o.employeePromocode=(:uuid);
+            """, nativeQuery = true)
+    String getUserLoginByOrderUUID(@Param("uuid") String uuid);
 }
