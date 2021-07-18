@@ -54,6 +54,8 @@ public class CompanyRestController {
     @PutMapping("/{id}")
     public CompanyDto update(@PathVariable Long id, @RequestBody CompanyDto company) {
         company.setId(id);
+        var snapshotCompanyFromDB = companyService.getById(id);
+        company.getAddresses().addAll(snapshotCompanyFromDB.getAddresses());
         return companyService.update(company);
     }
 
