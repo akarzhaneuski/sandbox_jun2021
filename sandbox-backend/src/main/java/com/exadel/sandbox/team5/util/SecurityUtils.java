@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SecurityUtils {
 
-    public String getCurrentUsername() {
+    public static String getCurrentUsername() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
     }
