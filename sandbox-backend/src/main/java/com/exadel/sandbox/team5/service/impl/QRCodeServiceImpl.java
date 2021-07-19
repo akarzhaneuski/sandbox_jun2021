@@ -46,18 +46,19 @@ public class QRCodeServiceImpl implements QRCodeService {
 
     @Override
     public String validateQR(String uuid) {
-        var responseMessage = "\"Not valid\" \"%s\"";
+        var notValid = "Not valid";
+        var responseMessage = "\"%s\" \"%s\"";
         if (!uuid.equals(orderDAO.getEmployeePromocodeByUUID(uuid))) {
-            return String.format(responseMessage, "Order not found. Promocode is incorrect");
+            return String.format(responseMessage, notValid, "Order not found. Promocode is incorrect");
         }
         if (!orderDAO.getPromoCodeStatusByUUID(uuid)) {
-            return String.format(responseMessage, "Order has already been activated");
+            return String.format(responseMessage, notValid, "Order has already been activated");
         }
         if (orderDAO.getPromocodePeriodEndByUUID(uuid).compareTo(new Date()) < 0) {
-            return String.format(responseMessage, "Order has expired");
+            return String.format(responseMessage, notValid, "Order has expired");
         }
         orderService.invalidatePromoCode(uuid);
-        return "\"Valid\"";
+        return String.format(responseMessage, "Valid", orderDAO.getUserLoginByOrderUUID(uuid));
     }
 
     private String generateQRUrl(String uuid) {

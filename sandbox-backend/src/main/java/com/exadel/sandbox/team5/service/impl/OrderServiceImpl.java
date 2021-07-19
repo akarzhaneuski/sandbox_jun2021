@@ -5,7 +5,6 @@ import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.OrderDAO;
 import com.exadel.sandbox.team5.dto.OrderDto;
 import com.exadel.sandbox.team5.entity.Discount;
-import com.exadel.sandbox.team5.entity.Employee;
 import com.exadel.sandbox.team5.entity.Order;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -38,7 +36,6 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
 
     @Value("${constant.amountDiscountDays}")
     String amountDiscountDays;
-
 
     public OrderServiceImpl(OrderDAO orderDAO, MapperConverter mapper, EmployeeService employeeService,
                             DiscountService discountService, DiscountDAO discountDAO, CompanyDAO companyDAO, SecurityUtils securityUtils) {
@@ -61,11 +58,9 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     @Override
     public String createOrder(String discountId) {
 
-        Long discountIdL = Long.valueOf(discountId);
-
+        var discountIdL = Long.valueOf(discountId);
         if (discountService.getById(discountIdL) != null) {
             var employee = employeeService.getByLogin(securityUtils.getCurrentUsername());
-
             String employeePromocode = new ValidatePromoCodeGenerator().generateUUID();
             var now = LocalDateTime.now();
             var orderToSave = Order.builder()
@@ -74,12 +69,9 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
                     .employeePromocode(employeePromocode)
                     .promoCodeStatus(true)
                     .promoCodePeriodStart(localDateTimeToDate(now))
-
-                    .promoCodePeriodEnd(localDateTimeToDate(now.plusDays(Long.valueOf(amountDiscountDays))))
+                    .promoCodePeriodEnd(localDateTimeToDate(now.plusDays(Long.parseLong(amountDiscountDays))))
                     .build();
-
             entityDao.save(orderToSave);
-
             return employeePromocode;
         }
         throw new IllegalArgumentException("Discount not found");
@@ -87,14 +79,6 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
 
     private Date localDateTimeToDate(LocalDateTime localDateTime) {
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-    }
-
-    private List<Order> activeOrdersByStatus(Employee employee) {
-        return entityDao.findAllByEmployeeId(employee.getId()).stream().filter(Order::getPromoCodeStatus).collect(Collectors.toList());
-    }
-
-    private List<Order> activeOrdersByTime(List<Order> activeOrders) {
-        return activeOrders.stream().filter(e -> System.currentTimeMillis() < e.getPromoCodePeriodEnd().getTime()).collect(Collectors.toList());
     }
 
     @Override
