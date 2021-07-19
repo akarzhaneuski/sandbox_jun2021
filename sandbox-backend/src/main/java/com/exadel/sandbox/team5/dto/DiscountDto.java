@@ -25,6 +25,6 @@ public class DiscountDto extends IdentifierDto {
     private Double rate;
     private CategoryDto category;
     private String nameImage;
-    private CountryDto country;
+    private Set<AddressDto> addresses;
     private Long views;
 }
