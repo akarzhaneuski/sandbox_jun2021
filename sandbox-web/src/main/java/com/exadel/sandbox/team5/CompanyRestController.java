@@ -1,8 +1,10 @@
 package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.CompanyDto;
+import com.exadel.sandbox.team5.dto.locationDiscountDto.CountryDiscountDto;
 import com.exadel.sandbox.team5.service.CompanyService;
 import com.exadel.sandbox.team5.service.ImageClientService;
+import com.exadel.sandbox.team5.service.LocationService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.export.ExportService;
 import com.exadel.sandbox.team5.service.export.FileNameGenerator;
@@ -28,6 +30,7 @@ public class CompanyRestController {
     private final CompanyService companyService;
     private final OrderService orderService;
     private final ImageClientService imageService;
+    private final LocationService locationService;
     private final ExportService exportService;
     private final FileNameGenerator fileNameGenerator;
 
@@ -40,6 +43,12 @@ public class CompanyRestController {
     @GetMapping
     public List<CompanyDto> getAll() {
         return companyService.getAll();
+    }
+
+    @PreAuthorize("hasAuthority('MODERATOR')")
+    @GetMapping("/{id}/location")
+    public CountryDiscountDto getLocationCompany(@PathVariable Long id) {
+        return locationService.getAllLocation(id);
     }
 
     @PreAuthorize("hasAuthority('MODERATOR')")
