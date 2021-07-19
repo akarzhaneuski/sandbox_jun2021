@@ -4,14 +4,17 @@ import lombok.NoArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor
 public class QueryUtils {
 
     public static String getWildcard(String text) {
-        return "%" + text + "%";
+        if (text.trim().toLowerCase().matches( "[a-zA-Z0-9_]")) {
+            return "%" + text + "%";
+        } else {
+            return "";
+        }
     }
 
     public static Set<String> safeCollectionParam(Set<String> collection) {
