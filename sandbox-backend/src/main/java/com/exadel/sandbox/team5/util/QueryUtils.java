@@ -10,11 +10,7 @@ import java.util.Set;
 public class QueryUtils {
 
     public static String getWildcard(String text) {
-        if (text.trim().toLowerCase().matches( "[a-zA-Z0-9_]")) {
             return "%" + text + "%";
-        } else {
-            return "";
-        }
     }
 
     public static Set<String> safeCollectionParam(Set<String> collection) {
