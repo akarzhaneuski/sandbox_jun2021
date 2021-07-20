@@ -24,7 +24,8 @@ public interface DiscountDAO extends CommonRepository<Discount> {
                             LEFT JOIN discount_address da ON d.id = da.discountId
                             LEFT JOIN address a ON da.addressId = a.id
                             LEFT JOIN city s ON a.cityId = s.id  
-                            LEFT JOIN company co ON d.companyId = co.id                
+                            LEFT JOIN company co ON d.companyId = co.id 
+                            LEFT JOIN category ct ON t.categoryId = ct.id             
                             LEFT JOIN review r ON d.id = r.discountId
             WHERE (:name is null or d.description like :name or d.name like :name 
                             or soundex_match(:name, d.name, ' ')
@@ -35,6 +36,7 @@ public interface DiscountDAO extends CommonRepository<Discount> {
                             AND (:country is null or c.name = :country)
                             AND (coalesce(:cities, null) is null or s.name in (:cities))
                             AND (coalesce(:companies, null) is null or co.name in (:companies))
+                            AND (coalesce(:categories, null) is null or ct.name in (:categories))
             GROUP BY d.id
                 HAVING rate>=(:rate)
             """,
@@ -47,7 +49,8 @@ public interface DiscountDAO extends CommonRepository<Discount> {
                                     LEFT JOIN discount_address da ON d.id = da.discountId
                                     LEFT JOIN address a ON da.addressId = a.id
                                     LEFT JOIN city s ON a.cityId = s.id  
-                                    LEFT JOIN company co ON d.companyId = co.id                
+                                    LEFT JOIN company co ON d.companyId = co.id    
+                                    LEFT JOIN category ct ON t.categoryId = ct.id            
                                     LEFT JOIN review r ON d.id = r.discountId
                     WHERE (:name is null or d.description like :name or d.name like :name 
                                     or soundex_match(:name, d.name, ' ')
@@ -58,12 +61,14 @@ public interface DiscountDAO extends CommonRepository<Discount> {
                                     AND (:country is null or c.name = :country)
                                     AND (coalesce(:cities, null) is null or s.name in (:cities))
                                     AND (coalesce(:companies, null) is null or co.name in (:companies))
+                                    AND (coalesce(:categories, null) is null or ct.name in (:categories))
                                                     """, nativeQuery = true)
     Page<Discount> findDiscountsByCriteria(@Param("name") String searchText,
                                            @Param("tags") Set<String> tags,
                                            @Param("country") String country,
                                            @Param("cities") Set<String> cities,
                                            @Param("companies") Set<String> companies,
+                                           @Param("categories") Set<String> categories,
                                            @Param("rate") double rate,
                                            Pageable pageable);
 
