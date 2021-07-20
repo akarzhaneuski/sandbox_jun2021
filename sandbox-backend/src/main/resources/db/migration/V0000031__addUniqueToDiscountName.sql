@@ -1,0 +1,1 @@
+alter table discount add (UNIQUE (name));
