@@ -69,7 +69,6 @@ public class DiscountRestController {
         service.delete(id);
     }
 
-    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/{discountId}/reviews")
     public Map<Integer, Integer> getReviewsByDiscount(@PathVariable Long discountId) {
         return reviewService.getReviewsByDiscount(discountId);
