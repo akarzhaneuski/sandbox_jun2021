@@ -10,7 +10,7 @@ import java.util.Set;
 public class QueryUtils {
 
     public static String getWildcard(String text) {
-            return "%" + text + "%";
+            return "%" + text.replace("%", "/%") + "%";
     }
 
     public static Set<String> safeCollectionParam(Set<String> collection) {
