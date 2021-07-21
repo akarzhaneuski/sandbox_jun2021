@@ -50,8 +50,9 @@ public class OrderRestController {
     @PostMapping(value = "/create/{discountId}", produces = MediaType.IMAGE_PNG_VALUE)
     public String create(@PathVariable String discountId) {
         var encodedQR = "data:image/png;base64," +
-                StringUtils.newStringUtf8(Base64.encodeBase64(qrCodeService.generateQRCode(orderService.createOrder(discountId)), false));
-        return String.format("<img src={`%s`}  />", encodedQR);
+                StringUtils.newStringUtf8(Base64.encodeBase64(
+                        qrCodeService.generateQRCode(orderService.createOrder(discountId)), false));
+        return String.format("`%s`", encodedQR);
     }
 
     @ApiOperation("Checks link if unique code of employee exists in database and promocode has not expired")
