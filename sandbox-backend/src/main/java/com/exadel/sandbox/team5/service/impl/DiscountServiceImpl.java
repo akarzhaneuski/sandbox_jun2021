@@ -101,7 +101,7 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
         DiscountSearchCriteria criteria = new DiscountSearchCriteria(0, Integer.MAX_VALUE,
                 searchCriteria.getOrders(), searchCriteria.getTags(), searchCriteria.getRate(),
                 searchCriteria.getSearchText(), searchCriteria.getLocationCriteria(),
-                searchCriteria.getCompanies(), searchCriteria.getCategories());
+                searchCriteria.getCompanies(), searchCriteria.getCategory());
         Page<Discount> discounts = findDiscountsByCriteria(criteria);
         ResultPage<DiscountDto> discountsDto = mapDto(discounts);
         List<DiscountDto> sorted = new ArrayList<>(discountsDto.getContent());
@@ -119,7 +119,7 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
                 searchCriteria.getLocationCriteria().getCountry(),
                 searchCriteria.getLocationCriteria().getCities(),
                 searchCriteria.getCompanies(),
-                searchCriteria.getCategories(),
+                searchCriteria.getCategory(),
                 searchCriteria.getRate(),
                 searchCriteria.getPageRequest());
     }

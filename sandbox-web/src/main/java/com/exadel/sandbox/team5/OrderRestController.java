@@ -5,6 +5,8 @@ import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.QRCodeService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -46,8 +48,10 @@ public class OrderRestController {
 
     @ApiOperation("Create order from register user and return QR code with link")
     @PostMapping(value = "/create/{discountId}", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<byte[]> create(@PathVariable String discountId) {
-        return new ResponseEntity<>(qrCodeService.generateQRCode(orderService.createOrder(discountId)), HttpStatus.OK);
+    public String create(@PathVariable String discountId) {
+        var encodedQR = "data:image/png;base64," +
+                StringUtils.newStringUtf8(Base64.encodeBase64(qrCodeService.generateQRCode(orderService.createOrder(discountId)), false));
+        return String.format("<img src={`%s`}  />", encodedQR);
     }
 
     @ApiOperation("Checks link if unique code of employee exists in database and promocode has not expired")

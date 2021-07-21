@@ -16,7 +16,7 @@ public class DiscountSearchCriteria extends SearchCriteria {
     private String searchText;
     private LocationSearchCriteria locationCriteria;
     private Set<String> companies;
-    private Set<String> categories;
+    private Set<String> category;
 
     public DiscountSearchCriteria(int pageNum, int itemsPerPage, List<Sorting> orders, Set<String> tags,
                                   double rate, String searchText, @Nullable LocationSearchCriteria locationCriteria,
@@ -29,10 +29,10 @@ public class DiscountSearchCriteria extends SearchCriteria {
                 : QueryUtils.getWildcard(searchText);
         this.locationCriteria = Objects.requireNonNullElse(locationCriteria, new LocationSearchCriteria(null, Collections.emptySet()));
         this.companies = QueryUtils.safeCollectionParam(companies);
-        this.categories = QueryUtils.safeCollectionParam(categories);
+        this.category = QueryUtils.safeCollectionParam(categories);
     }
 
     public boolean isEmpty() {
-        return searchText == null && tags.isEmpty() && companies.isEmpty() && getOrders().isEmpty() && categories.isEmpty();
+        return searchText == null && getOrders() != null && tags.isEmpty() && companies.isEmpty() && getOrders().isEmpty() && category.isEmpty();
     }
 }
