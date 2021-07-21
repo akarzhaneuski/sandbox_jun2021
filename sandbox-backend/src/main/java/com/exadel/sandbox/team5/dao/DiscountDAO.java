@@ -25,7 +25,7 @@ public interface DiscountDAO extends CommonRepository<Discount> {
                             LEFT JOIN address a ON da.addressId = a.id
                             LEFT JOIN city s ON a.cityId = s.id  
                             LEFT JOIN company co ON d.companyId = co.id 
-                            LEFT JOIN category ct ON t.categoryId = ct.id             
+                            LEFT JOIN category ct ON d.categoryId = ct.id             
                             LEFT JOIN review r ON d.id = r.discountId
             WHERE (:name is null or d.description like :name or d.name like :name 
                             or soundex_match(:name, d.name, ' ')
@@ -50,7 +50,7 @@ public interface DiscountDAO extends CommonRepository<Discount> {
                                     LEFT JOIN address a ON da.addressId = a.id
                                     LEFT JOIN city s ON a.cityId = s.id  
                                     LEFT JOIN company co ON d.companyId = co.id    
-                                    LEFT JOIN category ct ON t.categoryId = ct.id            
+                                    LEFT JOIN category ct ON d.categoryId = ct.id            
                                     LEFT JOIN review r ON d.id = r.discountId
                     WHERE (:name is null or d.description like :name or d.name like :name 
                                     or soundex_match(:name, d.name, ' ')

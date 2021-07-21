@@ -33,6 +33,6 @@ public class DiscountSearchCriteria extends SearchCriteria {
     }
 
     public boolean isEmpty() {
-        return searchText == null && tags.isEmpty() && companies.isEmpty() && getOrders().isEmpty();
+        return searchText == null && tags.isEmpty() && companies.isEmpty() && getOrders().isEmpty() && categories.isEmpty();
     }
 }
