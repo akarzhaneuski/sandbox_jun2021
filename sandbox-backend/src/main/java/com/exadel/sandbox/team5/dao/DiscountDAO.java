@@ -74,10 +74,10 @@ public interface DiscountDAO extends CommonRepository<Discount> {
 
 
     @Query(value = """
-            SELECT new com.exadel.sandbox.team5.util.Pair(d.name, COUNT(o.id))
+            SELECT DISTINCT new com.exadel.sandbox.team5.util.Pair(d.name, COUNT(o.id))
             FROM Discount d
                 LEFT JOIN Order o ON d.id=o.discount.id
-            WHERE d.id=o.discount.id
+            WHERE d.id=o.discount.id 
                 GROUP BY d.id
             """)
     List<Pair> getAllOrdersForDiscounts();
