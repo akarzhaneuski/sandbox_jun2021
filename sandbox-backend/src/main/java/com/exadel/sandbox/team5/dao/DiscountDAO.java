@@ -59,7 +59,7 @@ public interface DiscountDAO extends CommonRepository<Discount> {
                                     LEFT JOIN company co ON d.companyId = co.id    
                                     LEFT JOIN category ct ON d.categoryId = ct.id            
                                     LEFT JOIN review r ON d.id = r.discountId
-            WHERE
+            WHERE 
              case when regexp_like(:name, '[a-zA-Z0-9_]')
              then (
                         :name is null or d.description like :name or d.name like :name 
