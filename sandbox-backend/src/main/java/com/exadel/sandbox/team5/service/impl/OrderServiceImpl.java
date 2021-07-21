@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -83,7 +84,9 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
 
     @Override
     public Map<String, String> getOrdersByDiscounts() {
-        return discountDAO.getAllOrdersForDiscounts().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+        Map<String, String> result = new HashMap<>();
+        discountDAO.getAllOrdersForDiscounts().forEach(p -> result.put(p.getFirst(), p.getSecond()));
+        return result;
     }
 
     @Override
