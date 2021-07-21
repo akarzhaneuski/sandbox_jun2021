@@ -10,8 +10,6 @@ import java.util.Set;
 public class QueryUtils {
 
     public static String getWildcard(String text) {
-        String d = ("%" + text.replace("%", "/%") + "%");
-        System.out.println(d);
             return "%" + text.replace("%", "/%") + "%";
     }
 
