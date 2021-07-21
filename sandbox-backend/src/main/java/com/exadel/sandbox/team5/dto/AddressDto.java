@@ -12,4 +12,5 @@ import lombok.Setter;
 public class AddressDto extends IdentifierDto{
 
     private String address;
+    private CityDto city;
 }

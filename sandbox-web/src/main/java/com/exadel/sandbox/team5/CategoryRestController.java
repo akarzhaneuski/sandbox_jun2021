@@ -49,10 +49,7 @@ public class CategoryRestController {
 
     @PreAuthorize("hasAuthority('MODERATOR')")
     @PutMapping("/{id}")
-    public CategoryDto update(@PathVariable Long id, String category) {
-        CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setId(id);
-        categoryDto.setName(category);
+    public CategoryDto update(@RequestBody CategoryDto categoryDto) {
         return categoryService.update(categoryDto);
     }
 

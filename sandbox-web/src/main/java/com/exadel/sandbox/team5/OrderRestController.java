@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -47,8 +48,8 @@ public class OrderRestController {
 
     @ApiOperation("Create order from register user and return QR code with link")
     @PostMapping(value = "/create/{discountId}", produces = MediaType.IMAGE_PNG_VALUE)
-    public byte[] create(@PathVariable String discountId) {
-        return qrCodeService.generateQRCode(orderService.createOrder(discountId));
+    public ResponseEntity<byte[]> create(@PathVariable String discountId) {
+        return new ResponseEntity<>(qrCodeService.generateQRCode(orderService.createOrder(discountId)), HttpStatus.OK);
     }
 
     @ApiOperation("Checks link if unique code of employee exists in database and promocode has not expired")
