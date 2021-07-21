@@ -8,9 +8,9 @@ public interface CRUDService<T> {
 
     List<T> getAll();
 
-    T save(T employee);
+    T save(T entity);
 
-    T update(T employee);
+    T update(T entity);
 
     void delete(Long id);
 }

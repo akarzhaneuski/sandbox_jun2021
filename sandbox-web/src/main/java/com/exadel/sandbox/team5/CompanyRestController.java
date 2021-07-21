@@ -1,10 +1,13 @@
 package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.CompanyDto;
+import com.exadel.sandbox.team5.dto.locationDiscountDto.CountryDiscountDto;
 import com.exadel.sandbox.team5.service.CompanyService;
 import com.exadel.sandbox.team5.service.ImageClientService;
+import com.exadel.sandbox.team5.service.LocationService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.export.ExportService;
+import com.exadel.sandbox.team5.service.export.FileNameGenerator;
 import com.exadel.sandbox.team5.util.CompanySearchCriteria;
 import com.exadel.sandbox.team5.util.ResultPage;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +19,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -29,82 +30,89 @@ public class CompanyRestController {
     private final CompanyService companyService;
     private final OrderService orderService;
     private final ImageClientService imageService;
+    private final LocationService locationService;
     private final ExportService exportService;
+    private final FileNameGenerator fileNameGenerator;
 
-    @PreAuthorize("hasAnyAuthority('USER', 'MODERATOR')")
+
     @GetMapping("/{id}")
     public CompanyDto getCompany(@PathVariable Long id) {
         return companyService.getById(id);
     }
 
-    @PreAuthorize("hasAnyAuthority('USER', 'MODERATOR')")
     @GetMapping
     public List<CompanyDto> getAll() {
         return companyService.getAll();
     }
 
-    @PreAuthorize("hasAnyAuthority('MODERATOR')")
+    @PreAuthorize("hasAuthority('MODERATOR')")
+    @GetMapping("/{id}/location")
+    public CountryDiscountDto getLocationCompany(@PathVariable Long id) {
+        return locationService.getAllLocation(id);
+    }
+
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @PostMapping
     public CompanyDto save(@RequestBody CompanyDto company) {
         return companyService.save(company);
     }
 
-    @PreAuthorize("hasAnyAuthority('MODERATOR')")
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @PutMapping("/{id}")
     public CompanyDto update(@PathVariable Long id, @RequestBody CompanyDto company) {
         company.setId(id);
+        var snapshotCompanyFromDB = companyService.getById(id);
+        company.getAddresses().addAll(snapshotCompanyFromDB.getAddresses());
         return companyService.update(company);
     }
 
-    @PreAuthorize("hasAnyAuthority('MODERATOR')")
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @PutMapping("/{id}/uploadImage")
     public CompanyDto updateImage(@PathVariable Long id, @RequestBody MultipartFile file) {
         CompanyDto company = companyService.getById(id);
-        company.setImageId(imageService.save(file));
+        company.setNameImage(imageService.save(file));
         return companyService.update(company);
     }
 
-    @PreAuthorize("hasAnyAuthority('MODERATOR')")
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         companyService.delete(id);
     }
 
     //fixme is need add pagination here? or unite with search method?
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/{locationId}/companies")
     public List<CompanyDto> getCompaniesByLocation(@PathVariable Long locationId) {
         return companyService.getCompaniesByLocation(locationId);
     }
 
-    @PreAuthorize("hasAnyAuthority('MODERATOR')")
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/statistic/orders")
     public Map<String, String> getStatisticByOrders() {
         return orderService.getOrdersByCompanies();
     }
 
-    @PreAuthorize("hasAnyAuthority('MODERATOR')")
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/statistic/downloadCSVOrdersByCompanies")
     public ResponseEntity getOrdersByCompaniesCSVFile() {
 
-        String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByCompanies.csv";
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileNameGenerator.csvFileNameGenerator("OrdersByCompanies"))
                 .contentType(MediaType.parseMediaType("application/csv"))
                 .body(new InputStreamResource(exportService.exportServiceCSV(orderService.getOrdersByCompanies(), "Companies", "Orders")));
     }
 
-    @PreAuthorize("hasAnyAuthority('MODERATOR')")
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/statistic/downloadXLSXOrdersByCompanies")
     public ResponseEntity getOrdersByCompaniesXLSXFile() {
 
-        String filename = "report_" + new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Calendar.getInstance().getTime()) + "_OrdersByCompanies.xlsx";
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileNameGenerator.xlsxFileNameGenerator("OrdersByCompanies"))
                 .contentType(MediaType.parseMediaType("application/xlsx"))
                 .body(new InputStreamResource(exportService.exportServiceXLSX(orderService.getOrdersByCompanies(), "Companies", "Orders")));
     }
 
-    @PreAuthorize("hasAnyAuthority('USER', 'MODERATOR')")
     @PostMapping("/search")
     public ResultPage<CompanyDto> search(@RequestBody CompanySearchCriteria criteria) {
         return companyService.getByCriteria(criteria);

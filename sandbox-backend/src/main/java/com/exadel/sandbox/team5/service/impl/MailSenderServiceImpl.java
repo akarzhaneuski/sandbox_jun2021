@@ -37,10 +37,10 @@ public class MailSenderServiceImpl implements MailSenderService {
         Map<String, String> params = new HashMap<>();
         params.put("text", notification);
         try {
-            var t = freemarker.getTemplate("notification.ftl");
+            var t = freemarker.getTemplate("UI_notification.ftl");
             var text = FreeMarkerTemplateUtils.processTemplateIntoString(t, params);
             helper.setTo(employeeDAO.getAllEmails().toArray(new String[0]));
-            helper.setSubject("Hello there");
+            helper.setSubject("Notification");
             helper.setText(text, true);
         } catch (MessagingException | IOException | TemplateException e) {
             log.error("Cannot send mail!", e);
@@ -54,10 +54,10 @@ public class MailSenderServiceImpl implements MailSenderService {
         Map<String, List<String>> params = new HashMap<>();
         params.put("discounts", discountNames);
         try {
-            var t = freemarker.getTemplate("mail.ftl");
+            var t = freemarker.getTemplate("UI_mail.ftl");
             var text = FreeMarkerTemplateUtils.processTemplateIntoString(t, params);
             helper.setTo(email);
-            helper.setSubject("New Discounts!!!");
+            helper.setSubject("Subscription notification");
             helper.setText(text, true);
         } catch (MessagingException | IOException | TemplateException e) {
             log.error("Cannot send mail!", e);
