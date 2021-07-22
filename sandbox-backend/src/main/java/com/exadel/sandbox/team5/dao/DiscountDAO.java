@@ -27,11 +27,18 @@ public interface DiscountDAO extends CommonRepository<Discount> {
                             LEFT JOIN company co ON d.companyId = co.id 
                             LEFT JOIN category ct ON d.categoryId = ct.id             
                             LEFT JOIN review r ON d.id = r.discountId
-            WHERE (:name is null or d.description like :name or d.name like :name 
-                            or soundex_match(:name, d.name, ' ')
-                            or soundex_match(:name, d.description, ' ')
-                            or soundex_match_all(:name, d.name, ' ')
-                            or soundex_match_all(:name, d.description, ' '))
+            WHERE
+             case when regexp_like(:name, '[a-zA-Z0-9_]')
+             then (
+                        :name is null or d.description like :name or d.name like :name 
+                        or soundex_match(:name, d.name, ' ')
+                        or soundex_match(:name, d.description, ' ')
+                        or soundex_match_all(:name, d.name, ' ')
+                        or soundex_match_all(:name, d.description, ' ')
+                   ) else (
+                        :name is null or d.description like :name or d.name like :name
+                   )
+                   end 
                             AND (coalesce(:tags, null) is null or t.tagName in (:tags))
                             AND (:country is null or c.name = :country)
                             AND (coalesce(:cities, null) is null or s.name in (:cities))
@@ -52,16 +59,23 @@ public interface DiscountDAO extends CommonRepository<Discount> {
                                     LEFT JOIN company co ON d.companyId = co.id    
                                     LEFT JOIN category ct ON d.categoryId = ct.id            
                                     LEFT JOIN review r ON d.id = r.discountId
-                    WHERE (:name is null or d.description like :name or d.name like :name 
-                                    or soundex_match(:name, d.name, ' ')
-                                    or soundex_match(:name, d.description, ' ')
-                                    or soundex_match_all(:name, d.name, ' ')
-                                    or soundex_match_all(:name, d.description, ' '))
-                                    AND (coalesce(:tags, null) is null or t.tagName in (:tags))
-                                    AND (:country is null or c.name = :country)
-                                    AND (coalesce(:cities, null) is null or s.name in (:cities))
-                                    AND (coalesce(:companies, null) is null or co.name in (:companies))
-                                    AND (coalesce(:categories, null) is null or ct.name in (:categories))
+            WHERE 
+             case when regexp_like(:name, '[a-zA-Z0-9_]')
+             then (
+                        :name is null or d.description like :name or d.name like :name 
+                        or soundex_match(:name, d.name, ' ')
+                        or soundex_match(:name, d.description, ' ')
+                        or soundex_match_all(:name, d.name, ' ')
+                        or soundex_match_all(:name, d.description, ' ')
+                   ) else (
+                        :name is null or d.description like :name or d.name like :name
+                   )
+                   end 
+                            AND (coalesce(:tags, null) is null or t.tagName in (:tags))
+                            AND (:country is null or c.name = :country)
+                            AND (coalesce(:cities, null) is null or s.name in (:cities))
+                            AND (coalesce(:companies, null) is null or co.name in (:companies))
+                            AND (coalesce(:categories, null) is null or ct.name in (:categories))
                                                     """, nativeQuery = true)
     Page<Discount> findDiscountsByCriteria(@Param("name") String searchText,
                                            @Param("tags") Set<String> tags,
