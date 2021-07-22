@@ -12,7 +12,7 @@ import java.util.Date;
 @Builder
 @Entity
 @Table(name = "`order`")
-public class Order extends BaseEntity {
+public class Order extends AuditableEntity {
 
     @ManyToOne
     @JoinColumn(name = "employeeId", referencedColumnName = "id")

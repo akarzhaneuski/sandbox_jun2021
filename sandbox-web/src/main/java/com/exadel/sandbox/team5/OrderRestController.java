@@ -3,13 +3,14 @@ package com.exadel.sandbox.team5;
 import com.exadel.sandbox.team5.dto.OrderDto;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.QRCodeService;
+import com.exadel.sandbox.team5.util.ResultPage;
+import com.exadel.sandbox.team5.util.SearchCriteria;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,9 +29,9 @@ public class OrderRestController {
         return orderService.getById(id);
     }
 
-    @GetMapping
-    public List<OrderDto> getAll() {
-        return orderService.getAll();
+    @PostMapping
+    public ResultPage<OrderDto> getAll(@RequestBody SearchCriteria searchCriteria) {
+        return orderService.getAll(searchCriteria);
     }
 
     @PutMapping("/{id}")
