@@ -31,4 +31,10 @@ public class SnsServiceImpl implements SnsService {
         var message = String.format("New discount %s is waiting for you!", discountDto.getName());
         amazonSNS.publish(topic, message, "Subscription notification");
     }
+
+    public void subscribeUsers(){
+//        email-name(endpotin), email(protocol), topicArn
+        amazonSNS.
+    }
+
 }
