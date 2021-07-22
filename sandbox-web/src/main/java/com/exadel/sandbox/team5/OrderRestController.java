@@ -9,10 +9,8 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -26,7 +24,7 @@ public class OrderRestController {
 
     @GetMapping("/{id}")
     public OrderDto getOrder(@PathVariable Long id) {
-        return new ModelAndView()
+//        return new ModelAndView()
         return orderService.getById(id);
     }
 

@@ -3,11 +3,15 @@ package com.exadel.sandbox.team5.service.impl;
 import com.exadel.sandbox.team5.dao.CompanyDAO;
 import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.OrderDAO;
+import com.exadel.sandbox.team5.dao.ReviewDAO;
+import com.exadel.sandbox.team5.dto.DiscountDto;
+import com.exadel.sandbox.team5.entity.Discount;
+import com.exadel.sandbox.team5.entity.Image;
+import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.EmployeeService;
 import com.exadel.sandbox.team5.util.SecurityUtils;
 import org.junit.Before;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -26,36 +30,54 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(MockitoJUnitRunner.class)
 class OrderServiceImplTest {
 
-    @Mock
-    EmployeeService employeeService;
     @Spy
-    DiscountService discountService;
-    @Mock
-    DiscountDAO discountDAO;
+    EmployeeService employeeService;
+
     @Mock
     CompanyDAO companyDAO;
+
+    @Spy
+    DiscountDto discountDto;
+
+    @Spy
+    MapperConverter mapperConverter;
+
+    @Spy
+    Discount discount;
+
+    @Mock
+    Image image;
+
+    @Mock
+    ReviewDAO reviewDAO;
+
+    @InjectMocks
+    DiscountService discountService;
+
+    @Mock
+    DiscountDAO discountDAO;
+
     @Mock
     SecurityUtils securityUtils;
 
+    @Spy
+    OrderDAO orderDAO;
+
     @InjectMocks
-    OrderServiceImpl orderService;
+    OrderServiceImpl orderService = new OrderServiceImpl(orderDAO, mapperConverter, employeeService, discountService, discountDAO, companyDAO, securityUtils);
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
     }
 
-
-    @Mock
-    OrderDAO orderDAO;
-
-    @BeforeEach
-    void init() {
-        MockitoAnnotations.openMocks(this);
-    }
+//    @BeforeEach
+//    void init() {
+//        MockitoAnnotations.openMocks(this);
+//    }
 
     @Test
-    void testInvalidatePromoCode() throws NoSuchElementException {
+    void testCreateEmployeePromoCode() throws NoSuchElementException {
         assertEquals(String.class, orderService.createOrder("3"));
 
     }
