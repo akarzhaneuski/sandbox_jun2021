@@ -12,6 +12,8 @@ import com.exadel.sandbox.team5.service.EmployeeService;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.ValidatePromoCodeGenerator;
 import com.exadel.sandbox.team5.util.Pair;
+import com.exadel.sandbox.team5.util.ResultPage;
+import com.exadel.sandbox.team5.util.SearchCriteria;
 import com.exadel.sandbox.team5.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -33,19 +36,17 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     private final DiscountService discountService;
     private final DiscountDAO discountDAO;
     private final CompanyDAO companyDAO;
-    private final SecurityUtils securityUtils;
 
     @Value("${constant.amountDiscountDays}")
     String amountDiscountDays;
 
     public OrderServiceImpl(OrderDAO orderDAO, MapperConverter mapper, EmployeeService employeeService,
-                            DiscountService discountService, DiscountDAO discountDAO, CompanyDAO companyDAO, SecurityUtils securityUtils) {
+                            DiscountService discountService, DiscountDAO discountDAO, CompanyDAO companyDAO) {
         super(orderDAO, Order.class, OrderDto.class, mapper);
         this.employeeService = employeeService;
         this.discountService = discountService;
         this.discountDAO = discountDAO;
         this.companyDAO = companyDAO;
-        this.securityUtils = securityUtils;
     }
 
     @Override
@@ -61,7 +62,7 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
 
         var discountIdL = Long.valueOf(discountId);
         if (discountService.getById(discountIdL) != null) {
-            var employee = employeeService.getByLogin(securityUtils.getCurrentUsername());
+            var employee = employeeService.getByLogin(SecurityUtils.getCurrentUsername());
             String employeePromocode = new ValidatePromoCodeGenerator().generateUUID();
             var now = LocalDateTime.now();
             var orderToSave = Order.builder()
@@ -102,5 +103,11 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     @Override
     public Map<String, String> getOrdersByCategories() {
         return entityDao.getAllOrdersForCategories().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+    }
+
+    public ResultPage<OrderDto> getAll(SearchCriteria searchCriteria) {
+        var employee = employeeService.getByLogin(SecurityUtils.getCurrentUsername());
+        entityDao.findOrderByEmployeeId(employee.getId(), searchCriteria.getPageRequest());
+        return mapper.mapToPage(entityDao.findOrderByEmployeeId(employee.getId(), searchCriteria.lastUpdateSortingPageRequest()), OrderDto.class);
     }
 }
