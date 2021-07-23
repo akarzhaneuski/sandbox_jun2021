@@ -19,7 +19,7 @@ public class Address extends BaseEntity implements Serializable {
     @Column(name = "address")
     private String address;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "cityId", referencedColumnName = "id")
     private City city;
 
