@@ -48,35 +48,35 @@ public interface DiscountDAO extends CommonRepository<Discount> {
                 HAVING rate>=(:rate)
             """,
             countQuery = """
-                    SELECT COUNT(distinct d.id), AVG(COALESCE(r.rate, 0)) rate
-                                FROM discount d
-                                    LEFT JOIN discount_tag dt ON d.id = dt.discountId
-                                    LEFT JOIN tag t ON t.id = dt.tagId
-                                    LEFT JOIN country c ON d.countryId = c.id 
-                                    LEFT JOIN discount_address da ON d.id = da.discountId
-                                    LEFT JOIN address a ON da.addressId = a.id
-                                    LEFT JOIN city s ON a.cityId = s.id  
-                                    LEFT JOIN company co ON d.companyId = co.id    
-                                    LEFT JOIN category ct ON d.categoryId = ct.id            
-                                    LEFT JOIN review r ON d.id = r.discountId
-            WHERE 
-             case when regexp_like(:name, '[a-zA-Z0-9_]')
-             then (
-                        :name is null or d.description like :name or d.name like :name 
-                        or soundex_match(:name, d.name, ' ')
-                        or soundex_match(:name, d.description, ' ')
-                        or soundex_match_all(:name, d.name, ' ')
-                        or soundex_match_all(:name, d.description, ' ')
-                   ) else (
-                        :name is null or d.description like :name or d.name like :name
-                   )
-                   end 
-                            AND (coalesce(:tags, null) is null or t.tagName in (:tags))
-                            AND (:country is null or c.name = :country)
-                            AND (coalesce(:cities, null) is null or s.name in (:cities))
-                            AND (coalesce(:companies, null) is null or co.name in (:companies))
-                            AND (coalesce(:categories, null) is null or ct.name in (:categories))
-                                                    """, nativeQuery = true)
+                            SELECT COUNT(distinct d.id), AVG(COALESCE(r.rate, 0)) rate
+                                        FROM discount d
+                                            LEFT JOIN discount_tag dt ON d.id = dt.discountId
+                                            LEFT JOIN tag t ON t.id = dt.tagId
+                                            LEFT JOIN country c ON d.countryId = c.id 
+                                            LEFT JOIN discount_address da ON d.id = da.discountId
+                                            LEFT JOIN address a ON da.addressId = a.id
+                                            LEFT JOIN city s ON a.cityId = s.id  
+                                            LEFT JOIN company co ON d.companyId = co.id    
+                                            LEFT JOIN category ct ON d.categoryId = ct.id            
+                                            LEFT JOIN review r ON d.id = r.discountId
+                    WHERE 
+                     case when regexp_like(:name, '[a-zA-Z0-9_]')
+                     then (
+                                :name is null or d.description like :name or d.name like :name 
+                                or soundex_match(:name, d.name, ' ')
+                                or soundex_match(:name, d.description, ' ')
+                                or soundex_match_all(:name, d.name, ' ')
+                                or soundex_match_all(:name, d.description, ' ')
+                           ) else (
+                                :name is null or d.description like :name or d.name like :name
+                           )
+                           end 
+                                    AND (coalesce(:tags, null) is null or t.tagName in (:tags))
+                                    AND (:country is null or c.name = :country)
+                                    AND (coalesce(:cities, null) is null or s.name in (:cities))
+                                    AND (coalesce(:companies, null) is null or co.name in (:companies))
+                                    AND (coalesce(:categories, null) is null or ct.name in (:categories))
+                                                            """, nativeQuery = true)
     Page<Discount> findDiscountsByCriteria(@Param("name") String searchText,
                                            @Param("tags") Set<String> tags,
                                            @Param("country") String country,
@@ -112,4 +112,6 @@ public interface DiscountDAO extends CommonRepository<Discount> {
             UPDATE Discount d SET d.isSent=1 WHERE d.id IN (:discountIds)
             """)
     void markDiscountsAsSent(List<Long> discountIds);
+
+    Set<Discount> getDiscountsByIdIsIn(Set<Long> discountIds);
 }

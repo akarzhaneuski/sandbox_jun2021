@@ -5,6 +5,7 @@ import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.OrderDAO;
 import com.exadel.sandbox.team5.dto.OrderDto;
 import com.exadel.sandbox.team5.entity.Discount;
+import com.exadel.sandbox.team5.entity.Employee;
 import com.exadel.sandbox.team5.entity.Order;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
@@ -66,7 +67,7 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
             var now = LocalDateTime.now();
             var orderToSave = Order.builder()
                     .discount(mapper.map(discountService.getById(discountIdL), Discount.class))
-                    .employee(employeeService.getById(employee.getId()))
+                    .employee(mapper.map(employeeService.getById(employee.getId()), Employee.class))
                     .employeePromocode(employeePromocode)
                     .promoCodeStatus(true)
                     .promoCodePeriodStart(localDateTimeToDate(now))
