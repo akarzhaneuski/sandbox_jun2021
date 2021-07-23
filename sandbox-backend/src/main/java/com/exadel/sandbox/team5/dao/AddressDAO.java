@@ -5,8 +5,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface AddressDAO extends CommonRepository<Address> {
+public interface AddressDAO extends CommonRepository<Address>, AddressCustomDAO {
 
     @Query(value = """
                     SELECT adr.* FROM company c
@@ -18,5 +19,9 @@ public interface AddressDAO extends CommonRepository<Address> {
             """, nativeQuery = true)
     List<Address> findByCompanyId(@Param("companyId") Long id);
 
+    @Query(value = "SELECT id FROM City WHERE name LIKE :cityName")
+    Optional<Long> findIdCityByName(@Param("cityName") String cityName);
 
+    @Query(value = "SELECT id FROM Country WHERE name LIKE :countryName")
+    Optional<Long> findIdCountryByName(@Param("countryName") String countryName);
 }
