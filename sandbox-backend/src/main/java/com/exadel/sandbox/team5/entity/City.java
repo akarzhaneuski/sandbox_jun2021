@@ -1,6 +1,5 @@
 package com.exadel.sandbox.team5.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +18,7 @@ public class City extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @JsonIgnore
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "countryId", referencedColumnName = "id")
     private Country country;
 }
