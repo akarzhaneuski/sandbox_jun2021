@@ -34,7 +34,7 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
 
     @Override
     public ResultPage<DiscountDto> getAllByCriteria(SearchCriteria criteria) {
-        Page<Discount> discounts = entityDao.findAll(criteria.getPageRequest());
+        Page<Discount> discounts = entityDao.findAll(criteria.lastUpdateSortingPageRequest());
         return mapDto(discounts);
     }
 
@@ -79,8 +79,6 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
         entityDao.incrementViewsByDiscountId(discountId);
     }
 
-
-    //fixme добавить стандартную сортировку по дате добавления после включения аудита!
     @Override
     public ResultPage<DiscountDto> getByCriteria(DiscountSearchCriteria searchCriteria) {
         if (searchCriteria.isEmpty()) {
@@ -121,7 +119,7 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
                 searchCriteria.getCompanies(),
                 searchCriteria.getCategory(),
                 searchCriteria.getRate(),
-                searchCriteria.getPageRequest());
+                searchCriteria.lastUpdateSortingPageRequest());
     }
 
     private ResultPage<DiscountDto> mapDto(Page<Discount> discounts) {

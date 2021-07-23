@@ -32,6 +32,12 @@ public class SearchCriteria {
         return PageRequest.of(pageNum, itemsPerPage, Sort.by(result));
     }
 
+    public PageRequest lastUpdateSortingPageRequest() {
+        orders = new ArrayList<>();
+        orders.add(new Sorting("DESC", "modified"));
+        return getPageRequest();
+    }
+
     public void setOrders(List<Sorting> orders) {
         this.orders = orders;
     }

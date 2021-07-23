@@ -39,4 +39,12 @@ public class Employee extends AuditableEntity {
             inverseJoinColumns = {@JoinColumn(name = "categoryId")}
     )
     private Set<Category> subscriptions = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "employee_favorites_discount",
+            joinColumns = {@JoinColumn(name = "employeeId")},
+            inverseJoinColumns = {@JoinColumn(name = "discountId")}
+    )
+    private Set<Discount> favorites = new HashSet<>();
 }
