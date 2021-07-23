@@ -5,8 +5,9 @@ import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.util.Message;
 
 public interface SnsService {
-
     PublishResult sendToAllUsers(Message message);
 
     void sendToSubscribers(DiscountDto discountDto);
+
+    void subscribeUser(String email);
 }
