@@ -42,7 +42,7 @@ public class Employee extends AuditableEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "employee_discount",
+            name = "employee_favorites_discount",
             joinColumns = {@JoinColumn(name = "employeeId")},
             inverseJoinColumns = {@JoinColumn(name = "discountId")}
     )

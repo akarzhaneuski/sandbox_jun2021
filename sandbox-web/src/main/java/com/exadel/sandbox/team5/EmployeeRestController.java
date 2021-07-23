@@ -12,28 +12,28 @@ import java.util.Set;
 public class EmployeeRestController {
     private final EmployeeService employeeService;
 
-    @PutMapping("/{id}/Favorites/add")
-    public String addFavorites(@PathVariable Long id, @RequestBody Set<Long> discountIds) {
+    @PutMapping("/{id}/favorites/add")
+    public boolean addFavorites(@PathVariable Long id, @RequestBody Set<Long> discountIds) {
         employeeService.addFavorites(id, discountIds);
-        return "Favorites was updated";
+        return true;
     }
 
-    @PutMapping("/{id}/Favorites/remove")
-    public String removeFavorites(@PathVariable Long id, @RequestBody Set<Long> discountIds) {
+    @PutMapping("/{id}/favorites/remove")
+    public boolean removeFavorites(@PathVariable Long id, @RequestBody Set<Long> discountIds) {
         employeeService.removeFavorites(id, discountIds);
-        return "Favorites was updated";
+        return true;
     }
 
-    @PutMapping("/{id}/Subscriptions/add")
-    public String addSubscriptions(@PathVariable Long id, @RequestBody Set<Long> categoryIds) {
+    @PutMapping("/{id}/subscriptions/add")
+    public boolean addSubscriptions(@PathVariable Long id, @RequestBody Set<Long> categoryIds) {
         employeeService.addSubscriptions(id, categoryIds);
-        return "Subscriptions was updated";
+        return true;
     }
 
-    @PutMapping("/{id}/Subscriptions/remove")
-    public String removeSubscriptions(@PathVariable Long id, @RequestBody Set<Long> categoryIds) {
+    @PutMapping("/{id}/subscriptions/remove")
+    public boolean removeSubscriptions(@PathVariable Long id, @RequestBody Set<Long> categoryIds) {
         employeeService.removeSubscriptions(id, categoryIds);
-        return "Subscriptions was updated";
+        return true;
     }
 }
 
