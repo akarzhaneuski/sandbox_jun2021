@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team5.service;
 
+import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.OrderDto;
 import com.exadel.sandbox.team5.util.ResultPage;
 import com.exadel.sandbox.team5.util.SearchCriteria;
@@ -20,5 +21,5 @@ public interface OrderService extends CRUDService<OrderDto> {
 
     Map<String, String> getOrdersByCategories();
 
-    ResultPage<OrderDto> getAll(SearchCriteria searchCriteria);
+    ResultPage<DiscountDto> getAll(SearchCriteria searchCriteria);
 }

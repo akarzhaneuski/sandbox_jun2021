@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team5;
 
+import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.OrderDto;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.QRCodeService;
@@ -28,7 +29,7 @@ public class OrderRestController {
     }
 
     @PostMapping
-    public ResultPage<OrderDto> getAll(@RequestBody SearchCriteria searchCriteria) {
+    public ResultPage<DiscountDto> getAll(@RequestBody SearchCriteria searchCriteria) {
         return orderService.getAll(searchCriteria);
     }
 
