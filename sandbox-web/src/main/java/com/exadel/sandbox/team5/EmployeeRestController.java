@@ -1,7 +1,12 @@
 package com.exadel.sandbox.team5;
 
+import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.service.EmployeeService;
+import com.exadel.sandbox.team5.util.ResultPage;
+import com.exadel.sandbox.team5.util.SearchCriteria;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -34,6 +39,23 @@ public class EmployeeRestController {
     public boolean removeSubscriptions(@PathVariable Long id, @RequestBody Set<Long> categoryIds) {
         employeeService.removeSubscriptions(id, categoryIds);
         return true;
+    }
+
+    @PostMapping("/favorites")
+    public ResultPage<DiscountDto> getAll(@RequestBody SearchCriteria searchCriteria) {
+        return employeeService.getFavorites(searchCriteria);
+    }
+
+    @PostMapping("/favorites/{id}")
+    public ResponseEntity<?> addFavorite(@PathVariable Long id) {
+        employeeService.addFavorite(id);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PutMapping("/favorites/{id}")
+    public ResponseEntity<?> removeFavorite(@PathVariable Long id) {
+        employeeService.deleteFavorite(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
 
