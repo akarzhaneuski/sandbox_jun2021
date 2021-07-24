@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -41,6 +42,13 @@ public class RestExceptionHandler {
         apiError.setMessage(String.format("The parameter '%s' of value '%s' could not be converted to type '%s'",
                 ex.getName(), ex.getValue(), ex.getRequiredType().getSimpleName()));
         apiError.setDebugMessage(ex.getMessage());
+        return new ResponseEntity<>(apiError, BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Object> handleAuthExceptions(Exception ex, WebRequest request) {
+        log.error("Bad credentials Exception", ex);
+        ApiError apiError = new ApiError("Incorrect username or password", ex.getMessage());
         return new ResponseEntity<>(apiError, BAD_REQUEST);
     }
 
