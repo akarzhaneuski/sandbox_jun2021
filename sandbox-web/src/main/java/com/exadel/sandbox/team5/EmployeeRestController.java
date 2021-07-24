@@ -51,5 +51,11 @@ public class EmployeeRestController {
         employeeService.addFavorite(id);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @PutMapping("/favorites/{id}")
+    public ResponseEntity<?> removeFavorite(@PathVariable Long id) {
+        employeeService.deleteFavorite(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
 

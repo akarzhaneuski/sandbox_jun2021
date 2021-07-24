@@ -76,4 +76,12 @@ public class EmployeeServiceImpl extends CRUDServiceDtoImpl<EmployeeDAO, Employe
         return mapper
                 .mapToPage(employeeDAO.getFavorites(SecurityUtils.getCurrentUsername(), searchCriteria.getPageRequest()), DiscountDto.class);
     }
+
+    @Override
+    public boolean deleteFavorite(Long id) {
+        var employee = employeeDAO.getByLogin(SecurityUtils.getCurrentUsername());
+        employee.getFavorites().remove(discountDAO.getById(id));
+        employeeDAO.save(employee);
+        return true;
+    }
 }

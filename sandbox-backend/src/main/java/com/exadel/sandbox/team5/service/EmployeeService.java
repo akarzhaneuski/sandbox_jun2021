@@ -24,4 +24,6 @@ public interface EmployeeService extends CRUDService<EmployeeDto> {
     void removeSubscriptions(Long employeeId, Set<Long> categoryIds);
 
     ResultPage<DiscountDto> getFavorites(SearchCriteria searchCriteria);
+
+    boolean deleteFavorite(Long id);
 }
