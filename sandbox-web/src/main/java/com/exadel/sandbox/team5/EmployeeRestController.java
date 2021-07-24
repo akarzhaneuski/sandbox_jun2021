@@ -46,8 +46,8 @@ public class EmployeeRestController {
         return employeeService.getFavorites(searchCriteria);
     }
 
-    @PostMapping("/favorites/add")
-    public ResponseEntity<?> addFavorite(@RequestBody Long id) {
+    @PostMapping("/favorites/{id}")
+    public ResponseEntity<?> addFavorite(@PathVariable Long id) {
         employeeService.addFavorite(id);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
