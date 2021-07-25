@@ -2,9 +2,11 @@ package com.exadel.sandbox.team5.service.impl;
 
 import com.exadel.sandbox.team5.dao.CompanyDAO;
 import com.exadel.sandbox.team5.dao.ImageDAO;
+import com.exadel.sandbox.team5.dto.AddressDto;
 import com.exadel.sandbox.team5.dto.CompanyDto;
 import com.exadel.sandbox.team5.entity.Company;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
+import com.exadel.sandbox.team5.service.AddressService;
 import com.exadel.sandbox.team5.service.CompanyService;
 import com.exadel.sandbox.team5.util.CompanySearchCriteria;
 import com.exadel.sandbox.team5.util.Pair;
@@ -14,10 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -25,10 +24,12 @@ import java.util.stream.Collectors;
 public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, CompanyDto> implements CompanyService {
 
     private final ImageDAO imageDAO;
+    private final AddressService addressService;
 
-    public CompanyServiceImpl(CompanyDAO entityDao, MapperConverter mapper, ImageDAO imageDAO) {
+    public CompanyServiceImpl(CompanyDAO entityDao, MapperConverter mapper, ImageDAO imageDAO, AddressService addressService) {
         super(entityDao, Company.class, CompanyDto.class, mapper);
         this.imageDAO = imageDAO;
+        this.addressService = addressService;
     }
 
     @Override
@@ -52,6 +53,20 @@ public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, 
 
     @Override
     public CompanyDto update(CompanyDto entityDto) {
+        Set<AddressDto> newAddress = entityDto.getAddresses();
+        var saveAddress = newAddress.stream().map(a -> {
+            AddressDto result;
+            if (a.getId() != null) {
+                result = addressService.getById(a.getId());
+            } else {
+                result = addressService.save(a);
+            }
+            return result;
+        })
+                .collect(Collectors.toSet());
+        entityDto.setAddresses(saveAddress);
+        var snapshotCompanyFromDB = this.getById(entityDto.getId());
+        entityDto.getAddresses().addAll(snapshotCompanyFromDB.getAddresses());
         return this.save(entityDto);
     }
 

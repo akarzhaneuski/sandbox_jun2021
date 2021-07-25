@@ -3,8 +3,10 @@ package com.exadel.sandbox.team5.service.impl;
 import com.exadel.sandbox.team5.dao.CompanyDAO;
 import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.OrderDAO;
+import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.OrderDto;
 import com.exadel.sandbox.team5.entity.Discount;
+import com.exadel.sandbox.team5.entity.Employee;
 import com.exadel.sandbox.team5.entity.Order;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
@@ -67,7 +69,7 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
             var now = LocalDateTime.now();
             var orderToSave = Order.builder()
                     .discount(mapper.map(discountService.getById(discountIdL), Discount.class))
-                    .employee(employeeService.getById(employee.getId()))
+                    .employee(mapper.map(employeeService.getById(employee.getId()), Employee.class))
                     .employeePromocode(employeePromocode)
                     .promoCodeStatus(true)
                     .promoCodePeriodStart(localDateTimeToDate(now))
@@ -105,9 +107,9 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
         return entityDao.getAllOrdersForCategories().stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
     }
 
-    public ResultPage<OrderDto> getAll(SearchCriteria searchCriteria) {
+    public ResultPage<DiscountDto> getAll(SearchCriteria searchCriteria) {
         var employee = employeeService.getByLogin(SecurityUtils.getCurrentUsername());
-        entityDao.findOrderByEmployeeId(employee.getId(), searchCriteria.getPageRequest());
-        return mapper.mapToPage(entityDao.findOrderByEmployeeId(employee.getId(), searchCriteria.lastUpdateSortingPageRequest()), OrderDto.class);
+        var orders = entityDao.findOrderByEmployeeId(employee.getId(), searchCriteria.getPageRequest());
+        return discountService.mapDto(orders);
     }
 }

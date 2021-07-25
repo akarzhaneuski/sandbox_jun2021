@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team5.error;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -48,5 +49,12 @@ public class RestExceptionHandler {
         log.error("Internal Exception", ex);
         ApiError apiError = new ApiError("Internal Exception", ex.getMessage());
         return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
+        log.error("Internal Exception", ex);
+        ApiError apiError = new ApiError("Duplicate value", ex.getMessage());
+        return new ResponseEntity<>(apiError, BAD_REQUEST);
     }
 }

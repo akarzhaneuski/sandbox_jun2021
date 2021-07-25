@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team5;
 
+import com.exadel.sandbox.team5.dto.AddressDto;
 import com.exadel.sandbox.team5.dto.CompanyDto;
 import com.exadel.sandbox.team5.dto.locationDiscountDto.CountryDiscountDto;
 import com.exadel.sandbox.team5.service.CompanyService;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/company")
@@ -61,8 +63,6 @@ public class CompanyRestController {
     @PutMapping("/{id}")
     public CompanyDto update(@PathVariable Long id, @RequestBody CompanyDto company) {
         company.setId(id);
-        var snapshotCompanyFromDB = companyService.getById(id);
-        company.getAddresses().addAll(snapshotCompanyFromDB.getAddresses());
         return companyService.update(company);
     }
 
@@ -72,12 +72,6 @@ public class CompanyRestController {
         CompanyDto company = companyService.getById(id);
         company.setNameImage(imageService.save(file));
         return companyService.update(company);
-    }
-
-    @PreAuthorize("hasAuthority('MODERATOR')")
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        companyService.delete(id);
     }
 
     //fixme is need add pagination here? or unite with search method?
