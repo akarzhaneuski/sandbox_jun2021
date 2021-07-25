@@ -35,11 +35,4 @@ public class AWSConfiguration {
                 .withRegion(Regions.fromName(snsRegion))
                 .build();
     }
-
-    @Bean
-    public AmazonSQS sqsClient() {
-        return AmazonSQSClientBuilder.standard().withCredentials(DefaultAWSCredentialsProviderChain.getInstance())
-                .withRegion(Regions.fromName(region))
-                .build();
-    }
 }

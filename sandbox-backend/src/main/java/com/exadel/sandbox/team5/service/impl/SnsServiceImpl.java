@@ -17,23 +17,25 @@ public class SnsServiceImpl implements SnsService {
 
     private final AmazonSNS amazonSNS;
 
-    @Value("${SNS_REGION}")
+    @Value("${app.snsRegion}")
     private String region;
-
-    private final String ARN = String.format("arn:aws:sns:%s:468080558953:ToAllUsers", region);
 
     public PublishResult sendToAllUsers(Message message) {
         if (message.getSubject() == null)
-            return amazonSNS.publish(ARN, message.getMessage());
-        return amazonSNS.publish(ARN, message.getMessage(), message.getSubject());
+            return amazonSNS.publish(getARN(), message.getMessage());
+        return amazonSNS.publish(getARN(), message.getMessage(), message.getSubject());
     }
 
     public void sendToSubscribers(DiscountDto discountDto) {
         var message = String.format("New discount %s is waiting for you!", discountDto.getName());
-        amazonSNS.publish(ARN, message, "Special offer");
+        amazonSNS.publish(getARN(), message, "Special offer");
     }
 
     public void subscribeUser(String email) {
-        amazonSNS.subscribe(email, "email", ARN);
+        amazonSNS.subscribe(email, "email", getARN());
+    }
+
+    private String getARN() {
+        return String.format("arn:aws:sns:%s:468080558953:ToAllUsers",region);
     }
 }
