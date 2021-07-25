@@ -36,6 +36,11 @@ public class LocationRestController {
         return addressService.save(entity);
     }
 
+    @GetMapping("/all")
+    public List<AddressDto> getAllAddress() {
+        return addressService.getAll();
+    }
+
     @PreAuthorize("hasAuthority('MODERATOR')")
     @PutMapping("/{id}")
     public CountryDto update(@PathVariable Long id, @RequestBody CountryDto entity) {
