@@ -39,13 +39,6 @@ public class OrderRestController {
         return orderService.update(order);
     }
 
-    @PreAuthorize("hasAuthority('MODERATOR')")
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        orderService.delete(id);
-    }
-
-
     @ApiOperation("Create order from register user and return QR code with link")
     @PostMapping(value = "/create/{discountId}", produces = MediaType.IMAGE_PNG_VALUE)
     public String create(@PathVariable String discountId) {

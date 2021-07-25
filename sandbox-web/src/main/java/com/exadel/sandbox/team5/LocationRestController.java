@@ -42,10 +42,4 @@ public class LocationRestController {
         entity.setId(id);
         return locationService.update(entity);
     }
-
-    @PreAuthorize("hasAuthority('MODERATOR')")
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        locationService.delete(id);
-    }
 }
