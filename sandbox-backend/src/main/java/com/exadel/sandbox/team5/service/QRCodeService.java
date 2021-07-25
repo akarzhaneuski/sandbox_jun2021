@@ -1,5 +1,8 @@
 package com.exadel.sandbox.team5.service;
 
+import com.exadel.sandbox.team5.entity.OrderStatus;
+import org.springframework.data.util.Pair;
+
 import java.io.File;
 
 public interface QRCodeService {
@@ -18,5 +21,5 @@ public interface QRCodeService {
     /**
      * @return true if uuid and promocode exists in DB
      */
-    String validateQR(String uuid);
+    Pair<OrderStatus, String> validateQR(String uuid);
 }
