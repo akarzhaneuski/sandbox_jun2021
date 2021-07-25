@@ -74,12 +74,6 @@ public class CompanyRestController {
         return companyService.update(company);
     }
 
-    @PreAuthorize("hasAuthority('MODERATOR')")
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        companyService.delete(id);
-    }
-
     //fixme is need add pagination here? or unite with search method?
     @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/{locationId}/companies")

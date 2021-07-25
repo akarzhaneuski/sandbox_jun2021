@@ -34,11 +34,5 @@ public class ReviewRestController {
         entity.setId(id);
         return service.update(entity);
     }
-
-    @PreAuthorize("hasAuthority('MODERATOR')")
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
-    }
 }
 
