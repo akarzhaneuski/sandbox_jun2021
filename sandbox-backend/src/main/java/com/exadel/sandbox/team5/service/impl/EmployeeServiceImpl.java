@@ -7,6 +7,7 @@ import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.EmployeeDto;
 import com.exadel.sandbox.team5.entity.Employee;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
+import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.EmployeeService;
 import com.exadel.sandbox.team5.util.ResultPage;
 import com.exadel.sandbox.team5.util.SearchCriteria;
@@ -22,13 +23,15 @@ public class EmployeeServiceImpl extends CRUDServiceDtoImpl<EmployeeDAO, Employe
     private final EmployeeDAO employeeDAO;
     private final CategoryDAO categoryDAO;
     private final DiscountDAO discountDAO;
+    private final DiscountService discountService;
 
     public EmployeeServiceImpl(EmployeeDAO repository, MapperConverter mapper, EmployeeDAO employeeDAO,
-                               CategoryDAO categoryDAO, DiscountDAO discountDAO) {
+                               CategoryDAO categoryDAO, DiscountDAO discountDAO, DiscountService discountService) {
         super(repository, Employee.class, EmployeeDto.class, mapper);
         this.employeeDAO = employeeDAO;
         this.categoryDAO = categoryDAO;
         this.discountDAO = discountDAO;
+        this.discountService = discountService;
     }
 
     @Override
@@ -73,8 +76,7 @@ public class EmployeeServiceImpl extends CRUDServiceDtoImpl<EmployeeDAO, Employe
 
     @Override
     public ResultPage<DiscountDto> getFavorites(SearchCriteria searchCriteria) {
-        return mapper
-                .mapToPage(employeeDAO.getFavorites(SecurityUtils.getCurrentUsername(), searchCriteria.getPageRequest()), DiscountDto.class);
+        return discountService.mapDto(employeeDAO.getFavorites(SecurityUtils.getCurrentUsername(), searchCriteria.getPageRequest()));
     }
 
     @Override
