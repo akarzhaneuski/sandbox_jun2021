@@ -4,7 +4,6 @@ import com.exadel.sandbox.team5.dao.CompanyDAO;
 import com.exadel.sandbox.team5.dao.ImageDAO;
 import com.exadel.sandbox.team5.dto.AddressDto;
 import com.exadel.sandbox.team5.dto.CompanyDto;
-import com.exadel.sandbox.team5.entity.Address;
 import com.exadel.sandbox.team5.entity.Company;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.AddressService;
@@ -49,7 +48,6 @@ public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, 
         if (entityDto.getNameImage() != null) {
             company.setImageId(imageDAO.findImageByName(entityDto.getNameImage()).orElseThrow(NoSuchElementException::new).getId());
         }
-
         return mapper.map(entityDao.saveAndFlush(company), CompanyDto.class);
     }
 
