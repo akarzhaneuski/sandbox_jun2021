@@ -1,0 +1,2 @@
+ALTER TABLE discount
+    ALTER views SET DEFAULT 0;

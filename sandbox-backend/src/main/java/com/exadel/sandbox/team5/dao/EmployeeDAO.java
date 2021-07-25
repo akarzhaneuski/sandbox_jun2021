@@ -1,8 +1,12 @@
 package com.exadel.sandbox.team5.dao;
 
+import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.entity.Employee;
 import com.exadel.sandbox.team5.util.Notification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,4 +30,12 @@ public interface EmployeeDAO extends CommonRepository<Employee> {
                 WHERE e.email IS NOT null
             """)
     List<String> getAllEmails();
+
+    @Query(value = """
+            SELECT d FROM Employee e 
+            JOIN e.favorites f
+            JOIN Discount d ON f.id = d.id
+            WHERE e.login LIKE (:login)
+            """)
+    Page<Discount> getFavorites(@Param("login") String login, Pageable pageable);
 }

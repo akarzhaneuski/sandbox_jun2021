@@ -1,6 +1,8 @@
 package com.exadel.sandbox.team5;
 
+import com.exadel.sandbox.team5.dto.AddressDto;
 import com.exadel.sandbox.team5.dto.CountryDto;
+import com.exadel.sandbox.team5.service.AddressService;
 import com.exadel.sandbox.team5.service.LocationService;
 
 import lombok.RequiredArgsConstructor;
@@ -15,34 +17,35 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LocationRestController {
 
-    private final LocationService service;
+    private final LocationService locationService;
+    private final AddressService addressService;
 
     @GetMapping("/{id}")
     public CountryDto getLocation(@PathVariable Long id) {
-        return service.getById(id);
+        return locationService.getById(id);
     }
 
     @GetMapping
     public List<CountryDto> getAll() {
-        return service.getAll();
+        return locationService.getAll();
     }
 
     @PreAuthorize("hasAuthority('MODERATOR')")
     @PostMapping
-    public CountryDto save(@RequestBody CountryDto entity) {
-        return service.save(entity);
+    public AddressDto save(@RequestBody AddressDto entity) {
+        return addressService.save(entity);
     }
 
     @PreAuthorize("hasAuthority('MODERATOR')")
     @PutMapping("/{id}")
     public CountryDto update(@PathVariable Long id, @RequestBody CountryDto entity) {
         entity.setId(id);
-        return service.update(entity);
+        return locationService.update(entity);
     }
 
     @PreAuthorize("hasAuthority('MODERATOR')")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        service.delete(id);
+        locationService.delete(id);
     }
 }

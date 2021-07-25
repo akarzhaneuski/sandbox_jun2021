@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team5.dao;
 
+import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.entity.Order;
 import com.exadel.sandbox.team5.util.Pair;
 import org.springframework.data.domain.Page;
@@ -78,5 +79,10 @@ public interface OrderDAO extends CommonRepository<Order> {
             """, nativeQuery = true)
     String getUserLoginByOrderUUID(@Param("uuid") String uuid);
 
-    Page<Order> findOrderByEmployeeId(Long id, Pageable pageable);
+    @Query(value = """
+                        SELECT d FROM Order o
+                        LEFT JOIN Discount d ON o.discount.id = d.id
+                        WHERE o.employee.id = :id
+            """)
+    Page<Discount> findOrderByEmployeeId(@Param("id") Long id, Pageable pageable);
 }

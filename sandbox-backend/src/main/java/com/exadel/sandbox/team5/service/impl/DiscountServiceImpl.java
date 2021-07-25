@@ -128,7 +128,7 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
                 searchCriteria.lastUpdateSortingPageRequest());
     }
 
-    private ResultPage<DiscountDto> mapDto(Page<Discount> discounts) {
+    public ResultPage<DiscountDto> mapDto(Page<Discount> discounts) {
         ResultPage<DiscountDto> result = mapper.mapToPage(discounts, DiscountDto.class);
         setRate(getRate(result.getContent()), result.getContent());
         setNameImage(discounts, result);

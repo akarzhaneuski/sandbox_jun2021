@@ -19,4 +19,5 @@ public class EmployeeDto extends IdentifierDto {
     private Role role;
     private String email;
     private Set<CategoryDto> subscriptions;
+    private Set<DiscountDto> favorites;
 }
