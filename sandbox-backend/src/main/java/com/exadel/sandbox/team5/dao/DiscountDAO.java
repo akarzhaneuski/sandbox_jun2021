@@ -103,7 +103,7 @@ public interface DiscountDAO extends CommonRepository<Discount> {
     void incrementViewsByDiscountId(@Param("discountId") Long discountId);
 
     @Query(value = """
-            SELECT new com.exadel.sandbox.team5.util.Pair(d.name, d.views) FROM Discount d WHERE d.views IS NOT NULL order by d.name
+            SELECT new com.exadel.sandbox.team5.util.Pair(d.name, d.views) FROM Discount d WHERE d.views > 0 order by d.name
             """)
     List<Pair> getViewsByDiscounts();
 
