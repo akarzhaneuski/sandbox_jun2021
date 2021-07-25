@@ -20,8 +20,8 @@ public class Company extends AuditableEntity implements Serializable {
 
     @Column(name = "imageId")
     private Long imageId;
-
-    @ManyToMany(cascade = CascadeType.MERGE)
+    
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     @JoinTable(name = "company_address",
             joinColumns = @JoinColumn(name = "companyId", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "addressId", referencedColumnName = "id"))
