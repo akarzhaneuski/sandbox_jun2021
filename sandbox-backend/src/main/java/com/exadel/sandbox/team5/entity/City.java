@@ -18,7 +18,7 @@ public class City extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "countryId", referencedColumnName = "id")
     private Country country;
 }
