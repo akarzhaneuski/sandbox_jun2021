@@ -47,7 +47,6 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Object> handleAuthExceptions(Exception ex, WebRequest request) {
-        log.error("Bad credentials Exception", ex);
         ApiError apiError = new ApiError("Incorrect username or password", ex.getMessage());
         return new ResponseEntity<>(apiError, BAD_REQUEST);
     }

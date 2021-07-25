@@ -6,8 +6,8 @@ import com.exadel.sandbox.team5.dto.AuthorizationUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     new UsernamePasswordAuthenticationToken(login, password)).isAuthenticated()) {
                 throw new BadCredentialsException("Incorrect username or password");
             }
-        } catch (InternalAuthenticationServiceException e) {
+        } catch (AuthenticationException e) {
             throw new BadCredentialsException("User not found");
         }
     }
