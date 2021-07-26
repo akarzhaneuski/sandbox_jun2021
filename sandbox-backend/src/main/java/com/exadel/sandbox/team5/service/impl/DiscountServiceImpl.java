@@ -8,7 +8,7 @@ import com.exadel.sandbox.team5.dto.search.DiscountSearchCriteria;
 import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
-import com.exadel.sandbox.team5.service.SnsService;
+import com.exadel.sandbox.team5.service.NotificationService;
 import com.exadel.sandbox.team5.util.Pair;
 import com.exadel.sandbox.team5.util.ResultPage;
 import com.exadel.sandbox.team5.util.SearchCriteria;
@@ -29,7 +29,7 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
     private final ImageDAO imageDAO;
 
     @Autowired
-    private SnsService snsService;
+    private NotificationService notificationService;
 
     public DiscountServiceImpl(DiscountDAO entityDao, MapperConverter mapper, ReviewDAO reviewDAO, ImageDAO imageDAO) {
         super(entityDao, Discount.class, DiscountDto.class, mapper);
@@ -61,7 +61,7 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
 
     @Override
     public DiscountDto save(DiscountDto discount) {
-        if(discount.isNotifySubscribers()) snsService.sendToSubscribers(discount);
+        if(discount.isNotifySubscribers()) new Thread(() -> notificationService.sendToSubscribers(discount)).start();
         Discount dis = mapper.map(discount, Discount.class);
         if (discount.getNameImage() != null) {
             dis.setImageId(imageDAO.findImageByName(discount.getNameImage()).orElseThrow(NoSuchElementException::new).getId());
