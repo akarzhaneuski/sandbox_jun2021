@@ -10,14 +10,13 @@ import com.exadel.sandbox.team5.entity.Image;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.EmployeeService;
+import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.util.SecurityUtils;
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.HashMap;
@@ -30,16 +29,17 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(MockitoJUnitRunner.class)
 class OrderServiceImplTest {
 
-    @Spy
-    EmployeeService employeeService;
 
     @Mock
+    EmployeeService employeeService;
+
+    @Spy
     CompanyDAO companyDAO;
 
     @Spy
     DiscountDto discountDto;
 
-    @Spy
+    @Mock
     MapperConverter mapperConverter;
 
     @Spy
@@ -51,33 +51,42 @@ class OrderServiceImplTest {
     @Mock
     ReviewDAO reviewDAO;
 
-    @InjectMocks
+    @Mock
     DiscountService discountService;
 
     @Mock
     DiscountDAO discountDAO;
 
-    @Mock
+    @Spy
     SecurityUtils securityUtils;
 
     @Spy
     OrderDAO orderDAO;
 
+//    @InjectMocks
+//    OrderServiceImpl orderService = new OrderServiceImpl(orderDAO, mapperConverter, employeeService, discountService, discountDAO, companyDAO, securityUtils);
+
+
+    @Mock
+    OrderService orderSer;
+
     @InjectMocks
-    OrderServiceImpl orderService = new OrderServiceImpl(orderDAO, mapperConverter, employeeService, discountService, discountDAO, companyDAO, securityUtils);
+    OrderServiceImpl orderService;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
     }
 
-//    @BeforeEach
-//    void init() {
-//        MockitoAnnotations.openMocks(this);
-//    }
+    @BeforeEach
+    void init() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     void testCreateEmployeePromoCode() throws NoSuchElementException {
+        Mockito.when(discountService.getById(1L)).thenReturn(new DiscountDto());
+        Mockito.when(discountService.getById(1L)).thenReturn(new DiscountDto());
         assertEquals(String.class, orderService.createOrder("3"));
 
     }
