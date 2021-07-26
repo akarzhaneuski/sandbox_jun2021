@@ -10,7 +10,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -45,12 +44,5 @@ public class OrderRestController {
         return "data:image/png;base64," +
                 StringUtils.newStringUtf8(Base64.encodeBase64(
                         qrCodeService.generateQRCode(orderService.createOrder(discountId)), false));
-    }
-
-    @ApiOperation("Checks link if unique code of employee exists in database and promocode has not expired")
-    @GetMapping(value = "/validate/{uuid}")
-    @ResponseStatus(HttpStatus.OK)
-    public String validateQRCode(@PathVariable String uuid) {
-        return qrCodeService.validateQR(uuid);
     }
 }
