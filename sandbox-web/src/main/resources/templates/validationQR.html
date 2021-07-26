@@ -61,7 +61,8 @@
 <div>
     <h1>QR Code validation</h1>
     <h3> Result: [[${validationResult}]]</h3>
-    <h4 th:if="${validationResult == 'Valid'}"> User email is: <br><br> [[${email}]] </h4>
+    <h4 th:if="${validationResult == 'Valid'}"> Discount name: <br><br> [[${discountName}]] </h4>
+    <h4 th:if="${validationResult == 'Valid'}"> User email: <br><br> [[${email}]] </h4>
     <h4 th:if="${validationResult == 'Invalid'}">Reason: <br><br> [[${causeOfError}]]</h4>
     <img th:if="${validationResult == 'Invalid'}"
          src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Thumb_down_icon.svg/1024px-Thumb_down_icon.svg.png"

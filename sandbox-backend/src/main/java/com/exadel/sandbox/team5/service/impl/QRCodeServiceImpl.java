@@ -15,7 +15,8 @@ import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.*;
+import java.util.Date;
+import java.util.NoSuchElementException;
 
 @Transactional
 @Service
@@ -57,7 +58,8 @@ public class QRCodeServiceImpl implements QRCodeService {
             return Pair.of(OrderStatus.INVALID, "Order has expired");
         }
         orderService.invalidatePromoCode(uuid);
-        return Pair.of(OrderStatus.VALID, orderDAO.getUserLoginByOrderUUID(uuid));
+        var response = orderDAO.getUserLoginByOrderUUID(uuid) + "/" + orderDAO.getDiscountNameByOrderUUID(uuid);
+        return Pair.of(OrderStatus.VALID, response);
     }
 
     private String generateQRUrl(String uuid) {
