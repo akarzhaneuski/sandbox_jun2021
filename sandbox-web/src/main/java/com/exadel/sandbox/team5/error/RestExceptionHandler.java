@@ -14,6 +14,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import java.util.NoSuchElementException;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Slf4j
 @ControllerAdvice
@@ -48,7 +49,7 @@ public class RestExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Object> handleAuthExceptions(Exception ex, WebRequest request) {
         ApiError apiError = new ApiError("Incorrect username or password", ex.getMessage());
-        return new ResponseEntity<>(apiError, BAD_REQUEST);
+        return new ResponseEntity<>(apiError, UNAUTHORIZED);
     }
 
     @ExceptionHandler(Exception.class)
