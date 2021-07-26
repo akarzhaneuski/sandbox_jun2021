@@ -9,11 +9,11 @@ import org.springframework.lang.Nullable;
 @Setter
 @ToString
 public class Message {
-    private String message;
+    private String text;
     private String subject;
 
-    public Message(String message, @Nullable String subject) {
-        this.message = message;
+    public Message(String text, @Nullable String subject) {
+        this.text = text;
         this.subject = subject;
     }
 }

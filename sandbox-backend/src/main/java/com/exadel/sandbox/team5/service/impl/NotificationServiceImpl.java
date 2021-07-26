@@ -22,8 +22,8 @@ public class NotificationServiceImpl implements NotificationService {
 
     public PublishResult sendToAllUsers(Message message) {
         if (message.getSubject() == null)
-            return amazonSNS.publish(getARN(), message.getMessage());
-        return amazonSNS.publish(getARN(), message.getMessage(), message.getSubject());
+            return amazonSNS.publish(getARN(), message.getText());
+        return amazonSNS.publish(getARN(), message.getText(), message.getSubject());
     }
 
     public void sendToSubscribers(DiscountDto discountDto) {
