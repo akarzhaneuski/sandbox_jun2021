@@ -53,8 +53,8 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
-        log.error("Duplicate value", ex);
-        ApiError apiError = new ApiError("Duplicate value", ex.getMessage());
+        log.error("Duplicated entry", ex);
+        ApiError apiError = new ApiError("Duplicated entry", ex.getMessage());
         return new ResponseEntity<>(apiError, BAD_REQUEST);
     }
 }
