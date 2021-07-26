@@ -1,8 +1,11 @@
 package com.exadel.sandbox.team5;
 
+import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.OrderDto;
 import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.QRCodeService;
+import com.exadel.sandbox.team5.util.ResultPage;
+import com.exadel.sandbox.team5.util.SearchCriteria;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base64;
@@ -11,8 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
@@ -28,9 +29,9 @@ public class OrderRestController {
         return orderService.getById(id);
     }
 
-    @GetMapping
-    public List<OrderDto> getAll() {
-        return orderService.getAll();
+    @PostMapping
+    public ResultPage<DiscountDto> getAll(@RequestBody SearchCriteria searchCriteria) {
+        return orderService.getAll(searchCriteria);
     }
 
     @PutMapping("/{id}")
@@ -38,13 +39,6 @@ public class OrderRestController {
         order.setId(id);
         return orderService.update(order);
     }
-
-    @PreAuthorize("hasAuthority('MODERATOR')")
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        orderService.delete(id);
-    }
-
 
     @ApiOperation("Create order from register user and return QR code with link")
     @PostMapping(value = "/create/{discountId}", produces = MediaType.IMAGE_PNG_VALUE)

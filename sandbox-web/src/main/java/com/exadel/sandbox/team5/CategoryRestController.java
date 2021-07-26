@@ -54,12 +54,6 @@ public class CategoryRestController {
     }
 
     @PreAuthorize("hasAuthority('MODERATOR')")
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        categoryService.delete(id);
-    }
-
-    @PreAuthorize("hasAuthority('MODERATOR')")
     @ApiOperation("Statistic of Orders By Categories")
     @GetMapping("/statistic/categories")
     public Map<String, String> getStatisticOrdersByCategories() {

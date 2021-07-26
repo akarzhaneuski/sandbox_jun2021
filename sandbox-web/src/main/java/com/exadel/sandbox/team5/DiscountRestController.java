@@ -2,7 +2,10 @@ package com.exadel.sandbox.team5;
 
 import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.search.DiscountSearchCriteria;
-import com.exadel.sandbox.team5.service.*;
+import com.exadel.sandbox.team5.service.DiscountService;
+import com.exadel.sandbox.team5.service.ImageClientService;
+import com.exadel.sandbox.team5.service.OrderService;
+import com.exadel.sandbox.team5.service.ReviewService;
 import com.exadel.sandbox.team5.service.export.ExportService;
 import com.exadel.sandbox.team5.service.export.FileNameGenerator;
 import com.exadel.sandbox.team5.util.ResultPage;
@@ -61,12 +64,6 @@ public class DiscountRestController {
         DiscountDto discount = service.getById(id);
         discount.setNameImage(imageService.save(file));
         return service.update(discount);
-    }
-
-    @PreAuthorize("hasAuthority('MODERATOR')")
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
     }
 
     @GetMapping("/{discountId}/reviews")

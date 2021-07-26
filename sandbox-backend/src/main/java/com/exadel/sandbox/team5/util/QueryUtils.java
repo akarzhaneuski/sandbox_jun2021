@@ -4,14 +4,13 @@ import lombok.NoArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor
 public class QueryUtils {
 
     public static String getWildcard(String text) {
-        return "%" + text + "%";
+            return "%" + text.replace("%", "/%") + "%";
     }
 
     public static Set<String> safeCollectionParam(Set<String> collection) {
