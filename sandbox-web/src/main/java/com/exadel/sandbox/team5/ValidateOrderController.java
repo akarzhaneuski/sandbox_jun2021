@@ -1,6 +1,5 @@
 package com.exadel.sandbox.team5;
 
-import com.exadel.sandbox.team5.entity.OrderStatus;
 import com.exadel.sandbox.team5.service.QRCodeService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,7 @@ public class ValidateOrderController {
     public ModelAndView validateQRCode(@PathVariable String uuid) {
         var responsePair = qrCodeService.validateQR(uuid);
         var modelAndView = new ModelAndView();
-        modelAndView.setViewName( responsePair.getFirst() == OrderStatus.INVALID ? "invalidQR" : "validQR");
+        modelAndView.setViewName("validationQR");
         modelAndView.addObject("validationResult", responsePair.getFirst().getText());
         modelAndView.addObject("email", responsePair.getSecond());
         modelAndView.addObject("causeOfError", responsePair.getSecond());
