@@ -15,6 +15,7 @@ import com.exadel.sandbox.team5.util.SecurityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Transactional
@@ -36,7 +37,7 @@ public class EmployeeServiceImpl extends CRUDServiceDtoImpl<EmployeeDAO, Employe
 
     @Override
     public Employee getByLogin(String login) {
-        return employeeDAO.getByLogin(login);
+        return employeeDAO.getByLogin(login).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
@@ -69,7 +70,7 @@ public class EmployeeServiceImpl extends CRUDServiceDtoImpl<EmployeeDAO, Employe
 
     @Override
     public void addFavorite(Long id) {
-        var employee = employeeDAO.getByLogin(SecurityUtils.getCurrentUsername());
+        var employee = employeeDAO.getByLogin(SecurityUtils.getCurrentUsername()).orElseThrow(NoSuchElementException::new);
         employee.getFavorites().add(discountDAO.getById(id));
         employeeDAO.save(employee);
     }
@@ -81,7 +82,7 @@ public class EmployeeServiceImpl extends CRUDServiceDtoImpl<EmployeeDAO, Employe
 
     @Override
     public boolean deleteFavorite(Long id) {
-        var employee = employeeDAO.getByLogin(SecurityUtils.getCurrentUsername());
+        var employee = employeeDAO.getByLogin(SecurityUtils.getCurrentUsername()).orElseThrow(NoSuchElementException::new);
         employee.getFavorites().remove(discountDAO.getById(id));
         employeeDAO.save(employee);
         return true;
