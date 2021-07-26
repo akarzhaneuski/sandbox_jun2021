@@ -24,10 +24,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         try {
             if (!authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(login, password)).isAuthenticated()) {
-                throw new BadCredentialsException("Incorrect username or password");
             }
         } catch (AuthenticationException e) {
-            throw new BadCredentialsException("User not found");
+            throw new BadCredentialsException("Incorrect username or password");
         }
     }
 
