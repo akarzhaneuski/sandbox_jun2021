@@ -49,13 +49,13 @@ public class QRCodeServiceImpl implements QRCodeService {
     @Override
     public Pair<OrderStatus, String> validateQR(String uuid) {
         if (!uuid.equals(orderDAO.getEmployeePromocodeByUUID(uuid))) {
-            return Pair.of(OrderStatus.INVALID, "Order not found. Promocode is incorrect");
+            return Pair.of(OrderStatus.INVALID, "Order not found. Promocode is incorrect" + "/ ");
         }
         if (!orderDAO.getPromoCodeStatusByUUID(uuid)) {
-            return Pair.of(OrderStatus.INVALID, "Order has already been activated");
+            return Pair.of(OrderStatus.INVALID, "Order has already been activated"+ "/ ");
         }
         if (orderDAO.getPromocodePeriodEndByUUID(uuid).compareTo(new Date()) < 0) {
-            return Pair.of(OrderStatus.INVALID, "Order has expired");
+            return Pair.of(OrderStatus.INVALID, "Order has expired"+ "/ ");
         }
         orderService.invalidatePromoCode(uuid);
         var response = orderDAO.getUserLoginByOrderUUID(uuid) + "/" + orderDAO.getDiscountNameByOrderUUID(uuid);
