@@ -25,8 +25,11 @@ public class ValidateOrderController {
         var responsePair = qrCodeService.validateQR(uuid);
         var modelAndView = new ModelAndView();
         modelAndView.setViewName("validationQR");
+        var response = responsePair.getSecond();
+        var responseArray = response.split("/");
         modelAndView.addObject("validationResult", responsePair.getFirst().getText());
-        modelAndView.addObject("email", responsePair.getSecond());
+        modelAndView.addObject("email", responseArray[0]);
+        modelAndView.addObject("discountName", responseArray[1]);
         modelAndView.addObject("causeOfError", responsePair.getSecond());
         return modelAndView;
     }

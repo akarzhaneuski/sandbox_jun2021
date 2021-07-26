@@ -85,4 +85,12 @@ public interface OrderDAO extends CommonRepository<Order> {
                         WHERE o.employee.id = :id
             """)
     Page<Discount> findOrderByEmployeeId(@Param("id") Long id, Pageable pageable);
+
+    @Query(value = """
+            SELECT d.name
+            FROM discount d
+            LEFT JOIN `order` o on d.id = o.discountId
+            WHERE o.employeePromocode=(:uuid);
+            """, nativeQuery = true)
+    String getDiscountNameByOrderUUID(@Param("uuid") String uuid);
 }
