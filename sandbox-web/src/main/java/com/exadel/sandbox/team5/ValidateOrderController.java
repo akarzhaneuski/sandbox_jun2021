@@ -30,7 +30,7 @@ public class ValidateOrderController {
         modelAndView.addObject("validationResult", responsePair.getFirst().getText());
         modelAndView.addObject("email", responseArray[0]);
         modelAndView.addObject("discountName", responseArray[1]);
-        modelAndView.addObject("causeOfError", responsePair.getSecond());
+        modelAndView.addObject("causeOfError", responseArray[0]);
         return modelAndView;
     }
 }
