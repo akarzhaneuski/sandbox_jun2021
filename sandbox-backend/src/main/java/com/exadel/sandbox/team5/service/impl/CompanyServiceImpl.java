@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team5.service.impl;
 
+import com.exadel.sandbox.team5.annotations.Validate;
 import com.exadel.sandbox.team5.dao.CompanyDAO;
 import com.exadel.sandbox.team5.dao.ImageDAO;
 import com.exadel.sandbox.team5.dto.AddressDto;
@@ -43,6 +44,7 @@ public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, 
     }
 
     @Override
+    @Validate
     public CompanyDto save(CompanyDto entityDto) {
         Company company = mapper.map(entityDto, Company.class);
         if (entityDto.getNameImage() != null) {
@@ -52,6 +54,7 @@ public class CompanyServiceImpl extends CRUDServiceDtoImpl<CompanyDAO, Company, 
     }
 
     @Override
+    @Validate
     public CompanyDto update(CompanyDto entityDto) {
         Set<AddressDto> newAddress = entityDto.getAddresses();
         var saveAddress = newAddress.stream().map(a -> {

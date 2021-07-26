@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team5.service.impl;
 
-import com.exadel.sandbox.team5.dao.*;
+import com.exadel.sandbox.team5.annotations.Validate;
+import com.exadel.sandbox.team5.dao.AddressDAO;
 import com.exadel.sandbox.team5.dto.AddressDto;
 import com.exadel.sandbox.team5.entity.Address;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
@@ -17,6 +18,7 @@ public class AddressServiceImpl extends CRUDServiceDtoImpl<AddressDAO, Address, 
     }
 
     @Override
+    @Validate
     public AddressDto save(AddressDto entityDto) {
         entityDto.getCity().setId(entityDao.findIdCityByName(entityDto.getCity().getName()).orElse(null));
         entityDto.getCity().getCountry().setId(entityDao.findIdCountryByName(entityDto.getCity().getCountry().getName()).orElse(null));

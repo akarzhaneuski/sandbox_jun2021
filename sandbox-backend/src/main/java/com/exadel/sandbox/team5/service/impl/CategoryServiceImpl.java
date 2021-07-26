@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team5.service.impl;
 
+import com.exadel.sandbox.team5.annotations.Validate;
 import com.exadel.sandbox.team5.dao.CategoryDAO;
 import com.exadel.sandbox.team5.dao.TagDAO;
 import com.exadel.sandbox.team5.dto.CategoryDto;
@@ -29,6 +30,7 @@ public class CategoryServiceImpl extends CRUDServiceDtoImpl<CategoryDAO, Categor
     }
 
     @Override
+    @Validate
     public CategoryDto save(CategoryWithTagsDto categoryWithTagsDto) {
 
         Set<TagDto> tagDTOSet = new HashSet<>();
@@ -56,6 +58,7 @@ public class CategoryServiceImpl extends CRUDServiceDtoImpl<CategoryDAO, Categor
     }
 
     @Override
+    @Validate
     public CategoryDto save(String category) {
         var categoryDto = new CategoryDto();
         categoryDto.setName(category);
