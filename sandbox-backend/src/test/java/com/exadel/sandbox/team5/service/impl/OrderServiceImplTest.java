@@ -9,10 +9,9 @@ import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.EmployeeService;
 import com.exadel.sandbox.team5.util.SecurityUtils;
-import org.junit.Rule;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,8 +22,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
@@ -50,7 +49,7 @@ class OrderServiceImplTest {
     SecurityUtils securityUtils;
 
     @Mock
-    OrderDAO orderDAO;
+    OrderDAO entityDao;
 
     @InjectMocks
     OrderServiceImpl orderService;
@@ -60,45 +59,61 @@ class OrderServiceImplTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
-
     @Test
-    void testCreateOrderException() throws IllegalArgumentException {
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("Discount not found");
+    void createOrder_ReturnIllegalArgumentExceptionWhenDiscountNotFoundDyDiscountId() throws IllegalArgumentException {
+        String discountId = "3";
+
         when(discountService.getById(Mockito.anyLong())).thenReturn(null);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            orderService.createOrder(discountId);
+        });
     }
 
     @Test
-    void testCreateOrder() {
+    void createOrder_ReturnEmployeePromoCodeInputCorrectDiscountId() {
+        String discountId = "3";
+        orderService.amountDiscountDays = "7";
+        String userName = "E00001";
+
         when(discountService.getById(Mockito.anyLong())).thenReturn(new DiscountDto());
         mockStatic(SecurityUtils.class);
-        when(SecurityUtils.getCurrentUsername()).thenReturn("E00001");
+        when(SecurityUtils.getCurrentUsername()).thenReturn(userName);
         when(employeeService.getByLogin(SecurityUtils.getCurrentUsername())).thenReturn(new Employee());
-        orderService.amountDiscountDays = "7";
-        assertEquals(String.class, orderService.createOrder("3").getClass());
+        String result = orderService.createOrder(discountId);
+
+        assertEquals(String.class, result.getClass());
     }
 
     @Test
-    void getOrdersByDiscountsTest() {
-        Map<String, String> testMap = orderService.getOrdersByDiscounts();
-        assertNotNull(testMap);
-        assertEquals(HashMap.class, testMap.getClass());
+    void getOrdersByDiscount_ReturnHashMap() {
+        Map<String, String> resultMap = orderService.getOrdersByDiscounts();
+
+        assertNotNull(resultMap);
+        assertEquals(HashMap.class, resultMap.getClass());
     }
 
     @Test
-    void getOrdersByCompaniesTest() {
-        assertEquals(HashMap.class, orderService.getOrdersByCompanies().getClass());
+    void getOrdersByCompanies_ReturnHashMap() {
+        Map<String, String> resultMap = orderService.getOrdersByCompanies();
+
+        assertNotNull(resultMap);
+        assertEquals(HashMap.class, resultMap.getClass());
     }
 
     @Test
-    void getOrdersByTagsTest() {
-        assertEquals(HashMap.class, orderService.getOrdersByTags().getClass());
+    void getOrdersByTags_ReturnHashMap() {
+        Map<String, String> resultMap = orderService.getOrdersByTags();
+
+        assertNotNull(resultMap);
+        assertEquals(HashMap.class, resultMap.getClass());
     }
 
     @Test
-    void getOrdersByCategoriesTest() {
-        assertEquals(HashMap.class, orderService.getOrdersByCategories().getClass());
+    void getOrdersByCategories_ReturnHashMap() {
+        Map<String, String> resultMap = orderService.getOrdersByCategories();
+
+        assertNotNull(resultMap);
+        assertEquals(HashMap.class, resultMap.getClass());
     }
 }
