@@ -3,6 +3,7 @@ package com.exadel.sandbox.team5.service.impl;
 import com.exadel.sandbox.team5.dao.CategoryDAO;
 import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.EmployeeDAO;
+import com.exadel.sandbox.team5.dto.CategoryDto;
 import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.EmployeeDto;
 import com.exadel.sandbox.team5.entity.Employee;
@@ -86,6 +87,11 @@ public class EmployeeServiceImpl extends CRUDServiceDtoImpl<EmployeeDAO, Employe
         employee.getFavorites().remove(discountDAO.getById(id));
         employeeDAO.save(employee);
         return true;
+    }
+
+    @Override
+    public Set<CategoryDto> getSubscriptions() {
+        return mapper.map(getEmployee(), EmployeeDto.class).getSubscriptions();
     }
 
     private Employee getEmployee() {

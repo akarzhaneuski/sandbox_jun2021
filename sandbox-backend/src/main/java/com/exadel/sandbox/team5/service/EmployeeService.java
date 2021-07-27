@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team5.service;
 
+import com.exadel.sandbox.team5.dto.CategoryDto;
 import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.dto.EmployeeDto;
 import com.exadel.sandbox.team5.entity.Employee;
@@ -26,4 +27,6 @@ public interface EmployeeService extends CRUDService<EmployeeDto> {
     ResultPage<DiscountDto> getFavorites(SearchCriteria searchCriteria);
 
     boolean deleteFavorite(Long id);
+
+    Set<CategoryDto> getSubscriptions();
 }
