@@ -55,8 +55,8 @@ class OrderServiceImplTest {
     OrderServiceImpl orderService;
 
     @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
+    public void init() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
