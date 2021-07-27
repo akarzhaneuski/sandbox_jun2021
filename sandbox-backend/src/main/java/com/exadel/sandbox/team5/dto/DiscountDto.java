@@ -27,4 +27,5 @@ public class DiscountDto extends IdentifierDto {
     private String nameImage;
     private Set<AddressDto> addresses;
     private Long views;
+    private boolean notifySubscribers;
 }
