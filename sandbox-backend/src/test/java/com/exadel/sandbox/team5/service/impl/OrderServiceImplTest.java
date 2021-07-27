@@ -3,16 +3,11 @@ package com.exadel.sandbox.team5.service.impl;
 import com.exadel.sandbox.team5.dao.CompanyDAO;
 import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.OrderDAO;
-import com.exadel.sandbox.team5.dao.ReviewDAO;
 import com.exadel.sandbox.team5.dto.DiscountDto;
-import com.exadel.sandbox.team5.entity.Discount;
 import com.exadel.sandbox.team5.entity.Employee;
-import com.exadel.sandbox.team5.entity.Image;
-import com.exadel.sandbox.team5.entity.Order;
 import com.exadel.sandbox.team5.mapper.MapperConverter;
 import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.EmployeeService;
-import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.util.SecurityUtils;
 import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,9 +20,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,31 +31,17 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 class OrderServiceImplTest {
 
-    static final String amountDiscountDays = "7";
-
     @Mock
     EmployeeService employeeService;
 
     @Mock
-    CompanyDAO companyDAO;
-
-    @Mock
-    DiscountDto discountDto;
+    DiscountService discountService;
 
     @Mock
     MapperConverter mapperConverter;
 
     @Mock
-    Discount discount;
-
-    @Mock
-    Image image;
-
-    @Mock
-    ReviewDAO reviewDAO;
-
-    @Mock
-    DiscountService discountService;
+    CompanyDAO companyDAO;
 
     @Mock
     DiscountDAO discountDAO;
@@ -74,9 +52,6 @@ class OrderServiceImplTest {
     @Mock
     OrderDAO orderDAO;
 
-    @Mock
-    OrderService orderSer;
-
     @InjectMocks
     OrderServiceImpl orderService;
 
@@ -85,38 +60,18 @@ class OrderServiceImplTest {
         MockitoAnnotations.initMocks(this);
     }
 
-//    @BeforeEach
-//    void init() {
-//        MockitoAnnotations.openMocks(this);
-//    }
-
-    @Test
-    public void testInvalidatePromoCode(){
-        Order selectedOrder = new Order();
-        var now = LocalDateTime.now();
-        var periodStart = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
-        var periodEnd = Date.from((now.plusDays(Long.parseLong(amountDiscountDays))).atZone(ZoneId.systemDefault()).toInstant());
-        selectedOrder.setPromoCodeStatus(true);
-        selectedOrder.setPromoCodePeriodStart(periodStart);
-        selectedOrder.setPromoCodePeriodEnd(periodEnd);
-        when(orderService.entityDao.getOrderByEmployeePromocode("87f532ab-3ded-4930-aa5d-02107f78ae9c")).
-                thenReturn(selectedOrder);
-        do(selectedOrder.setP;).when(orderService.entityDao.setPromoCodeStatus(false, "87f532ab-3ded-4930-aa5d-02107f78ae9c")).
-        assertEquals("false", selectedOrder.getPromoCodeStatus());
-    }
-
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
     @Test
-    void testCreateEmployeePromoCodeException() throws IllegalArgumentException {
+    void testCreateOrderException() throws IllegalArgumentException {
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage("Discount not found");
         when(discountService.getById(Mockito.anyLong())).thenReturn(null);
     }
 
     @Test
-    void testCreateEmployeePromoCode() {
+    void testCreateOrder() {
         when(discountService.getById(Mockito.anyLong())).thenReturn(new DiscountDto());
         mockStatic(SecurityUtils.class);
         when(SecurityUtils.getCurrentUsername()).thenReturn("E00001");
