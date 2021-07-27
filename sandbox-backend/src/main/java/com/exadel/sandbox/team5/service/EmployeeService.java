@@ -13,15 +13,15 @@ public interface EmployeeService extends CRUDService<EmployeeDto> {
 
     Employee getByLogin(String login);
 
-    void addFavorites(Long employeeId, Set<Long> discountIds);
+    void addFavorites(Set<Long> discountIds);
 
     void addFavorite(Long id);
 
-    void removeFavorites(Long employeeId, Set<Long> discountIds);
+    void removeFavorites(Set<Long> discountIds);
 
-    void addSubscriptions(Long employeeId, Set<Long> categoryIds);
+    void addSubscriptions(Set<Long> categoryIds);
 
-    void removeSubscriptions(Long employeeId, Set<Long> categoryIds);
+    void removeSubscriptions(Set<Long> categoryIds);
 
     ResultPage<DiscountDto> getFavorites(SearchCriteria searchCriteria);
 
