@@ -5,6 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Getter
@@ -13,11 +17,21 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 public class OrderDto extends IdentifierDto {
 
-    private EmployeeDto employee;
-    private DiscountDto discount;
+    private @Valid EmployeeDto employee;
+
+    private @Valid DiscountDto discount;
+
+    @Size(max = 255, message = " has to be less than {max} symbols")
     private String employeePromocode;
+
+    @NotNull(message = " has to be not null")
     private boolean promoCodeStatus;
+
+    @NotNull(message = "  has to be not null")
     private Date promoCodePeriodStart;
+
+    @NotNull(message = " has to be not null")
+    @Future(message = " has to be a date in the future")
     private Date promoCodePeriodEnd;
 
 }

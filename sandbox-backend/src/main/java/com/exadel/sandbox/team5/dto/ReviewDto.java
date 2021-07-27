@@ -5,6 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Getter
@@ -13,9 +17,17 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 public class ReviewDto extends IdentifierDto {
 
+    @NotNull(message = " has to be not null")
+    @PositiveOrZero(message = " has to be 0 or positive")
     private Integer rate;
+
+    @Size(max = 500, message = " must be less than {max} symbols")
     private String comment;
+
+    @NotNull(message = " has to be not null")
     private Date date;
-    private DiscountDto discount;
-    private EmployeeDto employee;
+
+    private @Valid DiscountDto discount;
+
+    private @Valid EmployeeDto employee;
 }
