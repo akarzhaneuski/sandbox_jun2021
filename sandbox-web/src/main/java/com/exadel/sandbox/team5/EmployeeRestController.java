@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team5;
 
+import com.exadel.sandbox.team5.dto.CategoryDto;
 import com.exadel.sandbox.team5.dto.DiscountDto;
 import com.exadel.sandbox.team5.service.EmployeeService;
 import com.exadel.sandbox.team5.util.ResultPage;
@@ -56,6 +57,11 @@ public class EmployeeRestController {
     public ResponseEntity<?> removeFavorite(@PathVariable Long id) {
         employeeService.deleteFavorite(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/subscriptions")
+    public Set<CategoryDto> getSubscriptions() {
+        return employeeService.getSubscriptions();
     }
 }
 
