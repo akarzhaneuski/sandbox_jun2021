@@ -68,7 +68,6 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<Object> handleValidationDataInFieldException(ValidationException ex, WebRequest request) {
-        log.error("Incorrect data in field", ex);
         ApiError apiError = new ApiError("Incorrect data in field", ex.getMessage());
         return new ResponseEntity<>(apiError, BAD_REQUEST);
     }
