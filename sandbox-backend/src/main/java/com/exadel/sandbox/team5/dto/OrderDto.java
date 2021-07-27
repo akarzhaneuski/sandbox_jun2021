@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Future;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -22,8 +21,7 @@ public class OrderDto extends IdentifierDto {
 
     private @Valid DiscountDto discount;
 
-    @Size(max = 255, message = " has to be less than 255 symbols")
-    @NotBlank(message = " has to be not null or empty")
+    @Size(max = 255, message = " has to be less than {max} symbols")
     private String employeePromocode;
 
     @NotNull(message = " has to be not null")

@@ -21,7 +21,7 @@ public class ReviewDto extends IdentifierDto {
     @PositiveOrZero(message = " has to be 0 or positive")
     private Integer rate;
 
-    @Size(max = 500, message = " must be less than 500 symbols")
+    @Size(max = 500, message = " must be less than {max} symbols")
     private String comment;
 
     @NotNull(message = " has to be not null")

@@ -2,12 +2,12 @@ package com.exadel.sandbox.team5.util;
 
 import lombok.AllArgsConstructor;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 
-import javax.validation.*;
-import java.util.Set;
+import javax.validation.ValidationException;
+import javax.validation.Validator;
 
 @Aspect
 @Component
@@ -16,16 +16,19 @@ public class ValidationAspect {
 
     private final Validator validator;
 
-    @AfterReturning(pointcut = "@annotation(com.exadel.sandbox.team5.annotations.Validate)", returning = "result")
-    public void validate(JoinPoint joinPoint, Object result) {
-
-        Set<ConstraintViolation<Object>> violations = validator.validate(result);
-        if (!violations.isEmpty()) {
-            var builder = new StringBuilder();
-            violations.forEach(violation -> builder
-                    .append(violation.getPropertyPath())
-                    .append(violation.getMessage()));
-            throw new ValidationException("Invalid values for fields: " + builder);
+    @Before("@within(org.springframework.stereotype.Service)")
+    public void getFromServiceInfo(JoinPoint joinPoint) {
+        for (Object object : joinPoint.getArgs()) {
+            var results = validator.validate(object);
+            if (!results.isEmpty()) {
+                var builder = new StringBuilder();
+                results.forEach(result -> builder
+                        .append(result.getPropertyPath())
+                        .append(result.getMessage())
+                        .append("; ")
+                );
+                throw new ValidationException("Invalid values for fields: " + builder);
+            }
         }
     }
 }

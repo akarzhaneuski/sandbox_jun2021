@@ -6,7 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Set;
 
@@ -16,11 +19,10 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class DiscountDto extends IdentifierDto {
 
-    @Size(max = 50, message = " has to be less than 50 symbols")
-    @NotEmpty(message = " has to be not empty")
+    @Size(max = 50, message = " has to be less than {max} symbols")
     private String name;
 
-    @Size(max = 255, message = " has to be less than 255 symbols")
+    @Size(max = 255, message = " has to be less than {max} symbols")
     private String description;
 
     private Date periodStart;
@@ -32,8 +34,7 @@ public class DiscountDto extends IdentifierDto {
     @PositiveOrZero(message = " has to be 0 or positive")
     private int quantity;
 
-    @Size(max = 50, message = " has to be less than 50 symbols")
-    @NotEmpty(message = " has to be not empty")
+    @Size(max = 50, message = " has to be less than {max} symbols")
     private String promoCode;
 
     private Set<@Valid TagDto> tags;
@@ -45,7 +46,7 @@ public class DiscountDto extends IdentifierDto {
 
     private @Valid CategoryDto category;
 
-    @Size(max = 500, message = " has to be less than 500 symbols")
+    @Size(max = 500, message = " has to be less than {max} symbols")
     private String nameImage;
 
     private Set<@Valid AddressDto> addresses;

@@ -1,6 +1,5 @@
 package com.exadel.sandbox.team5.service.impl;
 
-import com.exadel.sandbox.team5.annotations.Validate;
 import com.exadel.sandbox.team5.dao.DiscountDAO;
 import com.exadel.sandbox.team5.dao.ImageDAO;
 import com.exadel.sandbox.team5.dao.ReviewDAO;
@@ -56,7 +55,6 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
     }
 
     @Override
-    @Validate
     public DiscountDto save(DiscountDto discount) {
         Discount dis = mapper.map(discount, Discount.class);
         if (discount.getNameImage() != null) {
@@ -66,7 +64,6 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
     }
 
     @Override
-    @Validate
     public DiscountDto update(DiscountDto discount) {
         return this.save(discount);
     }

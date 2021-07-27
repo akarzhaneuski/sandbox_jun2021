@@ -1,6 +1,5 @@
 package com.exadel.sandbox.team5.service.impl;
 
-import com.exadel.sandbox.team5.annotations.Validate;
 import com.exadel.sandbox.team5.dao.CommonRepository;
 import com.exadel.sandbox.team5.dto.IdentifierDto;
 import com.exadel.sandbox.team5.entity.BaseEntity;
@@ -32,14 +31,12 @@ public class CRUDServiceDtoImpl<S extends CommonRepository<E>, E extends BaseEnt
     }
 
     @Override
-    @Validate
     public D save(D entityDto) {
         var saveEntity = mapper.map(entityDto, entityClass);
         return mapper.map(entityDao.saveAndFlush(saveEntity), entityDtoClass);
     }
 
     @Override
-    @Validate
     public D update(D entityDto) {
         return this.save(entityDto);
     }

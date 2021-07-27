@@ -11,6 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import javax.validation.ValidationException;
 import java.util.NoSuchElementException;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -33,7 +34,6 @@ public class RestExceptionHandler {
         ApiError apiError = new ApiError("Page Not Found Exception ", ex.getMessage());
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
-
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex,
@@ -63,6 +63,13 @@ public class RestExceptionHandler {
     public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
         log.error("Duplicated entry", ex);
         ApiError apiError = new ApiError("Duplicated entry", ex.getMessage());
+        return new ResponseEntity<>(apiError, BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<Object> handleValidationDataInFieldException(ValidationException ex, WebRequest request) {
+        log.error("Incorrect data in field", ex);
+        ApiError apiError = new ApiError("Incorrect data in field", ex.getMessage());
         return new ResponseEntity<>(apiError, BAD_REQUEST);
     }
 }

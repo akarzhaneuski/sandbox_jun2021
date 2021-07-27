@@ -17,6 +17,6 @@ public class AddressDiscountDto {
     @PositiveOrZero(message = " has to be 0 or positive")
     private Long id;
 
-    @Size(max = 100, message = " has to be less than 100 symbols")
+    @Size(max = 100, message = " has to be less than {max} symbols")
     private String address;
 }

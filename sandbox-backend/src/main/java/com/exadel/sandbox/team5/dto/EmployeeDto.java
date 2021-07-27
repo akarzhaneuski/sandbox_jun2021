@@ -19,7 +19,7 @@ import java.util.Set;
 public class EmployeeDto extends IdentifierDto {
 
     @NotNull(message = " has to be not null")
-    @Size(max = 50, message = " has to be less than 50 symbols")
+    @Size(max = 50, message = " has to be less than {max} symbols")
     private String login;
 
     private @Valid CountryDto country;
@@ -27,7 +27,7 @@ public class EmployeeDto extends IdentifierDto {
     @NotNull(message = " has to be not null")
     private Role role;
 
-    @Size(max = 320, message = " has to be less than 320 symbols")
+    @Size(max = 320, message = " has to be less than {max} symbols")
     @Email(message = "not valid. Please enter a valid email address (Ex: username@example.com)")
     private String email;
 
