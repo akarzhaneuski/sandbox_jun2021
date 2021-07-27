@@ -45,7 +45,6 @@
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
@@ -92,5 +91,11 @@
             <artifactId>commons-csv</artifactId>
             <version>1.8</version>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
 </project>
