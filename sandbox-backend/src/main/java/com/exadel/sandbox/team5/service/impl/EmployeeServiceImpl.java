@@ -41,36 +41,36 @@ public class EmployeeServiceImpl extends CRUDServiceDtoImpl<EmployeeDAO, Employe
     }
 
     @Override
-    public void addFavorites(Long employeeId, Set<Long> discountIds) {
-        var employee = employeeDAO.getById(employeeId);
+    public void addFavorites(Set<Long> discountIds) {
+        var employee = getEmployee();
         employee.getFavorites().addAll(discountDAO.getDiscountsByIdIsIn(discountIds));
         employeeDAO.save(employee);
     }
 
     @Override
-    public void removeFavorites(Long employeeId, Set<Long> discountIds) {
-        var employee = employeeDAO.getById(employeeId);
+    public void removeFavorites(Set<Long> discountIds) {
+        var employee = getEmployee();
         employee.getFavorites().removeAll(discountDAO.getDiscountsByIdIsIn(discountIds));
         employeeDAO.save(employee);
     }
 
     @Override
-    public void addSubscriptions(Long employeeId, Set<Long> categoryIds) {
-        var employee = employeeDAO.getById(employeeId);
+    public void addSubscriptions(Set<Long> categoryIds) {
+        var employee = getEmployee();
         employee.getSubscriptions().addAll(categoryDAO.getCategoryByIdIsIn(categoryIds));
         employeeDAO.save(employee);
     }
 
     @Override
-    public void removeSubscriptions(Long employeeId, Set<Long> categoryIds) {
-        var employee = employeeDAO.getById(employeeId);
+    public void removeSubscriptions(Set<Long> categoryIds) {
+        var employee = getEmployee();
         employee.getSubscriptions().removeAll(categoryDAO.getCategoryByIdIsIn(categoryIds));
         employeeDAO.save(employee);
     }
 
     @Override
     public void addFavorite(Long id) {
-        var employee = employeeDAO.getByLogin(SecurityUtils.getCurrentUsername()).orElseThrow(NoSuchElementException::new);
+        var employee = getEmployee();
         employee.getFavorites().add(discountDAO.getById(id));
         employeeDAO.save(employee);
     }
@@ -82,9 +82,13 @@ public class EmployeeServiceImpl extends CRUDServiceDtoImpl<EmployeeDAO, Employe
 
     @Override
     public boolean deleteFavorite(Long id) {
-        var employee = employeeDAO.getByLogin(SecurityUtils.getCurrentUsername()).orElseThrow(NoSuchElementException::new);
+        var employee = getEmployee();
         employee.getFavorites().remove(discountDAO.getById(id));
         employeeDAO.save(employee);
         return true;
+    }
+
+    private Employee getEmployee() {
+        return employeeDAO.getByLogin(SecurityUtils.getCurrentUsername()).orElseThrow(NoSuchElementException::new);
     }
 }
