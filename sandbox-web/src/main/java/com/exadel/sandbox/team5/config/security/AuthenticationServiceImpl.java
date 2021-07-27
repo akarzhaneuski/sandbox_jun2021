@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,8 +22,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void authenticate(String login, String password) {
-        if (!authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(login, password)).isAuthenticated()) {
+        try {
+            if (!authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(login, password)).isAuthenticated()) {
+            }
+        } catch (UsernameNotFoundException e) {
             throw new BadCredentialsException("Incorrect username or password");
         }
     }

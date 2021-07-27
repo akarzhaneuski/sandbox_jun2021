@@ -62,7 +62,6 @@ public class OrderServiceImpl extends CRUDServiceDtoImpl<OrderDAO, Order, OrderD
     public String createOrder(String discountId) {
 
         var discountIdL = Long.valueOf(discountId);
-        var d = discountService.getById(discountIdL);
         if (discountService.getById(discountIdL) != null) {
             var employee = employeeService.getByLogin(SecurityUtils.getCurrentUsername());
             String employeePromocode = new ValidatePromoCodeGenerator().generateUUID();

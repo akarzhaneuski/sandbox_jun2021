@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import java.util.NoSuchElementException;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Slf4j
 @ControllerAdvice
@@ -44,6 +46,12 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(apiError, BAD_REQUEST);
     }
 
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Object> handleAuthExceptions(Exception ex, WebRequest request) {
+        ApiError apiError = new ApiError("Incorrect username or password", ex.getMessage());
+        return new ResponseEntity<>(apiError, UNAUTHORIZED);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
         log.error("Internal Exception", ex);
@@ -53,8 +61,8 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
-        log.error("Internal Exception", ex);
-        ApiError apiError = new ApiError("Duplicate value", ex.getMessage());
+        log.error("Duplicated entry", ex);
+        ApiError apiError = new ApiError("Duplicated entry", ex.getMessage());
         return new ResponseEntity<>(apiError, BAD_REQUEST);
     }
 }

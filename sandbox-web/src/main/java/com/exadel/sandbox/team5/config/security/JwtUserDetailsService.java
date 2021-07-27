@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 @RequiredArgsConstructor
 public class JwtUserDetailsService implements UserDetailsService {
@@ -25,7 +27,11 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        return createUserDetails(login);
+        try {
+            return createUserDetails(login);
+        } catch (NoSuchElementException e) {
+            throw new UsernameNotFoundException("Login invalid");
+        }
     }
 
     public JwtUser createUserDetails(String login) {

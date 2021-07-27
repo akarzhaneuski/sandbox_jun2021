@@ -27,7 +27,7 @@ public class SubscriptionScheduler {
     private final DiscountDAO discountDAO;
     private final MailSenderService mailSender;
 
-    private static final int DELAY = 3600000 * 12;
+    private static final int DELAY = 60000;
 
     @Scheduled(fixedRate = DELAY)
     public void senderSchedule() {
