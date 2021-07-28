@@ -1,9 +1,9 @@
 package com.exadel.sandbox.team5.service.impl;
 
 import com.exadel.sandbox.team5.barcodes.QRCode;
+import com.exadel.sandbox.team5.dao.EmployeeDAO;
 import com.exadel.sandbox.team5.dao.OrderDAO;
 import com.exadel.sandbox.team5.entity.OrderStatus;
-import com.exadel.sandbox.team5.service.OrderService;
 import com.exadel.sandbox.team5.service.QRCodeService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -25,7 +25,7 @@ import java.util.NoSuchElementException;
 public class QRCodeServiceImpl implements QRCodeService {
 
     private final OrderDAO orderDAO;
-    private final OrderService orderService;
+    private final EmployeeDAO employeeDAO;
 
     @Override
     public byte[] generateQRCode(String uuid) {
@@ -48,18 +48,17 @@ public class QRCodeServiceImpl implements QRCodeService {
 
     @Override
     public Pair<OrderStatus, String> validateQR(String uuid) {
-        if (!uuid.equals(orderDAO.getEmployeePromocodeByUUID(uuid))) {
-            return Pair.of(OrderStatus.INVALID, "Order not found. Promocode is incorrect" + "/ ");
+        var orderByEmployeePromocode = orderDAO.getOrderByEmployeePromocode(uuid);
+        if (orderByEmployeePromocode == null){
+            return Pair.of(OrderStatus.INVALID, "Order not found. Promocode is incorrect");
         }
-        if (!orderDAO.getPromoCodeStatusByUUID(uuid)) {
-            return Pair.of(OrderStatus.INVALID, "Order has already been activated"+ "/ ");
+        if (orderByEmployeePromocode.getPromoCodeStatus().equals(false)) {
+            return Pair.of(OrderStatus.INVALID, "Order has already been activated");
         }
-        if (orderDAO.getPromocodePeriodEndByUUID(uuid).compareTo(new Date()) < 0) {
-            return Pair.of(OrderStatus.INVALID, "Order has expired"+ "/ ");
+        if (orderByEmployeePromocode.getPromoCodePeriodEnd().compareTo(new Date()) < 0) {
+            return Pair.of(OrderStatus.INVALID, "Order has expired");
         }
-        orderService.invalidatePromoCode(uuid);
-        var response = orderDAO.getUserLoginByOrderUUID(uuid) + "/" + orderDAO.getDiscountNameByOrderUUID(uuid);
-        return Pair.of(OrderStatus.VALID, response);
+        return Pair.of(OrderStatus.VALID, employeeDAO.getUserLoginByOrderUUID(uuid));
     }
 
     private String generateQRUrl(String uuid) {

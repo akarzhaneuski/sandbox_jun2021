@@ -20,4 +20,6 @@ public interface DiscountService extends CRUDService<DiscountDto> {
     ResultPage<DiscountDto> getAllByCriteria(SearchCriteria criteria);
 
     ResultPage<DiscountDto> mapDto(Page<Discount> discounts);
+
+    String getDiscountNameByOrderUUID(String uuid);
 }

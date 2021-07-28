@@ -16,8 +16,6 @@ import java.util.List;
 @Repository
 public interface OrderDAO extends CommonRepository<Order> {
 
-    List<Order> findAllByEmployeeId(Long id);
-
     Order getOrderByEmployeePromocode(String uuid);
 
     @Modifying
@@ -32,14 +30,6 @@ public interface OrderDAO extends CommonRepository<Order> {
             GROUP BY t.id
             """)
     List<Pair> getAllOrdersForTags();
-
-    @Query(value = """
-
-            SELECT o.employeePromocode
-            FROM `order` o
-            WHERE o.employeePromocode=(:uuid);
-            """, nativeQuery = true)
-    String getEmployeePromocodeByUUID(@Param("uuid") String uuid);
 
     @Query(value = """
             SELECT new com.exadel.sandbox.team5.util.Pair(c.name, COUNT(o.id))
@@ -58,39 +48,9 @@ public interface OrderDAO extends CommonRepository<Order> {
     void changePromoCodeStatusAfterExpirationTime(@Param("currentTime") Date currentTime);
 
     @Query(value = """
-            SELECT o.promoCodeStatus
-            FROM `order` o
-            WHERE o.employeePromocode=(:uuid);
-            """, nativeQuery = true)
-    boolean getPromoCodeStatusByUUID(@Param("uuid") String uuid);
-
-    @Query(value = """
-            SELECT o.promoCodePeriodEnd
-            FROM `order` o
-            WHERE o.employeePromocode=(:uuid);
-            """, nativeQuery = true)
-    Date getPromocodePeriodEndByUUID(@Param("uuid") String uuid);
-
-    @Query(value = """
-            SELECT e.email
-            FROM employee e
-            LEFT JOIN `order` o on e.id = o.employeeId
-            WHERE o.employeePromocode=(:uuid);
-            """, nativeQuery = true)
-    String getUserLoginByOrderUUID(@Param("uuid") String uuid);
-
-    @Query(value = """
                         SELECT d FROM Order o
                         LEFT JOIN Discount d ON o.discount.id = d.id
                         WHERE o.employee.id = :id
             """)
     Page<Discount> findOrderByEmployeeId(@Param("id") Long id, Pageable pageable);
-
-    @Query(value = """
-            SELECT d.name
-            FROM discount d
-            LEFT JOIN `order` o on d.id = o.discountId
-            WHERE o.employeePromocode=(:uuid);
-            """, nativeQuery = true)
-    String getDiscountNameByOrderUUID(@Param("uuid") String uuid);
 }

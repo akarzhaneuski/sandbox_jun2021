@@ -39,4 +39,12 @@ public interface EmployeeDAO extends CommonRepository<Employee> {
             WHERE e.login LIKE (:login)
             """)
     Page<Discount> getFavorites(@Param("login") String login, Pageable pageable);
+
+    @Query(value = """
+            SELECT e.email
+            FROM employee e
+            LEFT JOIN `order` o on e.id = o.employeeId
+            WHERE o.employeePromocode=(:uuid);
+            """, nativeQuery = true)
+    String getUserLoginByOrderUUID(@Param("uuid") String uuid);
 }
