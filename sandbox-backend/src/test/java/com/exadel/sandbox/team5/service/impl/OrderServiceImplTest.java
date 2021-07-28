@@ -10,25 +10,28 @@ import com.exadel.sandbox.team5.service.DiscountService;
 import com.exadel.sandbox.team5.service.EmployeeService;
 import com.exadel.sandbox.team5.util.SecurityUtils;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@RunWith(JUnitPlatform.class)
 class OrderServiceImplTest {
+
+    @InjectMocks
+    OrderServiceImpl orderService;
 
     @Mock
     EmployeeService employeeService;
@@ -51,14 +54,6 @@ class OrderServiceImplTest {
     @Mock
     OrderDAO entityDao;
 
-    @InjectMocks
-    OrderServiceImpl orderService;
-
-    @BeforeEach
-    public void init() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
     void createOrder_ReturnIllegalArgumentExceptionWhenDiscountNotFoundDyDiscountId() throws IllegalArgumentException {
         String discountId = "3";
@@ -75,8 +70,10 @@ class OrderServiceImplTest {
         String discountId = "3";
         orderService.amountDiscountDays = "7";
         String userName = "E00001";
+        DiscountDto discountDto = new DiscountDto();
 
-        when(discountService.getById(Mockito.anyLong())).thenReturn(new DiscountDto());
+        when(discountService.getById(anyLong())).thenReturn(discountDto);
+        DiscountDto discountDto1 = discountService.getById(anyLong());
         mockStatic(SecurityUtils.class);
         when(SecurityUtils.getCurrentUsername()).thenReturn(userName);
         when(employeeService.getByLogin(SecurityUtils.getCurrentUsername())).thenReturn(new Employee());
