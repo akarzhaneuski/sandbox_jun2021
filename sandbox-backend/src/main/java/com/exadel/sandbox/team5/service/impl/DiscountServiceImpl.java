@@ -156,4 +156,9 @@ public class DiscountServiceImpl extends CRUDServiceDtoImpl<DiscountDAO, Discoun
         discounts.forEach(d -> nameImageToDto.put(d.getId(), namesImages.get(d.getImageId())));
         result.getContent().forEach(discountDto -> discountDto.setNameImage(nameImageToDto.get(discountDto.getId())));
     }
+
+    @Override
+    public String getDiscountNameByOrderUUID(String uuid) {
+        return entityDao.getDiscountNameByOrderUUID(uuid);
+    }
 }

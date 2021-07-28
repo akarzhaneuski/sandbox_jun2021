@@ -114,4 +114,12 @@ public interface DiscountDAO extends CommonRepository<Discount> {
     void markDiscountsAsSent(List<Long> discountIds);
 
     Set<Discount> getDiscountsByIdIsIn(Set<Long> discountIds);
+
+    @Query(value = """
+            SELECT d.name
+            FROM discount d
+            LEFT JOIN `order` o on d.id = o.discountId
+            WHERE o.employeePromocode=(:uuid);
+            """, nativeQuery = true)
+    String getDiscountNameByOrderUUID(@Param("uuid") String uuid);
 }
